@@ -1,0 +1,68 @@
+.p-toast {
+  opacity: 1;
+  margin-top: 3.5rem;
+
+  .p-toast-message {
+    background-color: var(--info-light);
+    border: none;
+    border-left: 4px solid var(--info-dark);
+    border-radius: 4px;
+    padding: 0.5rem 0;
+    overflow: hidden;
+
+    .p-toast-message-content {
+      padding: 0.5rem 2rem;
+
+      .p-toast-message-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .p-toast-close-button {
+        display: none;
+      }
+
+      .p-toast-message-icon {
+        margin: auto 0.75rem auto -1rem;
+      }
+
+      .p-icon:not(.p-toast-icon-close-icon) {
+        width: 20px;
+        height: 21px;
+      }
+
+      .p-toast-summary {
+        font-weight: 700;
+      }
+
+      .p-toast-detail {
+        margin: 0;
+      }
+    }
+
+    .p-toast-icon-close {
+      display: none;
+    }
+
+    &.p-toast-message-success {
+      background-color: var(--success-light);
+      border-left: 4px solid var(--success-dark);
+    }
+
+    &.p-toast-message-info {
+      background-color: var(--info-light);
+      border-left: 4px solid var(--info-dark);
+    }
+
+    &.p-toast-message-warn {
+      background-color: var(--warning-light);
+      border-left: 4px solid var(--warning-dark);
+    }
+
+    &.p-toast-message-error {
+      background-color: var(--error-light);
+      border-left: 4px solid var(--error-dark);
+    }
+  }
+}

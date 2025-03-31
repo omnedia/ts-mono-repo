@@ -1,0 +1,33 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .error-message {
+    background-color: var(--error-light);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    border-left: 4px solid var(--error-dark);
+  }
+
+  .info-message {
+    background-color: var(--info-light);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    border-left: 4px solid var(--info-dark);
+  }
+
+  .form-group {
+    display: flex;
+    gap: 0.25rem;
+
+    &:not(.checkbox-group) {
+      flex-direction: column;
+    }
+
+    &.checkbox-group {
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}

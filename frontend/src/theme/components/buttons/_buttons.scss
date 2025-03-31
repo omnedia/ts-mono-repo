@@ -1,0 +1,90 @@
+.text-button {
+  color: var(--primary-light-color);
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &.default {
+    color: var(--text-color);
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.disabled {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+.icon-button {
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.disabled {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  font-family: "Refrigerator Deluxe", sans-serif;
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+  position: relative;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border-radius: 4px;
+  transition: background 0.3s, opacity 0.3s, filter 0.3s;
+
+  &.button-white {
+    background-color: var(--text-color);
+    color: var(--text-color-black);
+  }
+
+  &.button-yellow {
+    background-color: var(--text-color-yellow);
+    color: var(--text-color-black);
+
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
+
+  &.button-red {
+    background-color: var(--surface-red);
+    color: var(--text-color);
+  }
+
+  &.button-big {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.5rem 2rem;
+  }
+
+  &:hover:not(.button-yellow) {
+    opacity: 0.8;
+  }
+
+  &:active:not(.button-yellow) {
+    opacity: 1;
+    background-color: var(--text-color-yellow);
+    color: var(--text-color-black);
+  }
+
+  &:disabled, &.disabled {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

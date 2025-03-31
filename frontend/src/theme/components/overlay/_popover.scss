@@ -1,0 +1,29 @@
+.p-popover {
+  margin-top: 1rem !important;
+
+  --p-popover-arrow-offset: 0%;
+
+  &::after, &::before {
+    border-bottom-color: var(--surface-gray) !important;
+    border-width: 10px !important;
+  }
+
+  .p-popover-content {
+    padding: 1rem;
+    background-color: var(--surface-gray);
+    border-radius: 15px;
+  }
+
+  .popover-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .item {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+  }
+}

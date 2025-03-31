@@ -1,0 +1,64 @@
+$colors: (
+  "blue": #2196f3,
+  "green": #689f38,
+  "yellow": #fbc02d,
+  "cyan": #00bcd4,
+  "pink": #e91e63,
+  "indigo": #4e5fbb,
+  "teal": #009688,
+  "orange": #ff9800,
+  "bluegray": #607d8b,
+  "purple": #9c27b0,
+  "red": #f44336,
+  "primary": #0a6852,
+) !default;
+
+:root {
+  font-family: "Open Sans", sans-serif;
+  --font-family: "Open Sans", sans-serif;
+  --surface-background: #f8f9fa;
+  --surface-ground: #ffffff;
+  --surface-white: white;
+  --surface-gray: #e0e0e0;
+  --surface-light-gray: #f5f5f5;
+  --text-color: #212121;
+  --primary-color: #0a6852;
+  --primary-light-color: #11a582;
+  --primary-color-text: white;
+  --info-dark: #0040ba;
+  --info-light: #c7d3ff;
+  --error: #ff6b6b;
+  --error-dark: #c0392b;
+  --error-light: #ffcccc;
+  --warning: #ffa500;
+  --warning-dark: #ff8c00;
+  --warning-light: #fff3cd;
+  --success: #28a745;
+  --success-dark: #1f9a00;
+  --success-light: #d4edda;
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --surface-background: #141616;
+  --surface-ground: #222;
+  --surface-white: white;
+  --surface-gray: #3a3a3a;
+  --surface-light-gray: #717171;
+  --text-color: #dfdfdf;
+  --primary-color: #0a6852;
+  --primary-light-color: #11a582;
+  --primary-color-text: white;
+  --info-dark: #0040ba;
+  --info-light: rgb(80, 85, 115);
+  --error: #c47d7d;
+  --error-dark: #ff0000;
+  --error-light: rgb(115, 80, 80);
+  --warning: orange;
+  --warning-dark: #ffc400;
+  --warning-light: rgb(115, 109, 80);
+  --success: green;
+  --success-dark: #1f9a00;
+  --success-light: rgb(83, 115, 80);
+  color-scheme: dark;
+}

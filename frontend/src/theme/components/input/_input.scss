@@ -1,0 +1,93 @@
+.p-input {
+  border: 1px solid var(--surface-gray) !important;
+  background-color: var(--surface-background) !important;
+  padding: 0.5rem 1rem !important;
+  transition: border-color 0.25s !important;
+  border-radius: 4px !important;
+  color: var(--text-color) !important;
+  display: flex;
+  gap: 0.25rem;
+  font-size: 1rem !important;
+  width: 100%;
+
+  &.full-width {
+    width: 100%;
+  }
+
+  & > .p-input {
+    padding: 0 !important;
+    border: none !important;
+    background-color: transparent !important;
+  }
+
+  &:active:not(:disabled), &:focus:not(:disabled) {
+    outline: none !important;
+    border-color: var(--primary-color) !important;
+  }
+
+  &.invalid {
+    border-color: var(--error) !important;
+  }
+
+  &::placeholder {
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+
+  &.transparent {
+    border: none !important;
+    background-color: transparent !important;
+  }
+}
+
+.p-input-checkbox {
+  accent-color: var(--primary-color) !important;
+  cursor: pointer !important;
+}
+
+.p-iconfield {
+  .p-inputicon {
+    top: 0.25rem;
+    bottom: 0;
+    margin: auto;
+    height: 16px;
+    padding: 0 0.5rem;
+    z-index: 1;
+  }
+
+  &.p-iconfield-left {
+    .p-inputicon {
+      left: 0;
+    }
+
+    .p-input, .p-select {
+      padding-left: calc(16px + 1rem) !important;
+    }
+  }
+}
+
+.p-floatlabel {
+  label {
+    font-size: 1rem !important;
+    transition: all 0.2s !important;
+    opacity: 0.8;
+  }
+
+  input::placeholder {
+    opacity: 0;
+  }
+
+  &:has(.p-iconfield) {
+    label {
+      margin-left: calc(16px + 1rem);
+    }
+  }
+
+  &.p-floatlabel-on {
+    &:has(.p-inputwrapper-filled) label, &:has(input.p-filled) label, &:has(.p-inputwrapper-focus) label, &:has(input:focus) label {
+      margin-left: 0.5rem;
+      font-size: 0.8rem !important;
+      opacity: 1;
+    }
+  }
+}

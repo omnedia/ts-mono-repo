@@ -1,0 +1,177 @@
+.p-dialog-mask.p-overlay-mask {
+  background-color: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(2px);
+}
+
+.p-dialog {
+  border-radius: 10px;
+  border: none;
+  width: fit-content;
+  position: relative;
+
+  .p-dialog-header {
+    background: var(--surface-background);
+    width: 100%;
+    justify-content: start;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--surface-gray);
+    gap: 1rem;
+
+    .p-dialog-title {
+      font-weight: 900;
+      font-size: 2rem;
+      color: var(--text-color);
+    }
+
+    .p-dialog-header-actions {
+      margin-left: auto;
+    }
+  }
+
+  .p-dialog-content {
+    background: var(--surface-background);
+    color: var(--text-color);
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    overflow: visible !important;
+
+    .content {
+      overflow: visible !important;
+    }
+
+    &:last-of-type {
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+  }
+
+  .dialog-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &:has(.dialog-list), &.large {
+    width: 95%;
+    max-width: 800px;
+  }
+
+  .dialog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+    max-height: 50dvh;
+    padding-right: 0.5rem;
+
+    .list-item {
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+
+      &.no-hover {
+        cursor: default;
+        border-radius: 0;
+      }
+
+      &.divided {
+        border-bottom: 1px solid var(--surface-gray);
+        padding: 0.25rem 0.25rem 0.75rem;
+      }
+
+      &:hover:not(.no-hover), &.active {
+        background-color: var(--surface-gray);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+
+    p {
+      width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 0.8rem;
+    }
+  }
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:has(.p-dialog-footer) .p-dialog-content {
+    padding: 1rem 1.5rem 0 1.5rem;
+  }
+
+  .p-dialog-footer {
+    color: var(--text-color);
+    background: var(--surface-background);
+    padding: 1.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    .actions {
+      &.right {
+        margin-left: auto;
+      }
+    }
+  }
+
+  &.p-confirm-dialog {
+    .p-confirm-dialog-icon {
+      font-size: 1.25rem;
+
+      &.p-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    .p-confirm-dialog-message {
+      margin-left: 1rem;
+    }
+  }
+
+  textarea {
+    overflow: auto !important;
+    max-height: 60dvh !important;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .p-dialog {
+    width: 95dvw;
+
+    .p-dialog-header {
+      .p-dialog-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    textarea {
+      max-height: 45dvh !important;
+    }
+  }
+}

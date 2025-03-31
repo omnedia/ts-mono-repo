@@ -1,0 +1,48 @@
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--surface-background);
+  color: var(--text-color);
+}
+
+p, a, h1 {
+  color: var(--text-color);
+}
+
+p, h1, h3 {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+
+  @extend .text-button
+}
+
+.p-hidden-accessible {
+  display: none;
+}
+
+hr {
+  height: 1px;
+  width: 100%;
+  opacity: 0.3;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.divider {
+  display: block;
+  width: 1px;
+  background-color: var(--surface-gray);
+  height: 95%;
+  margin: auto 0;
+}
+
