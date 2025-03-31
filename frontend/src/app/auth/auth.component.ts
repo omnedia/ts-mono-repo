@@ -144,9 +144,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.authApiService.getCurrentUser().pipe(takeUntil(this.destroy$)).subscribe({
       next: (user) => {
         this.loading = false;
-        
+
         this.appStore.updateUser(user);
-        this.router.navigate(['chat']);
+        this.router.navigate(['home']);
       }
     })
   }
