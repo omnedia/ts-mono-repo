@@ -1,0 +1,47 @@
+.auth-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100dvw;
+  height: 100dvh;
+
+  .header {
+    padding: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: -0.2rem;
+  }
+
+  .body {
+    width: 95%;
+    max-width: 300px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+
+    form {
+      width: 100%;
+    }
+
+    .error-message {
+      background-color: var(--error-light);
+      border-radius: 4px;
+      padding: 0.5rem 0.75rem;
+      border-left: 4px solid var(--error-dark);
+    }
+
+    .form-view-switch {
+      display: flex;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+      justify-content: center;
+      margin: 0.5rem 0;
+    }
+
+    .legal {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}

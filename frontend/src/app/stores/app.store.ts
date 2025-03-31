@@ -31,6 +31,10 @@ export class AppStore extends ComponentStore<AppState> {
     user: user,
   }));
 
+  readonly hasRole$ = (role: string) => this.select(({user}) => user?.role === role);
+
+  readonly isAdmin$ = this.select(({user}) => user?.role === 'admin');
+
   readonly loading$ = this.select(({loading}) => loading);
 
   readonly updateLoading = this.updater((state, loading: boolean) => ({
