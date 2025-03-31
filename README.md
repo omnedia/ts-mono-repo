@@ -145,6 +145,21 @@ The body tag will automatically be updated with the correct `data-theme` attribu
 
 ---
 
+### 🔐 Frontend Auth Guard
+
+You can add an AuthRoleGuard to your frontend routes like this:
+
+```ts
+{
+    path: 'home',
+        loadComponent: () => import('./home/home.component').then(
+        (m) => m.HomeComponent,
+    ),
+        canActivate: [AuthRoleGuard],
+        roles: ['user', 'admin']
+},
+```
+
 ### 🌍 Frontend Environment Config
 
 Create `src/environments/environment.ts` in `frontend`:

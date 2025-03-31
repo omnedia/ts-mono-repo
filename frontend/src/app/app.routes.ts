@@ -1,6 +1,6 @@
-import {Routes} from '@angular/router';
+import {CustomRoute} from './types/custom-route';
 
-export const routes: Routes = [
+export const routes: CustomRoute[] = [
   {
     path: 'auth',
     loadComponent: () => import('./auth/auth.component').then(

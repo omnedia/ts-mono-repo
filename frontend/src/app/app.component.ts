@@ -12,7 +12,7 @@ import {AuthApiService} from './services/auth-api.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true,
-  providers: [MessageService, AppStore]
+  providers: [MessageService]
 })
 export class AppComponent implements OnInit, OnDestroy {
   constructor(

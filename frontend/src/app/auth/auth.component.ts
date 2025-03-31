@@ -54,6 +54,12 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUser();
+
+    this.appStore.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      if (user) {
+        this.router.navigate(['home']);
+      }
+    })
   }
 
   destroy$ = new Subject<void>()
@@ -146,7 +152,6 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.loading = false;
 
         this.appStore.updateUser(user);
-        this.router.navigate(['home']);
       }
     })
   }
