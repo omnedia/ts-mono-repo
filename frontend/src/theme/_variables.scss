@@ -48,7 +48,7 @@ $colors: (
   --text-color: #dfdfdf;
   --primary-color: #0a6852;
   --primary-light-color: #11a582;
-  --primary-color-text: white;
+  --primary-color-text: var(--text-color);
   --info-dark: #0040ba;
   --info-light: rgb(80, 85, 115);
   --error: #c47d7d;
