@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { User } from '../entities/user.entity';
 import { IAuthResponse } from '@shared/interfaces';
+import { AuthRequest } from '../types/types';
 
 @Injectable()
 export class AuthService {
@@ -11,8 +11,10 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  login(user: User, staySignedIn: boolean): IAuthResponse {
-    const payload = { email: user.email, userId: user.id, role: user.role };
+  login(req: AuthRequest, staySignedIn: boolean): IAuthResponse {
+    const user = req.user;
+
+    const payload = { email: user.email, userId: user.userId, role: user.role };
 
     const accessTokenExpires = this.configService.get<string>('JWT_EXPIRATION');
     const refreshTokenExpires = staySignedIn
@@ -31,8 +33,10 @@ export class AuthService {
     };
   }
 
-  refreshToken(user: User): IAuthResponse {
-    const payload = { email: user.email, userId: user.id, role: user.role };
+  refreshToken(req: AuthRequest): IAuthResponse {
+    const user = req.user;
+
+    const payload = { email: user.email, userId: user.userId, role: user.role };
 
     return {
       access_token: this.jwtService.sign(payload, {

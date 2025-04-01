@@ -57,18 +57,18 @@ export class AuthController {
     },
   })
   login(
-    @Request() req: { user: User },
+    @Request() req: AuthRequest,
     @Body() body: { staySignedIn: boolean },
   ): IAuthResponse {
-    return this.authService.login(req.user, body.staySignedIn);
+    return this.authService.login(req, body.staySignedIn);
   }
 
   @UseGuards(RefreshJwtGuard)
   @ApiBearerAuth()
   @Post('refresh')
   @ApiOperation({ summary: 'Refresh access token using refresh token' })
-  refreshToken(@Request() req: { user: User }): IAuthResponse {
-    return this.authService.refreshToken(req.user);
+  refreshToken(@Request() req: AuthRequest): IAuthResponse {
+    return this.authService.refreshToken(req);
   }
 
   @UseGuards(JwtAuthGuard)
