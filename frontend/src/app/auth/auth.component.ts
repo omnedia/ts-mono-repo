@@ -4,11 +4,11 @@ import {AuthApiService} from '../services/auth-api.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
 import {ProgressSpinner} from 'primeng/progressspinner';
 import {CommonModule} from '@angular/common';
 import {Checkbox} from 'primeng/checkbox';
 import {AppStore} from '../stores/app.store';
+import {RoutingService} from '../services/routing.service';
 
 @Component({
   selector: 'app-auth',
@@ -36,8 +36,8 @@ export class AuthComponent implements OnInit, OnDestroy {
   constructor(
     private readonly authApiService: AuthApiService,
     private readonly fb: FormBuilder,
-    private readonly router: Router,
     private readonly appStore: AppStore,
+    private readonly routingService: RoutingService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -57,7 +57,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
     this.appStore.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       if (user) {
-        this.router.navigate(['home']);
+        this.routingService.home();
       }
     })
   }

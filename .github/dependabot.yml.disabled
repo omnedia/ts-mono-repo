@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "develop"
+
+  # NPM - frontend
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "daily"
+    target-branch: "develop"
+
+  # NPM - backend
+  - package-ecosystem: "npm"
+    directory: "/backend"
+    schedule:
+      interval: "daily"
+    target-branch: "develop"

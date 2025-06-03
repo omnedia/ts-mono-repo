@@ -1,11 +1,15 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router,} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate,} from '@angular/router';
 import {map, Observable, take} from 'rxjs';
 import {AppStore} from '../stores/app.store';
+import {RoutingService} from '../services/routing.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthRoleGuard implements CanActivate {
-  constructor(private appStore: AppStore, private router: Router) {
+  constructor(
+    private appStore: AppStore,
+    private readonly routingService: RoutingService,
+  ) {
   }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
@@ -15,7 +19,7 @@ export class AuthRoleGuard implements CanActivate {
       take(1),
       map((user) => {
         if (!user) {
-          this.router.navigate(['/auth']);
+          this.routingService.auth();
           return false;
         }
 
@@ -23,7 +27,7 @@ export class AuthRoleGuard implements CanActivate {
           return true;
         }
 
-        this.router.navigate(['/not-found']);
+        this.routingService.notFound();
         return false;
       })
     );

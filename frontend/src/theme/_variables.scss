@@ -13,18 +13,23 @@ $colors: (
   "primary": #0a6852,
 ) !default;
 
-:root {
+:root, [data-theme='light'] {
   font-family: "Open Sans", sans-serif;
   --font-family: "Open Sans", sans-serif;
-  --surface-background: #f8f9fa;
+  --surface-background: #eaeaea;
   --surface-ground: #ffffff;
   --surface-white: white;
-  --surface-gray: #e0e0e0;
-  --surface-light-gray: #f5f5f5;
+  --surface-black: black;
+  --surface-gray: #c8c8c8;
+  --surface-light-gray: #dddddd;
   --text-color: #212121;
-  --primary-color: #0a6852;
-  --primary-light-color: #11a582;
+  --text-color-black: var(--text-color);
+  --dark-overlay: rgba(220, 220, 220, 0.8);
+  --primary-color: #f59e0b;
+  --primary-light-color: #d5a21e;
   --primary-color-text: white;
+  --secondary-color: #e4b467;
+  --secondary-color-text: var(--text-color);
   --info-dark: #0040ba;
   --info-light: #c7d3ff;
   --error: #ff6b6b;
@@ -43,16 +48,21 @@ $colors: (
   --surface-background: #141616;
   --surface-ground: #222;
   --surface-white: white;
+  --surface-black: black;
   --surface-gray: #3a3a3a;
-  --surface-light-gray: #717171;
+  --surface-light-gray: #656565;
   --text-color: #dfdfdf;
-  --primary-color: #0a6852;
-  --primary-light-color: #11a582;
+  --text-color-black: #212121;
+  --dark-overlay: rgba(0, 0, 0, 0.5);
+  --primary-color: #9f6f1e;
+  --primary-light-color: #fbbf24;
   --primary-color-text: var(--text-color);
+  --secondary-color: #534120;
+  --secondary-color-text: var(--text-color);
   --info-dark: #0040ba;
   --info-light: rgb(80, 85, 115);
   --error: #c47d7d;
-  --error-dark: #ff0000;
+  --error-dark: #bf0000;
   --error-light: rgb(115, 80, 80);
   --warning: orange;
   --warning-dark: #ffc400;

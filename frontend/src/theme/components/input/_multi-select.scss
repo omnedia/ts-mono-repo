@@ -1,0 +1,105 @@
+.p-multiselect {
+  display: flex;
+  gap: 0.5rem;
+  border: 1px solid var(--surface-gray) !important;
+  background-color: var(--surface-background) !important;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  border-radius: 8px !important;
+  font-weight: bold;
+  transition: border 0.25s !important;
+  width: 100%;
+
+  &.p-disabled, &:disabled, &.disabled {
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  &.invalid {
+    border-color: var(--error);
+  }
+
+  .p-multiselect-label.p-placeholder {
+    opacity: 0.8;
+  }
+}
+
+.p-overlay-content {
+  margin-top: 0.5rem !important;
+  padding: 0.75rem;
+  background-color: var(--surface-gray);
+  border-radius: 10px;
+  box-shadow: 0 0 10px -2px var(--surface-background);
+
+  .p-multiselect-header {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem;
+
+    .p-iconfield {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      border: 1px solid var(--surface-gray);
+      background-color: var(--surface-background) !important;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 4px;
+      color: var(--text-color);
+      transition: border-color 0.25s;
+
+      .p-inputicon {
+        position: relative !important;
+        top: 10%;
+      }
+
+      &:active, &:focus-within {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+
+      &.invalid {
+        border-color: var(--error);
+      }
+    }
+  }
+
+  .p-multiselect-option {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem;
+    position: relative;
+    border-radius: 4px;
+    transition: background-color 0.25s;
+
+    &:hover, &:active, &.p-focus, &.p-select-option-selected {
+      background-color: var(--surface-light-gray) !important;
+    }
+
+    &::before {
+      content: "";
+      display: block;
+      height: 1px;
+      background-color: var(--color-dark-greyish);
+      width: 100%;
+      position: absolute;
+      top: 0;
+      margin: auto;
+      left: 0;
+      right: 0;
+    }
+
+    span {
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+  }
+
+  .p-multiselect-empty-message {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .p-select-list {
+    gap: 0.25rem;
+  }
+}

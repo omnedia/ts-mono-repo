@@ -1,0 +1,35 @@
+.p-tooltip {
+  &.p-tooltip-right {
+    .p-tooltip-arrow {
+      border-right-color: var(--surface-gray) !important;
+      margin-top: -2px;
+    }
+
+    .p-tooltip-text {
+      margin-left: 9px;
+    }
+  }
+
+  &.p-tooltip-left {
+    .p-tooltip-arrow {
+      border-left-color: var(--surface-gray) !important;
+      margin-top: -2px;
+    }
+
+    .p-tooltip-text {
+      margin-right: 9px;
+    }
+  }
+
+  .p-tooltip-arrow {
+
+  }
+
+  .p-tooltip-text {
+    background-color: var(--surface-gray);
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    max-width: 350px;
+    box-shadow: 0 0 10px -2px var(--surface-background);
+  }
+}

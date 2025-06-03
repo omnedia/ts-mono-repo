@@ -1,0 +1,73 @@
+.p-carousel {
+  height: 100%;
+
+  .p-carousel-prev-button, .p-carousel-next-button {
+    & > button.p-button {
+      background-color: transparent;
+      padding: 0.5rem;
+      border-radius: 50%;
+    }
+
+    &:not(.p-disabled):hover > button.p-button {
+      background-color: var(--surface-gray);
+    }
+  }
+
+  &.big-nav {
+    .p-carousel-prev-button > button.p-button, .p-carousel-next-button > button.p-button {
+      --p-icon-size: 1.5rem;
+    }
+  }
+
+  .p-carousel-indicator-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem 0 0;
+    gap: 0.5rem;
+    margin: 0;
+    list-style: none;
+
+    .p-carousel-indicator-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-gray);
+      width: 2rem;
+      height: 0.5rem;
+      border: 0 none;
+      transition: background 0.2s, color 0.2s, outline-color 0.2s, box-shadow 0.2s;
+      outline-color: transparent;
+      border-radius: 6px;
+      padding: 0;
+      margin: 0;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .p-carousel-indicator-active .p-carousel-indicator-button {
+      background: var(--primary-color);
+    }
+  }
+
+  .p-carousel-content-container {
+    height: 100%;
+
+    .p-carousel-content {
+      height: 100%;
+
+      .p-carousel-viewport {
+        .p-carousel-item-list {
+          height: 100%;
+
+          .p-carousel-item {
+            display: flex;
+            height: 100%;
+            max-width: 100% !important;
+          }
+        }
+      }
+    }
+  }
+}

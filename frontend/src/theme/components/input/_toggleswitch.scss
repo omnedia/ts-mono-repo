@@ -1,0 +1,97 @@
+.p-toggleswitch-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+p-toggle-switch, p-toggleSwitch {
+  height: 1.5rem;
+}
+
+.p-toggleswitch {
+  display: inline-block;
+  width: 2.5rem !important;
+  height: 1.5rem !important;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .p-toggleswitch-input {
+    cursor: pointer;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    z-index: 1;
+    outline: 0 none;
+    border-radius: 30px;
+  }
+
+  .p-toggleswitch-slider {
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--surface-gray);
+    background: var(--surface-gray);
+    transition: background 0.2s, color 0.2s, border-color 0.2s, outline-color 0.2s, box-shadow 0.2s;
+    border-radius: 30px;
+    outline-color: transparent;
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05);
+
+    .p-toggleswitch-handle {
+      position: absolute;
+      top: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--surface-background);
+      width: 1rem;
+      height: 1rem;
+      inset-inline-start: 0.25rem;
+      margin-block-start: calc(-1 * calc(1rem / 2));
+      border-radius: 50%;
+      transition: background 0.2s, color 0.2s, inset-inline-start 0.2s, box-shadow 0.2s;
+    }
+  }
+
+  &.p-toggleswitch-checked {
+    .p-toggleswitch-slider {
+      background: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    .p-toggleswitch-handle {
+      background: var(--surface-background) !important;
+      inset-inline-start: calc(2.5rem - calc(1rem + 0.25rem)) !important;
+    }
+  }
+
+  &:not(.p-disabled):not(.p-toggleswitch-checked):has(.p-toggleswitch-input:hover) {
+    .p-toggleswitch-slider {
+      background: var(--surface-light-gray) !important;
+      border-color: var(--surface-light-gray) !important;
+    }
+
+    .p-toggleswitch-handle {
+      background: var(--surface-background) !important;
+    }
+  }
+}

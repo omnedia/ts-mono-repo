@@ -1,6 +1,7 @@
 .p-toast {
   opacity: 1;
   margin-top: 3.5rem;
+  z-index: 10000;
 
   .p-toast-message {
     background-color: var(--info-light);

@@ -1,0 +1,68 @@
+p-progress-bar > .p-progressbar {
+  position: relative;
+  overflow: hidden;
+  height: 0.5rem;
+  background: var(--surface-gray);
+  border-radius: 6px;
+
+  .p-progressbar-value {
+    margin: 0;
+    background: var(--primary-color);
+  }
+
+  .p-progressbar-indeterminate .p-progressbar-value {
+    &::before {
+      content: "";
+      position: absolute;
+      background: inherit;
+      top: 0;
+      inset-inline-start: 0;
+      bottom: 0;
+      will-change: inset-inline-start, inset-inline-end;
+      animation: p-progressbar-indeterminate-anim 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      background: inherit;
+      top: 0;
+      inset-inline-start: 0;
+      bottom: 0;
+      will-change: inset-inline-start, inset-inline-end;
+      animation: p-progressbar-indeterminate-anim-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+      animation-delay: 0s;
+      animation-delay: 1.15s;
+    }
+  }
+}
+
+@keyframes p-progressbar-indeterminate-anim {
+  0% {
+    inset-inline-start: -35%;
+    inset-inline-end: 100%;
+  }
+  60% {
+    inset-inline-start: 100%;
+    inset-inline-end: -90%;
+  }
+  100% {
+    inset-inline-start: 100%;
+    inset-inline-end: -90%;
+  }
+}
+
+@keyframes p-progressbar-indeterminate-anim-short {
+  0% {
+    inset-inline-start: -200%;
+    inset-inline-end: 100%;
+  }
+  60% {
+    inset-inline-start: 107%;
+    inset-inline-end: -8%;
+  }
+  100% {
+    inset-inline-start: 107%;
+    inset-inline-end: -8%;
+  }
+}

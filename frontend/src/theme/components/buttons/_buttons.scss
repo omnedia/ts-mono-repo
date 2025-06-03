@@ -1,7 +1,11 @@
 .text-button {
   color: var(--primary-light-color);
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s, background-color 0.2s;
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  padding: 0;
 
   &.default {
     color: var(--text-color);
@@ -9,6 +13,16 @@
 
   &:hover {
     opacity: 0.8;
+  }
+
+  &.hover-bg {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+
+    &:hover {
+      opacity: 1;
+      background-color: var(--surface-ground) !important;
+    }
   }
 
   &.disabled {
@@ -28,42 +42,72 @@
   &.disabled {
     cursor: default;
     pointer-events: none;
+    opacity: 0.6;
   }
 }
 
-.button {
+.button, p-button > .p-button:not(.p-dialog-close-button) {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border: none;
   font-family: "Refrigerator Deluxe", sans-serif;
+  padding: clamp(0.25rem, 0.5dvw, 0.5rem) clamp(1rem, 0.8dvw, 1.5rem);
   font-size: 1rem;
-  padding: 0.5rem 1.5rem;
   position: relative;
   cursor: pointer;
-  background-color: var(--primary-color);
-  color: var(--primary-color-text);
-  border-radius: 4px;
-  transition: background 0.3s, opacity 0.3s, filter 0.3s;
+  background-color: var(--primary-color) !important;
+  color: var(--primary-color-text) !important;
+  border-radius: 8px;
+  text-wrap: nowrap;
+  transition: all 0.25s ease;
+  overflow: hidden;
+
+  &.fit-content {
+    width: fit-content;
+  }
+
+  &.full-width {
+    width: 100%;
+  }
+
+  &.button-bold {
+    font-weight: bold;
+  }
+
+  i {
+    color: inherit;
+  }
+
+  &.button-secondary, &.p-button-secondary {
+    background-color: var(--secondary-color) !important;
+    color: var(--secondary-color-text) !important;
+  }
+
+  &.button-outlined, &.p-button-outlined {
+    background-color: transparent !important;
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
+  }
 
   &.button-white {
-    background-color: var(--text-color);
-    color: var(--text-color-black);
+    background-color: var(--text-color) !important;
+    color: var(--text-color-black) !important;
   }
 
   &.button-yellow {
-    background-color: var(--text-color-yellow);
-    color: var(--text-color-black);
+    background-color: var(--text-color-yellow) !important;
+    color: var(--text-color-black) !important;
 
     &:hover {
       filter: brightness(0.9);
     }
   }
 
-  &.button-red {
-    background-color: var(--surface-red);
-    color: var(--text-color);
+  &.button-red, &.p-button-red {
+    background-color: var(--error-dark) !important;
+    color: var(--text-color) !important;
   }
 
   &.button-big {
@@ -77,14 +121,24 @@
   }
 
   &:active:not(.button-yellow) {
-    opacity: 1;
-    background-color: var(--text-color-yellow);
-    color: var(--text-color-black);
+    opacity: 0.8;
+    transform: scale(0.97);
   }
 
   &:disabled, &.disabled {
     cursor: default;
     opacity: 0.5;
     pointer-events: none;
+
+    &:has(p-progress-spinner, p-progressSpinner) {
+      opacity: 1;
+    }
+  }
+
+  p-progress-spinner, p-progressSpinner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }

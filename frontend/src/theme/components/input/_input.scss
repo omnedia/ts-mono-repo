@@ -1,14 +1,35 @@
-.p-input {
+textarea.p-input {
+  min-height: 22px;
+}
+
+.p-input, .p-inputtext, p-input-number > input {
   border: 1px solid var(--surface-gray) !important;
   background-color: var(--surface-background) !important;
   padding: 0.5rem 1rem !important;
   transition: border-color 0.25s !important;
-  border-radius: 4px !important;
+  border-radius: 8px !important;
   color: var(--text-color) !important;
   display: flex;
   gap: 0.25rem;
   font-size: 1rem !important;
   width: 100%;
+
+  &.small {
+    max-height: 100px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  &.medium {
+    max-height: 30dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  &.h-auto {
+    overflow: unset !important;
+    max-height: unset !important;
+  }
 
   &.full-width {
     width: 100%;
@@ -37,6 +58,12 @@
   &.transparent {
     border: none !important;
     background-color: transparent !important;
+  }
+
+  &:disabled, &.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: default;
   }
 }
 
@@ -67,10 +94,16 @@
 }
 
 .p-floatlabel {
+  position: relative;
+
   label {
+    position: absolute;
+    display: block;
+    left: 0;
     font-size: 1rem !important;
     transition: all 0.2s !important;
-    opacity: 0.8;
+    opacity: 0.6;
+    margin-left: 1rem !important;
   }
 
   input::placeholder {
@@ -79,13 +112,19 @@
 
   &:has(.p-iconfield) {
     label {
-      margin-left: calc(16px + 1rem);
+      margin-left: calc(16px + 1rem) !important;
     }
   }
 
   &.p-floatlabel-on {
-    &:has(.p-inputwrapper-filled) label, &:has(input.p-filled) label, &:has(.p-inputwrapper-focus) label, &:has(input:focus) label {
-      margin-left: 0.5rem;
+    label {
+      background-color: var(--surface-background) !important;
+      padding: 0 0.25rem !important;
+      border-radius: 2px !important;
+    }
+
+    &:has(.p-inputwrapper-filled) label, &:has(.p-filled) label, &:has(.p-inputwrapper-focus) label, &:has(input:focus) label, &:has(textarea:focus) label {
+      margin-left: 0.5rem !important;
       font-size: 0.8rem !important;
       opacity: 1;
     }

@@ -9,12 +9,14 @@ export type AppState = {
   user?: IUser;
   loading: boolean;
   theme: Theme;
+  lastUrl?: string;
 };
 
 const defaultState: AppState = {
   user: undefined,
   loading: false,
   theme: 'light',
+  lastUrl: undefined,
 };
 
 @Injectable({providedIn: 'root'})
@@ -40,6 +42,13 @@ export class AppStore extends ComponentStore<AppState> {
   readonly updateLoading = this.updater((state, loading: boolean) => ({
     ...state,
     loading: loading,
+  }));
+
+  readonly lastUrl$ = this.select(({lastUrl}) => lastUrl);
+
+  readonly updateLastUrl = this.updater((state, lastUrl?: string) => ({
+    ...state,
+    lastUrl: lastUrl,
   }));
 
   readonly theme$ = this.select(({theme}) => theme);

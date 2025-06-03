@@ -3,23 +3,64 @@
   flex-direction: column;
   gap: 1rem;
 
-  .error-message {
-    background-color: var(--error-light);
-    border-radius: 4px;
-    padding: 0.5rem 0.75rem;
-    border-left: 4px solid var(--error-dark);
+  &.disabled {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
   }
 
-  .info-message {
-    background-color: var(--info-light);
-    border-radius: 4px;
-    padding: 0.5rem 0.75rem;
-    border-left: 4px solid var(--info-dark);
+  &.grid, .form-group-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .actions {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+
+    .full-width {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+  }
+
+  &.row {
+    flex-direction: row;
+  }
+
+  &.full-width {
+    width: 100%;
   }
 
   .form-group {
+    position: relative;
     display: flex;
     gap: 0.25rem;
+
+    &.as-input {
+      border-radius: 8px !important;
+      overflow: hidden;
+      border: 1px solid var(--surface-gray) !important;
+      transition: border-color 0.25s !important;
+
+      .p-input {
+        border: none !important;
+      }
+
+      &:has(input:active:not(:disabled)), &:has(input:focus:not(:disabled)), &:has(textarea:active:not(:disabled)), &:has(textarea:focus:not(:disabled)) {
+        outline: none !important;
+        border-color: var(--primary-color) !important;
+      }
+
+      &.invalid {
+        border-color: var(--error) !important;
+      }
+    }
+
+    &:has(.full-width) {
+      flex-grow: 1;
+    }
 
     &:not(.checkbox-group) {
       flex-direction: column;
@@ -29,5 +70,33 @@
       align-items: center;
       gap: 0.5rem;
     }
+
+    label {
+      margin-left: 0.25rem;
+      font-weight: bold;
+    }
   }
+
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+
+    & > button {
+      flex-grow: 1;
+    }
+  }
+}
+
+.error-message {
+  background-color: var(--error-light);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid var(--error-dark);
+}
+
+.info-message {
+  background-color: var(--info-light);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid var(--info-dark);
 }

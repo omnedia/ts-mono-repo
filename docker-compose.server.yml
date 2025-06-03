@@ -1,0 +1,28 @@
+services:
+  frontend:
+    image: ghcr.io/YOUR_USERNAME/YOUR_APP-frontend:latest
+    restart: unless-stopped
+    networks:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.YOUR_APPfrontend.rule=Host(`app.YOUR_APP.com`)"
+      - "traefik.http.routers.YOUR_APPfrontend.entrypoints=websecure"
+      - "traefik.http.routers.YOUR_APPfrontend.tls.certresolver=myresolver"
+
+  backend:
+    image: ghcr.io/YOUR_USERNAME/YOUR_APP-backend:latest
+    restart: unless-stopped
+    networks:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.YOUR_APPbackend.rule=Host(`api.YOUR_APP.com`)"
+      - "traefik.http.routers.YOUR_APPbackend.entrypoints=websecure"
+      - "traefik.http.routers.YOUR_APPbackend.tls.certresolver=myresolver"
+    env_file:
+      - .env
+
+networks:
+  backend:
+    external: true
