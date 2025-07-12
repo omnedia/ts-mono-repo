@@ -1,10 +1,14 @@
 import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
 import {inject} from '@angular/core';
 import {AuthApiService} from '../services/auth-api.service';
-import {throwError} from 'rxjs';
+import {BehaviorSubject, filter, finalize, throwError} from 'rxjs';
 import {catchError, switchMap} from 'rxjs/operators';
 import {RoutingService} from '../services/routing.service';
 import {AppStore} from '../stores/app.store';
+
+let isRefreshInFlight = false;
+const refreshInFlight = new BehaviorSubject<string | undefined>(undefined);
+const refreshInFlight$ = refreshInFlight.asObservable();
 
 export const tokenInterceptor: HttpInterceptorFn = (request, next) => {
   const authService = inject(AuthApiService);
@@ -24,18 +28,14 @@ export const tokenInterceptor: HttpInterceptorFn = (request, next) => {
         Authorization: `Bearer ${token}`,
       },
     });
-  } else if (refreshToken) {
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    });
   }
 
   return next(request).pipe(
     catchError((error: unknown) => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
-        if (!token && !refreshToken) {
+        if (!refreshToken) {
+          appStore.updateUser(undefined);
+
           if (!currentPath.startsWith('/auth')) {
             appStore.updateLastUrl(currentPath);
             routingService.auth();
@@ -43,40 +43,54 @@ export const tokenInterceptor: HttpInterceptorFn = (request, next) => {
           return throwError(() => error);
         }
 
-        if (!token && refreshToken) {
+        if (token === refreshToken) {
+          localStorage.removeItem('token');
           localStorage.removeItem('refresh-token');
+
+          appStore.updateUser(undefined);
 
           if (!currentPath.startsWith('/auth')) {
             appStore.updateLastUrl(currentPath);
             routingService.auth();
           }
+
+          return throwError(() => error);
         }
 
-        localStorage.removeItem('token');
+        localStorage.setItem('token', refreshToken);
 
-        return authService.refreshToken().pipe(
-          switchMap((response) => {
+        if (!isRefreshInFlight) {
+          isRefreshInFlight = true;
+          return authService.refreshToken().pipe(
+            switchMap((response) => {
+              const newRequest = originalRequest.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${response.access_token}`,
+                },
+              });
+
+              refreshInFlight.next(response.access_token);
+
+              return next(newRequest);
+            }),
+            finalize(() => {
+              isRefreshInFlight = false;
+              refreshInFlight.next(undefined);
+            }),
+          );
+        }
+
+        return refreshInFlight$.pipe(
+          filter((token) => token !== undefined),
+          switchMap((token) => {
             const newRequest = originalRequest.clone({
               setHeaders: {
-                Authorization: `Bearer ${response.access_token}`,
+                Authorization: `Bearer ${token}`,
               },
             });
 
             return next(newRequest);
-          }),
-          catchError((refreshError) => {
-            if (refreshError instanceof HttpErrorResponse && refreshError.status === 401) {
-              localStorage.removeItem('token');
-              localStorage.removeItem('refresh-token');
-
-              if (!currentPath.startsWith('/auth')) {
-                appStore.updateLastUrl(currentPath);
-                routingService.auth();
-              }
-            }
-
-            return throwError(() => refreshError);
-          }),
+          })
         );
       }
 

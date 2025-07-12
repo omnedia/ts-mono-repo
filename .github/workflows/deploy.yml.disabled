@@ -44,7 +44,7 @@ jobs:
           context: .
           file: ./frontend/Dockerfile
           push: true
-          tags: ghcr.io/YOUR_USERNAME/YOUR_APP-frontend:latest
+          tags: ghcr.io/YOUR_GITHUB_USERNAME/YOUR_APP-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -60,7 +60,7 @@ jobs:
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: xSentry
+          username: YOUR_USERNAME
           password: ${{ secrets.GHCR_PAT }}
 
       - name: Build & Push NestJS Image
@@ -70,7 +70,7 @@ jobs:
           file: ./backend/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/YOUR_USERNAME/YOUR_APP-backend:latest
+          tags: ghcr.io/YOUR_GITHUB_USERNAME/YOUR_APP-backend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -106,7 +106,7 @@ jobs:
 
             echo "${{ secrets.NEST_ENV_FILE }}" > .env
 
-            docker login ghcr.io -u YOUR_USERNAME -p ${{ secrets.GHCR_PAT }}
+            docker login ghcr.io -u YOUR_GITHUB_USERNAME -p ${{ secrets.GHCR_PAT }}
 
             docker compose pull
             docker compose up -d --force-recreate

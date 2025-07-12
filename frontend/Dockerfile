@@ -1,15 +1,15 @@
 # Stage 1: Build Angular app
-FROM node:20 AS build
-WORKDIR /app
-
-# Copy required files
-COPY frontend/ ./frontend/
-COPY shared/ ./shared/
-
-# Move into frontend folder to run Angular CLI
+FROM node:20-alpine AS build
 WORKDIR /app/frontend
 
-RUN npm install
+# Copy only package files first to leverage Docker cache for npm ci
+COPY frontend/package*.json ./
+RUN npm ci
+
+# Copy the rest of the code
+COPY frontend/ ./
+COPY shared/ ../shared/
+
 RUN cp src/environments/environment.prod.ts src/environments/environment.ts
 RUN npm run build:prod
 
