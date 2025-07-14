@@ -44,13 +44,19 @@
       background-color: var(--surface-background) !important;
       padding: 0.5rem 1rem;
       margin-bottom: 0.5rem;
-      border-radius: 4px;
+      border-radius: 8px;
       color: var(--text-color);
       transition: border-color 0.25s;
 
       .p-inputicon {
         position: relative !important;
         top: 10%;
+      }
+
+      .p-inputtext {
+        border: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
       }
 
       &:active, &:focus-within {

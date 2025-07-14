@@ -1,15 +1,17 @@
 .p-carousel {
   height: 100%;
 
-  .p-carousel-prev-button, .p-carousel-next-button {
-    & > button.p-button {
-      background-color: transparent;
-      padding: 0.5rem;
-      border-radius: 50%;
-    }
+  .p-carousel-content-container > .p-carousel-content {
+    .p-carousel-prev-button, .p-carousel-next-button {
+      .p-button {
+        background-color: transparent;
+        padding: 0.5rem !important;
+        border-radius: 50% !important;
+      }
 
-    &:not(.p-disabled):hover > button.p-button {
-      background-color: var(--surface-gray);
+      &:not(.p-disabled):hover > button.p-button {
+        background-color: var(--surface-gray);
+      }
     }
   }
 
@@ -56,6 +58,8 @@
 
     .p-carousel-content {
       height: 100%;
+      display: flex;
+      gap: 0.5rem !important;
 
       .p-carousel-viewport {
         .p-carousel-item-list {
