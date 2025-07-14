@@ -1,8 +1,8 @@
-# 🧱 TS Monorepo Starter (NestJS + Angular + PostgreSQL)
+# 🧱 TS Monorepo Starter (NestJS + Angular 19 + PostgreSQL)
 
 A full-stack monorepo boilerplate built with:
 
-- **Angular** (with PrimeNG + Auth skeleton)
+- **Angular 19** (with PrimeNG + Auth skeleton)
 - **NestJS** (with Swagger + JWT Auth setup)
 - **PostgreSQL** (via Docker Compose)
 - **Shared** module for common types/interfaces
