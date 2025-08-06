@@ -17,7 +17,7 @@ p, h1, h3 {
 a {
   text-decoration: none;
 
-  @extend .text-button
+  @extend .text-button !optional;
 }
 
 * {
