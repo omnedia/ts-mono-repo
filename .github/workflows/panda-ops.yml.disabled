@@ -1,0 +1,21 @@
+name: PandaOps PR Review
+
+on:
+  pull_request:
+    types: [ opened ]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: omnedia/panda-ops@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          openai_model: gpt-5
