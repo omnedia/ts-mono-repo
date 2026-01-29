@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+
+# Production build
+dist
+out-tsc
+
+# Coverage
+coverage
+.nyc_output
+
+# IDEs
+.idea
+.vscode
+*.swp
+*.swo
+
+# Misc
+.angular
+.sass-cache
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Package manager lock files (optional - uncomment if you want to format them)
+package-lock.json
+pnpm-lock.yaml
+.prettierrc.json
+eslint.config.mjs
+nest-cli.json
+package.json
+README.md
+tsconfig.build.json
+tsconfig.json
+
+
