@@ -1,8 +1,8 @@
-# 🧱 TS Monorepo Starter (NestJS + Angular 20 + PostgreSQL)
+# 🧱 TS Monorepo Starter (NestJS + Angular 21 + PostgreSQL)
 
 A full-stack monorepo boilerplate built with:
 
-- **Angular 20** (with PrimeNG + Auth skeleton)
+- **Angular 21** (with PrimeNG + Auth skeleton)
 - **NestJS** (with Swagger + JWT Auth setup)
 - **PostgreSQL** (via Docker Compose)
 - **Shared** module for common types/interfaces
@@ -59,6 +59,18 @@ http://localhost:3800/api
 
 Basic JWT auth is preconfigured.
 
+#### 🧹 Linting & Formatting
+
+ESLint and Prettier are preconfigured for code quality and consistency.
+
+```bash
+npm run lint           # Check for linting errors
+npm run lint:fix       # Fix linting errors automatically
+npm run format         # Check formatting
+npm run format:fix     # Fix formatting automatically
+npm run check          # Run both lint and format checks
+```
+
 ---
 
 ### 🧪 Backend Environment Config
@@ -106,42 +118,36 @@ PrimeNG components are preconfigured.
 
 ### 🎨 Frontend Theme Support
 
-The Angular app supports **light and dark mode switching** using CSS variables and a global state managed by
-`@ngrx/component-store`.
+The Angular app supports **light and dark mode switching** using CSS variables and state managed by
+`@omnedia/ngx-theme-toggle`.
 
 #### ✅ Theme Features
 
 - Light/dark mode based on system preference or user choice
 - Theme preference saved to `localStorage`
-- Reactive switching via a central `AppStore`
+- Reactive switching via a central `ThemeToggle`
 
 #### 🛠 How It Works
 
 - CSS variables are defined in `:root` (light theme) and `[data-theme="dark"]` (dark theme) in your global styles
-- The `AppStore` manages the current theme and persists it
+- The `ThemeToggle` manages the current theme and persists it
 - On app start, the system preference is used unless a saved value is found
-- You can toggle theme in any component via `appStore.toggleTheme()`
 
-#### 🧩 Example Usage
+The html tag will automatically be updated with the correct `class` for styling.
 
-In `app.component.html`:
+---
 
-```html
+### 🧹 Frontend Linting & Formatting
 
-<button (click)="appStore.toggleTheme()">
-    Switch to {{ appStore.theme$ | async === 'light' ? 'Dark' : 'Light' }} Mode
-</button>
+ESLint and Prettier are preconfigured for code quality and consistency.
+
+```bash
+npm run lint           # Check for linting errors
+npm run lint:fix       # Fix linting errors automatically
+npm run format         # Check formatting
+npm run format:fix     # Fix formatting automatically
+npm run check          # Run both lint and format checks
 ```
-
-You can access the theme state and toggle logic via dependency injection:
-
-```ts
-constructor(public appStore: AppStore)
-{
-}
-```
-
-The body tag will automatically be updated with the correct `data-theme` attribute for styling.
 
 ---
 
