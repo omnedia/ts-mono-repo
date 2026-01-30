@@ -1,4 +1,4 @@
-export type Environment = {
+export interface Environment {
   apiUrl: string;
   apiPoints: {
     authRegister: string;
@@ -6,5 +6,5 @@ export type Environment = {
     authRefresh: string;
     authUser: string;
     changePassword: string;
-  },
-};
+  };
+}

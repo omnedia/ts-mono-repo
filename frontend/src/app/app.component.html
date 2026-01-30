@@ -1,4 +1,8 @@
 <div class="app-wrapper">
+  @if (showNavigation()) {
+    <app-navigation></app-navigation>
+  }
+
   <div class="body">
     <router-outlet></router-outlet>
   </div>

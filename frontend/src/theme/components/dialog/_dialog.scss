@@ -4,7 +4,7 @@
 }
 
 .p-dialog {
-  border-radius: 10px;
+  border-radius: var(--radius-2xl);
   border: none;
   width: fit-content;
   position: relative;
@@ -58,7 +58,8 @@
     gap: 1rem;
   }
 
-  &:has(.dialog-list), &.large {
+  &:has(.dialog-list),
+  &.large {
     width: 95%;
     max-width: 800px;
   }
@@ -128,7 +129,7 @@
     justify-content: space-between;
     cursor: pointer;
     padding: 0.25rem;
-    border-radius: 4px;
+    border-radius: var(--radius-xl);
     transition: background-color 0.2s;
 
     &.no-hover {
@@ -141,7 +142,8 @@
       padding: 0.75rem 0.25rem 0.25rem;
     }
 
-    &:hover:not(.no-hover), &.active {
+    &:hover:not(.no-hover),
+    &.active {
       background-color: var(--surface-gray);
     }
 

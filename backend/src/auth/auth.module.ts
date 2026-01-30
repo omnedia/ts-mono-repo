@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
+import { StringValue } from '../types/types';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRATION') || '1h',
+          expiresIn: (configService.get<string>('JWT_EXPIRATION') ||
+            '1h') as StringValue,
         },
       }),
     }),

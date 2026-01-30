@@ -1,7 +1,9 @@
 .text-button {
   color: var(--primary-light-color);
   cursor: pointer;
-  transition: opacity 0.2s, background-color 0.2s;
+  transition:
+    opacity 0.2s,
+    background-color 0.2s;
   width: fit-content;
   background-color: transparent;
   border: none;
@@ -17,7 +19,7 @@
 
   &.hover-bg {
     padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-xl);
 
     &:hover {
       opacity: 1;
@@ -52,20 +54,21 @@
   }
 }
 
-.button, .p-button:not(.p-dialog-close-button) {
+.button,
+.p-button:not(.p-dialog-close-button) {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   border: none;
-  font-family: "Refrigerator Deluxe", sans-serif;
-  padding: clamp(0.25rem, 0.5dvw, 0.5rem) clamp(1rem, 0.8dvw, 1.5rem);
+  font-family: 'Refrigerator Deluxe', sans-serif;
+  padding: var(--padding-sm);
   font-size: 1rem;
   position: relative;
   cursor: pointer;
   background-color: var(--primary-color) !important;
   color: var(--primary-color-text) !important;
-  border-radius: 8px;
+  border-radius: var(--radius-xl);
   text-wrap: nowrap;
   transition: all 0.25s ease;
   overflow: hidden;
@@ -95,12 +98,14 @@
     color: inherit;
   }
 
-  &.button-secondary, &.p-button-secondary {
+  &.button-secondary,
+  &.p-button-secondary {
     background-color: var(--secondary-color) !important;
     color: var(--secondary-color-text) !important;
   }
 
-  &.button-outlined, &.p-button-outlined {
+  &.button-outlined,
+  &.p-button-outlined {
     background-color: transparent !important;
     outline: 2px solid var(--primary-color);
     outline-offset: -2px;
@@ -120,7 +125,8 @@
     }
   }
 
-  &.button-red, &.p-button-red:not(.p-confirmdialog-accept-button) {
+  &.button-red,
+  &.p-button-red:not(.p-confirmdialog-accept-button) {
     background-color: var(--error-dark) !important;
     color: var(--text-color) !important;
   }
@@ -128,7 +134,7 @@
   &.button-big {
     font-size: 2rem;
     font-weight: bold;
-    padding: 0.5rem 2rem;
+    padding: var(--padding-lg);
   }
 
   &:hover:not(.button-yellow) {
@@ -140,7 +146,9 @@
     transform: scale(0.97);
   }
 
-  &:disabled, &.disabled, &.p-disabled {
+  &:disabled,
+  &.disabled,
+  &.p-disabled {
     cursor: default;
     opacity: 0.5;
     pointer-events: none;
@@ -150,7 +158,8 @@
     }
   }
 
-  p-progress-spinner, p-progressSpinner {
+  p-progress-spinner,
+  p-progressSpinner {
     position: absolute !important;
     width: 100% !important;
     height: 100% !important;
@@ -163,7 +172,9 @@
 }
 
 p-button {
-  &:disabled, &.disabled, &.p-disabled {
+  &:disabled,
+  &.disabled,
+  &.p-disabled {
     cursor: default;
     opacity: 0.5;
     pointer-events: none;

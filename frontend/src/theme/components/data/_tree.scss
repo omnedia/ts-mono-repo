@@ -5,8 +5,9 @@
     background-color: var(--surface-background);
   }
 
-  .p-tree-root-children, .p-tree-node-children {
-    gap: 0.25rem
+  .p-tree-root-children,
+  .p-tree-node-children {
+    gap: 0.25rem;
   }
 
   .p-tree-node {
@@ -18,8 +19,9 @@
         padding-top: 0.25rem;
       }
 
-      &.p-tree-node-selectable, .p-tree-node-selectable {
-        border-radius: 4px;
+      &.p-tree-node-selectable,
+      .p-tree-node-selectable {
+        border-radius: var(--radius-xl);
         transition: background-color 0.25s;
 
         &:hover {

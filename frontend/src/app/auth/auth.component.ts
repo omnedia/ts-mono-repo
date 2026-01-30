@@ -1,84 +1,108 @@
-import {Component, OnDestroy, OnInit, signal} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AuthApiService} from '../services/auth-api.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ProgressSpinner} from 'primeng/progressspinner';
+import { HttpErrorResponse } from '@angular/common/http';
+import type { OnInit } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { email, form, FormField, required } from '@angular/forms/signals';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { AuthApiService } from '../services/auth-api.service';
 
-import {Checkbox} from 'primeng/checkbox';
-import {AppStore} from '../stores/app.store';
-import {RoutingService} from '../services/routing.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Checkbox } from 'primeng/checkbox';
+import { RoutingService } from '../services/routing.service';
+import { AppStore } from '../stores/app.store';
+import type { LoginData, RegisterData } from '../types/form.types';
 
 @Component({
   selector: 'app-auth',
-  imports: [
-    ReactiveFormsModule,
-    ProgressSpinner,
-    Checkbox
-  ],
+  imports: [ReactiveFormsModule, ProgressSpinner, Checkbox, FormField],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
   standalone: true,
 })
-export class AuthComponent implements OnInit, OnDestroy {
-  formView: 'login' | 'register' = 'login';
+export class AuthComponent implements OnInit {
+  formView = signal<'login' | 'register'>('login');
 
-  loginForm: FormGroup;
-  registerForm: FormGroup;
+  loginModel = signal<LoginData>({
+    email: '',
+    password: '',
+    staySignedIn: false,
+  });
+
+  registerModel = signal<RegisterData>({
+    email: '',
+    password: '',
+    passwordCheck: '',
+  });
+
+  loginForm = form(this.loginModel, (schema) => {
+    required(schema.email);
+    email(schema.email);
+    required(schema.password);
+  });
+  registerForm = form(this.registerModel, (schema) => {
+    required(schema.email);
+    email(schema.email);
+    required(schema.password);
+    required(schema.passwordCheck);
+  });
 
   submitted = signal<boolean>(false);
   errorMessage = signal<string | undefined>(undefined);
 
   loading = signal<boolean>(false);
 
-  constructor(
-    private readonly authApiService: AuthApiService,
-    private readonly fb: FormBuilder,
-    private readonly appStore: AppStore,
-    private readonly routingService: RoutingService,
-  ) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      staySignedIn: [false]
+  hasFormError(fieldName: keyof LoginData): ReturnType<typeof computed<boolean>>;
+  hasFormError(fieldName: keyof RegisterData): ReturnType<typeof computed<boolean>>;
+  hasFormError(fieldName: keyof LoginData | keyof RegisterData) {
+    return computed(() => {
+      if (this.formView() === 'login') {
+        const field = this.loginForm[fieldName as keyof LoginData];
+        return !!field && this.submitted() && field().invalid();
+      } else {
+        const field = this.registerForm[fieldName as keyof RegisterData];
+        return !!field && this.submitted() && field().invalid();
+      }
     });
+  }
 
-    this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      passwordCheck: ['', Validators.required]
+  private readonly authApiService = inject(AuthApiService);
+  private readonly appStore = inject(AppStore);
+  private readonly routingService = inject(RoutingService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  constructor() {
+    effect(() => {
+      const user = this.appStore.user();
+
+      if (user) {
+        this.routingService.home();
+      }
     });
   }
 
   ngOnInit() {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'light' || theme === 'dark') {
+      document.documentElement.classList.add(theme);
+    }
+
     this.getUser();
-
-    this.appStore.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
-      if (user) {
-        this.routingService.home();
-      }
-    })
   }
 
-  destroy$ = new Subject<void>()
+  login(event: Event): void {
+    event.preventDefault();
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  login(): void {
     this.submitted.set(true);
 
-    if (this.loginForm.invalid) return;
+    if (this.loginForm().invalid()) return;
 
-    const {email, password, staySignedIn} = this.loginForm.value;
+    const { email, password, staySignedIn } = this.loginForm().value();
 
     this.loading.set(true);
 
-    this.authApiService.login(email, password, staySignedIn)
-      .pipe(takeUntil(this.destroy$))
+    this.authApiService
+      .login(email, password, staySignedIn)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
           if (staySignedIn && response.refresh_token) {
@@ -87,95 +111,94 @@ export class AuthComponent implements OnInit, OnDestroy {
 
           localStorage.setItem('token', response.access_token);
 
-          this.loginForm.reset();
+          this.loginForm().reset();
           this.submitted.set(false);
           this.errorMessage.set(undefined);
 
           this.getUser();
         },
-        error: (error) => {
-          this.loginForm.patchValue({password: ''});
+        error: () => {
+          this.loginForm.password().reset('');
           this.errorMessage.set('Invalid username or password');
           this.submitted.set(false);
           this.loading.set(false);
-        }
+        },
       });
   }
 
-  register(): void {
+  register(event: Event): void {
+    event.preventDefault();
+
     this.submitted.set(true);
 
-    if (this.registerForm.invalid) return;
+    if (this.registerForm().invalid()) return;
 
-    const {email, password, passwordCheck} = this.registerForm.value;
+    const { email, password, passwordCheck } = this.registerForm().value();
 
     if (password !== passwordCheck) {
       this.errorMessage.set('The Password and Password-Check must be equal.');
-      this.registerForm.patchValue({password: '', passwordCheck: ''});
+      this.registerForm().reset({
+        email: email,
+        password: '',
+        passwordCheck: '',
+      });
       return;
     }
 
     this.loading.set(true);
 
-    this.authApiService.register(email, password)
-      .pipe(takeUntil(this.destroy$))
+    this.authApiService
+      .register(email, password)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => {
-          this.registerForm.reset();
+        next: () => {
+          this.registerForm().reset();
           this.submitted.set(false);
           this.errorMessage.set(undefined);
 
-          this.loginForm.patchValue({email: email, password: '', staySignedIn: false});
-          this.formView = 'login';
+          this.loginForm().reset({ email: email, password: '', staySignedIn: false });
+          this.formView.set('login');
 
           this.loading.set(false);
         },
         error: (error) => {
-          if (error instanceof HttpErrorResponse && error.status === 409) {
-            this.errorMessage.set('The username is already in use.');
-            this.registerForm.patchValue({email: ''});
-          } else {
-            this.errorMessage.set('An error occurred. Try again.');
-          }
-
-          this.registerForm.patchValue({password: '', passwordCheck: ''});
           this.submitted.set(false);
           this.loading.set(false);
-        }
+
+          if (error instanceof HttpErrorResponse && error.status === 409) {
+            this.errorMessage.set('The username is already in use.');
+            this.registerForm().reset({ email: '', password: '', passwordCheck: '' });
+          } else {
+            this.errorMessage.set('An error occurred. Try again.');
+            this.registerForm().reset({ email: email, password: '', passwordCheck: '' });
+          }
+        },
       });
   }
 
   getUser(): void {
-    this.authApiService.getCurrentUser().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (user) => {
-        this.loading.set(false);
+    this.authApiService
+      .getCurrentUser()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (user) => {
+          this.loading.set(false);
 
-        this.appStore.updateUser(user);
-      }
-    })
+          this.appStore.updateUser(user);
+        },
+      });
   }
 
   switchFormView(): void {
     this.submitted.set(false);
-    this.loginForm.reset();
-    this.registerForm.reset();
+    this.loginForm().reset({ email: '', password: '', staySignedIn: false });
+    this.registerForm().reset({ email: '', password: '', passwordCheck: '' });
     this.errorMessage.set(undefined);
 
-    if (this.formView === 'login') {
-      this.formView = 'register';
+    if (this.formView() === 'login') {
+      this.formView.set('register');
     } else {
-      this.formView = 'login';
+      this.formView.set('login');
     }
-  }
-
-  hasFormError(controlName: string): boolean {
-    let control: AbstractControl<any, any> | null = null;
-
-    if (this.formView === 'login') {
-      control = this.loginForm.get(controlName);
-    } else {
-      control = this.registerForm.get(controlName);
-    }
-    return this.submitted() && control?.invalid!;
   }
 }

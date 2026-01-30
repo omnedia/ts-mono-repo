@@ -37,7 +37,11 @@
     background: var(--surface-ground);
     width: 1.25rem;
     height: 1.25rem;
-    transition: background 0.25s, color 0.25s, border-color 0.25s, outline-color 0.25s;
+    transition:
+      background 0.25s,
+      color 0.25s,
+      border-color 0.25s,
+      outline-color 0.25s;
     outline-color: transparent;
 
     .p-radiobutton-icon {

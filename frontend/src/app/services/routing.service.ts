@@ -1,15 +1,24 @@
-import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import {AppStore} from '../stores/app.store';
+import { inject, Injectable } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { AppStore } from '../stores/app.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoutingService {
-  constructor(
-    private readonly router: Router,
-    private readonly appStore: AppStore,
-  ) {
+  private readonly router = inject(Router);
+  private readonly appStore = inject(AppStore);
+
+  constructor() {
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe((e) => {
+        const currentPath = e.urlAfterRedirects;
+
+        this.appStore.updateLastUrl(this.appStore.currentUrl());
+        this.appStore.updateCurrentUrl(currentPath);
+      });
   }
 
   auth(): void {

@@ -22,13 +22,12 @@
   }
 
   .p-tooltip-arrow {
-
   }
 
   .p-tooltip-text {
     background-color: var(--surface-gray);
     padding: 0.25rem 0.5rem;
-    border-radius: 5px;
+    border-radius: var(--radius-xl);
     max-width: 350px;
     box-shadow: 0 0 10px -2px var(--surface-background);
   }

@@ -2,7 +2,8 @@
   height: 100%;
 
   .p-carousel-content-container > .p-carousel-content {
-    .p-carousel-prev-button, .p-carousel-next-button {
+    .p-carousel-prev-button,
+    .p-carousel-next-button {
       .p-button {
         background-color: transparent;
         padding: 0.5rem !important;
@@ -16,7 +17,8 @@
   }
 
   &.big-nav {
-    .p-carousel-prev-button > button.p-button, .p-carousel-next-button > button.p-button {
+    .p-carousel-prev-button > button.p-button,
+    .p-carousel-next-button > button.p-button {
       --p-icon-size: 1.5rem;
     }
   }
@@ -39,7 +41,11 @@
       width: 2rem;
       height: 0.5rem;
       border: 0 none;
-      transition: background 0.2s, color 0.2s, outline-color 0.2s, box-shadow 0.2s;
+      transition:
+        background 0.2s,
+        color 0.2s,
+        outline-color 0.2s,
+        box-shadow 0.2s;
       outline-color: transparent;
       border-radius: 6px;
       padding: 0;

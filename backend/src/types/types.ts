@@ -1,4 +1,5 @@
-import { Request } from 'express';
+import type { Request } from 'express';
+import { UnitAnyCase } from 'ms';
 
 export interface AuthRequest extends Request {
   user: {
@@ -12,3 +13,8 @@ export enum UserRole {
   USER = 'user',
   ADMIN = 'admin',
 }
+
+export type StringValue =
+  | `${number}`
+  | `${number}${UnitAnyCase}`
+  | `${number} ${UnitAnyCase}`;

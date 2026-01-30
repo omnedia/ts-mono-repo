@@ -9,7 +9,8 @@
     pointer-events: none;
   }
 
-  &.grid, .form-group-grid {
+  &.grid,
+  .form-group-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
@@ -39,7 +40,7 @@
     gap: 0.25rem;
 
     &.as-input {
-      border-radius: 8px !important;
+      border-radius: var(--radius-xl) !important;
       overflow: hidden;
       border: 1px solid var(--surface-gray) !important;
       transition: border-color 0.25s !important;
@@ -48,7 +49,10 @@
         border: none !important;
       }
 
-      &:has(input:active:not(:disabled)), &:has(input:focus:not(:disabled)), &:has(textarea:active:not(:disabled)), &:has(textarea:focus:not(:disabled)) {
+      &:has(input:active:not(:disabled)),
+      &:has(input:focus:not(:disabled)),
+      &:has(textarea:active:not(:disabled)),
+      &:has(textarea:focus:not(:disabled)) {
         outline: none !important;
         border-color: var(--primary-color) !important;
       }
@@ -89,14 +93,14 @@
 
 .error-message {
   background-color: var(--error-light);
-  border-radius: 4px;
-  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-xl);
+  padding: var(--padding-lg);
   border-left: 4px solid var(--error-dark);
 }
 
 .info-message {
   background-color: var(--info-light);
-  border-radius: 4px;
-  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-xl);
+  padding: var(--padding-lg);
   border-left: 4px solid var(--info-dark);
 }

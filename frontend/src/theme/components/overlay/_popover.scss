@@ -2,16 +2,19 @@
   margin-top: 0.5rem !important;
   --p-popover-arrow-offset: 8%;
 
-  &:before, &:after {
+  &:before,
+  &:after {
     display: none;
   }
 
-  &:not(.p-popover-flipped)::after, &:not(.p-popover-flipped)::before {
+  &:not(.p-popover-flipped)::after,
+  &:not(.p-popover-flipped)::before {
     border-bottom-color: var(--surface-gray) !important;
     border-width: 10px !important;
   }
 
-  &.p-popover-flipped::after, &.p-popover-flipped::before {
+  &.p-popover-flipped::after,
+  &.p-popover-flipped::before {
     border-top-color: var(--surface-gray) !important;
     border-width: 10px !important;
   }
@@ -23,7 +26,7 @@
   .p-popover-content {
     padding: 0.5rem;
     background-color: var(--surface-gray);
-    border-radius: 8px;
+    border-radius: var(--radius-2xl);
     box-shadow: 0 0 10px -2px var(--surface-background);
 
     &:has(.text-button.hover-bg) {
@@ -43,7 +46,7 @@
         position: relative;
 
         &::before {
-          content: "";
+          content: '';
           position: absolute;
           top: -0.375rem;
           left: 0;

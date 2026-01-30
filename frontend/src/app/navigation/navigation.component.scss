@@ -1,0 +1,19 @@
+.navigation-wrapper {
+  padding: var(--padding-lg);
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--surface-ground);
+
+  .logo {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: -0.2rem;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}

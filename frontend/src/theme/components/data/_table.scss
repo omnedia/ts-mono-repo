@@ -1,13 +1,16 @@
-p-table, .p-datatable {
+p-table,
+.p-datatable {
   position: relative;
 }
 
-table, .p-datatable-table {
+table,
+.p-datatable-table {
   border-spacing: 0;
   border-collapse: separate;
   width: 100%;
 
-  thead, .p-datatable-thead {
+  thead,
+  .p-datatable-thead {
     position: sticky;
 
     tr > th {
@@ -22,7 +25,8 @@ table, .p-datatable-table {
     }
   }
 
-  tbody, .p-datatable-tbody {
+  tbody,
+  .p-datatable-tbody {
     tr {
       outline-color: transparent;
       background: transparent;
@@ -44,7 +48,8 @@ table, .p-datatable-table {
 }
 
 .table-borders {
-  thead > tr > th, tbody > tr > td {
+  thead > tr > th,
+  tbody > tr > td {
     border-width: 1px;
   }
 }

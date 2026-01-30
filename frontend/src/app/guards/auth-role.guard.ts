@@ -1,16 +1,14 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate,} from '@angular/router';
-import {map, Observable, take} from 'rxjs';
-import {AppStore} from '../stores/app.store';
-import {RoutingService} from '../services/routing.service';
+import { inject, Injectable } from '@angular/core';
+import type { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import type { Observable } from 'rxjs';
+import { map, take } from 'rxjs';
+import { RoutingService } from '../services/routing.service';
+import { AppStore } from '../stores/app.store';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthRoleGuard implements CanActivate {
-  constructor(
-    private appStore: AppStore,
-    private readonly routingService: RoutingService,
-  ) {
-  }
+  private appStore = inject(AppStore);
+  private readonly routingService = inject(RoutingService);
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const requiredRoles = route.data['roles'] as string[] | undefined;
@@ -29,7 +27,7 @@ export class AuthRoleGuard implements CanActivate {
 
         this.routingService.notFound();
         return false;
-      })
+      }),
     );
   }
 }

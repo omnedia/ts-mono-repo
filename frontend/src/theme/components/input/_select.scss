@@ -4,18 +4,20 @@ p-select.p-select {
   border: 1px solid var(--surface-gray) !important;
   background-color: var(--surface-background) !important;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-xl);
   font-weight: bold;
   transition: border 0.25s;
 
   &.p-select-transparent {
     background-color: transparent !important;
-    border-radius: 4px;
+    border-radius: var(--radius-xl);
     border: 1px solid var(--surface-gray);
     font-weight: normal;
   }
 
-  &.p-disabled, &:disabled, &.disabled {
+  &.p-disabled,
+  &:disabled,
+  &.disabled {
     opacity: 0.6;
     cursor: default;
     pointer-events: none;
@@ -61,7 +63,7 @@ p-select.p-select {
   margin-top: 0.5rem !important;
   padding: 0.75rem;
   background-color: var(--surface-gray);
-  border-radius: 10px;
+  border-radius: var(--radius-2xl);
   box-shadow: 0 0 10px -2px var(--surface-background);
 
   .p-select-header > .p-iconfield {
@@ -72,7 +74,7 @@ p-select.p-select {
     background-color: var(--surface-background-dark);
     padding: 0.5rem 1rem;
     margin-bottom: 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-xl);
     color: var(--text-color);
     transition: border-color 0.25s;
 
@@ -81,7 +83,8 @@ p-select.p-select {
       top: 10%;
     }
 
-    &:active, &:focus-within {
+    &:active,
+    &:focus-within {
       outline: none;
       border-color: var(--primary-color);
     }
@@ -94,15 +97,18 @@ p-select.p-select {
   .p-select-option {
     padding: 0.5rem 0.75rem;
     position: relative;
-    border-radius: 4px;
+    border-radius: var(--radius-xl);
     transition: background-color 0.25s;
 
-    &:hover, &:active, &.p-focus, &.p-select-option-selected {
+    &:hover,
+    &:active,
+    &.p-focus,
+    &.p-select-option-selected {
       background-color: var(--surface-light-gray) !important;
     }
 
     &::before {
-      content: "";
+      content: '';
       display: block;
       height: 1px;
       background-color: var(--color-dark-greyish);
@@ -127,11 +133,10 @@ p-select.p-select {
 
 @media only screen and (max-width: 800px) {
   p-select.p-select {
-
     &:not(.p-select-transparent) {
       gap: 0.25rem;
       padding: 0.25rem 0.25rem 0.25rem 0.5rem;
-      border-radius: 5px;
+      border-radius: var(--radius-xl);
 
       .p-select-label {
         font-size: 0.75rem;
@@ -147,7 +152,7 @@ p-select.p-select {
 
     .p-overlay-content {
       padding: 0.5rem;
-      border-radius: 5px;
+      border-radius: var(--radius-xl);
 
       .p-select-header > .p-iconfield {
         padding: 0.25rem 0.5rem;

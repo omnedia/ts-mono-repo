@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { IAuthResponse } from '@shared/interfaces';
-import { AuthRequest } from '../types/types';
+import { AuthRequest, StringValue } from '../types/types';
 
 @Injectable()
 export class AuthService {
@@ -22,13 +22,13 @@ export class AuthService {
       : this.configService.get<string>('JWT_EXPIRATION');
 
     return {
-      access_token: this.jwtService.sign(payload, {
+      access_token: this.jwtService.sign<typeof payload>(payload, {
         secret: this.configService.get<string>('JWT_SECRET'),
-        expiresIn: accessTokenExpires,
+        expiresIn: accessTokenExpires as StringValue,
       }),
-      refresh_token: this.jwtService.sign(payload, {
+      refresh_token: this.jwtService.sign<typeof payload>(payload, {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn: refreshTokenExpires,
+        expiresIn: refreshTokenExpires as StringValue,
       }),
     };
   }
@@ -39,9 +39,11 @@ export class AuthService {
     const payload = { email: user.email, userId: user.userId, role: user.role };
 
     return {
-      access_token: this.jwtService.sign(payload, {
+      access_token: this.jwtService.sign<typeof payload>(payload, {
         secret: this.configService.get<string>('JWT_SECRET'),
-        expiresIn: this.configService.get<string>('JWT_EXPIRATION'),
+        expiresIn: this.configService.get<string>(
+          'JWT_EXPIRATION',
+        ) as StringValue,
       }),
     };
   }

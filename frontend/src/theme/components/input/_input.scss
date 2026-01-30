@@ -2,12 +2,14 @@ textarea.p-input {
   min-height: 22px;
 }
 
-.p-input, .p-inputtext, p-input-number > input {
+.p-input,
+.p-inputtext,
+p-input-number > input {
   border: 1px solid var(--surface-gray) !important;
   background-color: var(--surface-background) !important;
-  padding: 0.5rem 1rem !important;
+  padding: var(--padding-sm) !important;
   transition: border-color 0.25s !important;
-  border-radius: 8px !important;
+  border-radius: var(--radius-xl) !important;
   color: var(--text-color) !important;
   display: flex;
   gap: 0.25rem;
@@ -41,7 +43,8 @@ textarea.p-input {
     background-color: transparent !important;
   }
 
-  &:active:not(:disabled), &:focus:not(:disabled) {
+  &:active:not(:disabled),
+  &:focus:not(:disabled) {
     outline: none !important;
     border-color: var(--primary-color) !important;
   }
@@ -60,7 +63,8 @@ textarea.p-input {
     background-color: transparent !important;
   }
 
-  &:disabled, &.disabled {
+  &:disabled,
+  &.disabled {
     pointer-events: none;
     opacity: 0.6;
     cursor: default;
@@ -87,7 +91,8 @@ textarea.p-input {
       left: 0;
     }
 
-    .p-input, .p-select {
+    .p-input,
+    .p-select {
       padding-left: calc(16px + 1rem) !important;
     }
   }
@@ -123,7 +128,11 @@ textarea.p-input {
       border-radius: 2px !important;
     }
 
-    &:has(.p-inputwrapper-filled) label, &:has(.p-filled) label, &:has(.p-inputwrapper-focus) label, &:has(input:focus) label, &:has(textarea:focus) label {
+    &:has(.p-inputwrapper-filled) label,
+    &:has(.p-filled) label,
+    &:has(.p-inputwrapper-focus) label,
+    &:has(input:focus) label,
+    &:has(textarea:focus) label {
       margin-left: 0.5rem !important;
       font-size: 0.8rem !important;
       opacity: 1;

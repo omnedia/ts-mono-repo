@@ -5,11 +5,15 @@ body {
   color: var(--text-color);
 }
 
-p, a, h1 {
+p,
+a,
+h1 {
   color: var(--text-color);
 }
 
-p, h1, h3 {
+p,
+h1,
+h3 {
   padding: 0;
   margin: 0;
 }
@@ -46,6 +50,12 @@ a {
   background-color: var(--surface-light-gray);
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 .p-hidden-accessible {
   display: none;
 }
@@ -72,7 +82,8 @@ hr {
   margin: auto 0;
 }
 
-.p-absolute, p-dialog {
+.p-absolute,
+p-dialog {
   position: absolute;
 }
 
@@ -123,18 +134,20 @@ hr {
     align-items: center;
     cursor: pointer;
 
-    p, i {
+    p,
+    i {
       opacity: 0.8;
       transition: opacity 0.25s;
     }
 
     & + .breadcrumb-item::before {
-      content: "/";
+      content: '/';
       font-size: 1.25rem;
       opacity: 0.8;
     }
 
-    &:hover p, &:hover i {
+    &:hover p,
+    &:hover i {
       opacity: 1;
     }
 
@@ -148,7 +161,7 @@ hr {
   width: 100%;
   padding: 1rem;
   background-color: var(--surface-ground);
-  border-radius: 8px;
+  border-radius: var(--radius-2xl);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

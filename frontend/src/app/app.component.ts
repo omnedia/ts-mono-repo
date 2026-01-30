@@ -1,38 +1,39 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {MessageService} from 'primeng/api';
-import {AppStore} from './stores/app.store';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {AuthApiService} from './services/auth-api.service';
+import { Component, computed, DestroyRef, inject, type OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterOutlet } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { NavigationComponent } from './navigation/navigation.component';
+import { AuthApiService } from './services/auth-api.service';
+import { AppStore } from './stores/app.store';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NavigationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true,
-  providers: [MessageService]
+  providers: [MessageService],
 })
-export class AppComponent implements OnInit, OnDestroy {
-  constructor(
-    private readonly authApiService: AuthApiService,
-    private readonly appStore: AppStore,
-  ) {
-  }
+export class AppComponent implements OnInit {
+  private readonly authApiService = inject(AuthApiService);
+  private readonly appStore = inject(AppStore);
+  private readonly destroyRef = inject(DestroyRef);
+
+  showNavigation = computed(() => {
+    const loggedIn = !!this.appStore.user();
+    const route = this.appStore.currentUrl();
+
+    return loggedIn && !route?.startsWith('/auth');
+  });
 
   ngOnInit(): void {
-    this.authApiService.getCurrentUser().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (user) => {
-        this.appStore.updateUser(user);
-      }
-    });
-  }
-
-  destroy$ = new Subject<void>()
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.authApiService
+      .getCurrentUser()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (user) => {
+          this.appStore.updateUser(user);
+        },
+      });
   }
 }

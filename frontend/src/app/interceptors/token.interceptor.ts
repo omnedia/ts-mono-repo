@@ -1,10 +1,11 @@
-import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
-import {inject} from '@angular/core';
-import {AuthApiService} from '../services/auth-api.service';
-import {BehaviorSubject, filter, finalize, throwError} from 'rxjs';
-import {catchError, switchMap} from 'rxjs/operators';
-import {RoutingService} from '../services/routing.service';
-import {AppStore} from '../stores/app.store';
+import type { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { BehaviorSubject, filter, finalize, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { AuthApiService } from '../services/auth-api.service';
+import { RoutingService } from '../services/routing.service';
+import { AppStore } from '../stores/app.store';
 
 let isRefreshInFlight = false;
 const refreshInFlight = new BehaviorSubject<string | undefined>(undefined);
@@ -90,11 +91,11 @@ export const tokenInterceptor: HttpInterceptorFn = (request, next) => {
             });
 
             return next(newRequest);
-          })
+          }),
         );
       }
 
       return throwError(() => error);
-    })
+    }),
   );
 };
