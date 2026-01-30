@@ -4,7 +4,9 @@
   "description": "Your app description",
   "scripts": {
     "start:backend": "cd backend && npm run start:dev",
-    "start:frontend": "cd frontend && npm run start"
+    "start:frontend": "cd frontend && npm run start",
+    "check:frontend": "cd frontend && npm run check",
+    "check:backend": "cd backend && npm run check"
   },
   "private": true
 }
