@@ -2,11 +2,13 @@ import type { Request } from 'express';
 import { UnitAnyCase } from 'ms';
 
 export interface AuthRequest extends Request {
-  user: {
-    userId: number;
-    email: string;
-    role: string;
-  };
+  user: SessionUser;
+}
+
+export interface SessionUser {
+  id: number;
+  email: string;
+  role: UserRole;
 }
 
 export enum UserRole {

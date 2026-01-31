@@ -9,13 +9,13 @@
 
   &:not(.p-popover-flipped)::after,
   &:not(.p-popover-flipped)::before {
-    border-bottom-color: var(--surface-gray) !important;
+    border-bottom-color: var(--border-color) !important;
     border-width: 10px !important;
   }
 
   &.p-popover-flipped::after,
   &.p-popover-flipped::before {
-    border-top-color: var(--surface-gray) !important;
+    border-top-color: var(--border-color) !important;
     border-width: 10px !important;
   }
 

@@ -50,12 +50,6 @@ a {
   background-color: var(--surface-light-gray);
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
 .p-hidden-accessible {
   display: none;
 }
@@ -100,7 +94,7 @@ p-dialog {
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
-  cursor: pointer;
+  cursor: default;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,6 +112,19 @@ p-dialog {
 
   &.transparent {
     background-color: transparent;
+  }
+}
+
+.navigating-indicator {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  z-index: 99998;
+  overflow: hidden;
+
+  p-progress-bar {
+    width: 101%;
   }
 }
 

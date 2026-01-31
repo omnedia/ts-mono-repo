@@ -37,10 +37,10 @@ export class RoutingService {
   }
 
   private preRouting(): void {
-    this.appStore.updateLoading(true);
+    this.appStore.updateNavigating(true);
   }
 
   private postRouting(): void {
-    this.appStore.updateLoading(false);
+    this.appStore.updateNavigating(false);
   }
 }

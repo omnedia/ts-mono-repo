@@ -2,13 +2,16 @@ import { Component, computed, DestroyRef, inject, type OnInit } from '@angular/c
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { ProgressBar } from 'primeng/progressbar';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { Toast } from 'primeng/toast';
 import { NavigationComponent } from './navigation/navigation.component';
 import { AuthApiService } from './services/auth-api.service';
 import { AppStore } from './stores/app.store';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavigationComponent],
+  imports: [RouterOutlet, NavigationComponent, Toast, ProgressSpinner, ProgressBar],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true,
@@ -25,6 +28,9 @@ export class AppComponent implements OnInit {
 
     return loggedIn && !route?.startsWith('/auth');
   });
+
+  globalNavigating = this.appStore.navigating;
+  globalLoading = this.appStore.loading;
 
   ngOnInit(): void {
     this.authApiService

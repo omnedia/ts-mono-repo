@@ -2,26 +2,22 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Post,
   Put,
+  Req,
   Request,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import { Request as ERequest, Response as EResponse } from 'express';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { RefreshJwtGuard } from './guards/refresh-jwt.guard';
 import { User } from '../entities/user.entity';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { AuthRequest } from '../types/types';
-import { IAuthResponse } from '@shared/interfaces';
+import { AuthRequest, SessionUser } from '../types/types';
+import { SessionAuthGuard } from './guards/session-auth.guard';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -30,6 +26,15 @@ export class AuthController {
     private authService: AuthService,
     private userService: UserService,
   ) {}
+
+  @Get('csrf')
+  @ApiOperation({ summary: 'Get csrfToken for current session' })
+  csrf(@Req() req: ERequest, @Res() res: EResponse) {
+    const csrfToken = this.authService
+      .createDoubleCsrfConfig()
+      .generateCsrfToken(req, res);
+    return res.json({ csrfToken });
+  }
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
@@ -46,6 +51,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(204)
   @ApiOperation({ summary: 'Log in a user' })
   @ApiBody({
     schema: {
@@ -59,27 +65,25 @@ export class AuthController {
   login(
     @Request() req: AuthRequest,
     @Body() body: { staySignedIn: boolean },
-  ): IAuthResponse {
+  ): Promise<void> {
     return this.authService.login(req, body.staySignedIn);
   }
 
-  @UseGuards(RefreshJwtGuard)
-  @ApiBearerAuth()
-  @Post('refresh')
-  @ApiOperation({ summary: 'Refresh access token using refresh token' })
-  refreshToken(@Request() req: AuthRequest): IAuthResponse {
-    return this.authService.refreshToken(req);
+  @HttpCode(204)
+  @Post('logout')
+  @ApiOperation({ summary: 'Log out a user' })
+  logout(@Req() req: ERequest): Promise<void> {
+    return this.authService.logout(req);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @UseGuards(SessionAuthGuard)
   @Get('user')
   @ApiOperation({ summary: 'Get the current User (Authenticated)' })
   @ApiOkResponse({
     description: 'Returns User Entity',
     type: User,
   })
-  async getCurrentUser(@Request() req: AuthRequest) {
+  async getCurrentUser(@Request() req: AuthRequest): Promise<SessionUser> {
     const user = await this.userService.findOne(req.user.email);
 
     return {
@@ -89,14 +93,13 @@ export class AuthController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @UseGuards(SessionAuthGuard)
   @Put('change-password')
   @ApiOperation({
     summary: 'Change the password of the current User (Authenticated)',
   })
   changeUserPassword(
-    @Request() req: { user: User },
+    @Request() req: AuthRequest,
     @Body() body: { password: string },
   ): Promise<void> {
     return this.userService.changePassword(req.user, body.password);

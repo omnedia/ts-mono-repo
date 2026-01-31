@@ -50,20 +50,18 @@ p-toggleSwitch {
     height: 100%;
     border-width: 1px;
     border-style: solid;
-    border-color: var(--surface-gray);
+    border-color: var(--border-color);
     background: var(--surface-gray);
-    transition:
-      background 0.2s,
-      color 0.2s,
-      border-color 0.2s,
-      outline-color 0.2s,
-      box-shadow 0.2s;
+    transition: background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    outline-color 0.2s,
+    box-shadow 0.2s;
     border-radius: 30px;
     outline-color: transparent;
-    box-shadow:
-      0 0 #0000,
-      0 0 #0000,
-      0 1px 2px 0 rgba(18, 18, 23, 0.05);
+    box-shadow: 0 0 #0000,
+    0 0 #0000,
+    0 1px 2px 0 rgba(18, 18, 23, 0.05);
 
     .p-toggleswitch-handle {
       position: absolute;
@@ -77,11 +75,10 @@ p-toggleSwitch {
       inset-inline-start: 0.25rem;
       margin-block-start: calc(-1 * calc(1rem / 2));
       border-radius: 50%;
-      transition:
-        background 0.2s,
-        color 0.2s,
-        inset-inline-start 0.2s,
-        box-shadow 0.2s;
+      transition: background 0.2s,
+      color 0.2s,
+      inset-inline-start 0.2s,
+      box-shadow 0.2s;
     }
   }
 

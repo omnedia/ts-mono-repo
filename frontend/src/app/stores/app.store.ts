@@ -8,15 +8,19 @@ export type Theme = 'light' | 'dark';
 export interface AppState {
   user?: IUser;
   loading: boolean;
+  navigating: boolean;
   lastUrl?: string;
   currentUrl?: string;
+  csrfToken?: string;
 }
 
 const defaultState: AppState = {
   user: undefined,
   loading: false,
+  navigating: false,
   lastUrl: undefined,
   currentUrl: undefined,
+  csrfToken: undefined,
 };
 
 @Injectable({ providedIn: 'root' })
@@ -24,6 +28,14 @@ export class AppStore extends ComponentStore<AppState> {
   constructor() {
     super(defaultState);
   }
+
+  readonly csrfToken$ = this.select(({ csrfToken }) => csrfToken);
+  readonly csrfToken = toSignal(this.csrfToken$);
+
+  readonly updateCsrfToken = this.updater((state, csrfToken: string | undefined) => ({
+    ...state,
+    csrfToken: csrfToken,
+  }));
 
   readonly user$ = this.select(({ user }) => user);
   readonly user = toSignal(this.user$);
@@ -45,6 +57,14 @@ export class AppStore extends ComponentStore<AppState> {
   readonly updateLoading = this.updater((state, loading: boolean) => ({
     ...state,
     loading: loading,
+  }));
+
+  readonly navigating$ = this.select(({ navigating }) => navigating);
+  readonly navigating = toSignal(this.navigating$);
+
+  readonly updateNavigating = this.updater((state, navigating: boolean) => ({
+    ...state,
+    navigating: navigating,
   }));
 
   readonly lastUrl$ = this.select(({ lastUrl }) => lastUrl);

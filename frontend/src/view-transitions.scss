@@ -1,0 +1,39 @@
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(app) {
+  animation: 250ms ease both fade-out;
+}
+
+::view-transition-new(app) {
+  animation: 250ms ease both fade-in;
+}
+
+::view-transition-old(auth-panel) {
+  animation: 180ms ease both fade-out;
+}
+
+::view-transition-new(auth-panel) {
+  animation: 180ms ease both fade-in;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,7 +1,7 @@
 p-select.p-select {
   display: flex;
   gap: 0.5rem;
-  border: 1px solid var(--surface-gray) !important;
+  border: 1px solid var(--border-color) !important;
   background-color: var(--surface-background) !important;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
   border-radius: var(--radius-xl);
@@ -11,7 +11,7 @@ p-select.p-select {
   &.p-select-transparent {
     background-color: transparent !important;
     border-radius: var(--radius-xl);
-    border: 1px solid var(--surface-gray);
+    border: 1px solid var(--border-color);
     font-weight: normal;
   }
 

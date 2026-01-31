@@ -1,50 +1,105 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { IAuthResponse } from '@shared/interfaces';
-import { AuthRequest, StringValue } from '../types/types';
+import { AuthRequest } from '../types/types';
+import { CookieOptions } from 'csurf';
+import { Request as ERequest } from 'express';
+import { doubleCsrf } from 'csrf-csrf';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly configService: ConfigService) {}
 
-  login(req: AuthRequest, staySignedIn: boolean): IAuthResponse {
+  async login(req: AuthRequest, staySignedIn: boolean): Promise<void> {
     const user = req.user;
+    (req as any).session.user = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
 
-    const payload = { email: user.email, userId: user.userId, role: user.role };
+    req.session.cookie.maxAge = staySignedIn
+      ? this.durationToMs(
+          this.configService.get<string>('SESSION_STAY_SIGNED_IN_EXPIRATION'),
+        )
+      : this.durationToMs(this.configService.get<string>('SESSION_EXPIRATION'));
 
-    const accessTokenExpires = this.configService.get<string>('JWT_EXPIRATION');
-    const refreshTokenExpires = staySignedIn
-      ? this.configService.get<string>('JWT_REFRESH_EXPIRATION')
-      : this.configService.get<string>('JWT_EXPIRATION');
+    req.session.touch();
+
+    await new Promise<void>((resolve, reject) =>
+      req.session.save((err) => (err ? reject(err) : resolve())),
+    );
+  }
+
+  logout(req: ERequest): Promise<void> {
+    const sessionOptions = this.getSessionCookieOptions();
+
+    return new Promise((resolve) => {
+      req.session.destroy(() => {
+        req.res?.clearCookie('sid', {
+          domain: sessionOptions.domain,
+          path: sessionOptions.path,
+        });
+        resolve();
+      });
+    });
+  }
+
+  getSessionCookieOptions(): Pick<
+    CookieOptions,
+    'domain' | 'path' | 'httpOnly' | 'secure' | 'sameSite' | 'maxAge'
+  > {
+    const domain = this.configService.get<string>('SESSION_COOKIE_DOMAIN');
 
     return {
-      access_token: this.jwtService.sign<typeof payload>(payload, {
-        secret: this.configService.get<string>('JWT_SECRET'),
-        expiresIn: accessTokenExpires as StringValue,
-      }),
-      refresh_token: this.jwtService.sign<typeof payload>(payload, {
-        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn: refreshTokenExpires as StringValue,
-      }),
+      domain: domain || undefined,
+      path: '/',
+      httpOnly: true,
+      secure: this.configService.get<string>('NODE_ENV') === 'prod',
+      sameSite: 'lax',
+      maxAge: this.durationToMs(
+        this.configService.get<string>('SESSION_EXPIRATION'),
+      ),
     };
   }
 
-  refreshToken(req: AuthRequest): IAuthResponse {
-    const user = req.user;
+  createDoubleCsrfConfig() {
+    return doubleCsrf({
+      getSecret: () => this.configService.get<string>('CSRF_SECRET')!,
+      getSessionIdentifier: (req) => (req as any).sessionID,
+      cookieName: 'csrf',
+      cookieOptions: this.getSessionCookieOptions(),
+      getCsrfTokenFromRequest: (req) => req.headers['x-csrf-token'] as string,
+    });
+  }
 
-    const payload = { email: user.email, userId: user.userId, role: user.role };
+  private durationToMs(value?: string): number {
+    if (!value) {
+      throw new Error(
+        `Invalid duration format: .env variable missing for session ttl.`,
+      );
+    }
 
-    return {
-      access_token: this.jwtService.sign<typeof payload>(payload, {
-        secret: this.configService.get<string>('JWT_SECRET'),
-        expiresIn: this.configService.get<string>(
-          'JWT_EXPIRATION',
-        ) as StringValue,
-      }),
-    };
+    const match = value.trim().match(/^(\d+)\s*([smhd])$/i);
+    if (!match) {
+      throw new Error(
+        `Invalid duration format: "${value}" (expected 10s | 5m | 1h | 7d)`,
+      );
+    }
+
+    const amount = Number(match[1]);
+    const unit = match[2].toLowerCase();
+
+    switch (unit) {
+      case 's':
+        return amount * 1000;
+      case 'm':
+        return amount * 60 * 1000;
+      case 'h':
+        return amount * 60 * 60 * 1000;
+      case 'd':
+        return amount * 24 * 60 * 60 * 1000;
+      default:
+        throw new Error(`Unsupported duration unit: ${unit}`);
+    }
   }
 }

@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from '../entities/user.entity';
-import { UserRole } from '../types/types';
+import { SessionUser, UserRole } from '../types/types';
 
 @Injectable()
 export class UserService {
@@ -58,7 +58,7 @@ export class UserService {
     return null;
   }
 
-  async changePassword(user: User, password: string): Promise<void> {
+  async changePassword(user: SessionUser, password: string): Promise<void> {
     const userEntity = await this.findOne(user.email);
 
     if (!userEntity) {

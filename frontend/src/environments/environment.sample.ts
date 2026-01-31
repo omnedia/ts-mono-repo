@@ -5,6 +5,8 @@ export const environment: Environment = {
   apiPoints: {
     authRegister: '/auth/register',
     authLogin: '/auth/login',
+    authLogout: '/auth/logout',
+    authCsrf: '/auth/csrf',
     authRefresh: '/auth/refresh',
     authUser: '/auth/user',
     changePassword: '/auth/change-password',

@@ -104,18 +104,8 @@ export class AuthComponent implements OnInit {
       .login(email, password, staySignedIn)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => {
-          if (staySignedIn && response.refresh_token) {
-            localStorage.setItem('refresh-token', response.refresh_token);
-          }
-
-          localStorage.setItem('token', response.access_token);
-
-          this.loginForm().reset();
-          this.submitted.set(false);
-          this.errorMessage.set(undefined);
-
-          this.getUser();
+        next: () => {
+          this.getCsrf();
         },
         error: () => {
           this.loginForm.password().reset('');
@@ -190,15 +180,45 @@ export class AuthComponent implements OnInit {
   }
 
   switchFormView(): void {
-    this.submitted.set(false);
-    this.loginForm().reset({ email: '', password: '', staySignedIn: false });
-    this.registerForm().reset({ email: '', password: '', passwordCheck: '' });
-    this.errorMessage.set(undefined);
+    const doSwitch = () => {
+      this.submitted.set(false);
+      this.loginForm().reset({ email: '', password: '', staySignedIn: false });
+      this.registerForm().reset({ email: '', password: '', passwordCheck: '' });
+      this.errorMessage.set(undefined);
 
-    if (this.formView() === 'login') {
-      this.formView.set('register');
-    } else {
-      this.formView.set('login');
+      this.formView.set(this.formView() === 'login' ? 'register' : 'login');
+    };
+
+    const doc = document as any;
+
+    if (typeof doc.startViewTransition !== 'function') {
+      doSwitch();
+      return;
     }
+
+    doc.startViewTransition(doSwitch);
+  }
+
+  private getCsrf() {
+    this.authApiService
+      .getCsrf()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.appStore.updateCsrfToken(response.csrfToken);
+
+          this.loginForm().reset();
+          this.submitted.set(false);
+          this.errorMessage.set(undefined);
+
+          this.getUser();
+        },
+        error: () => {
+          this.loginForm.password().reset('');
+          this.errorMessage.set('Failed to get csrf token.');
+          this.submitted.set(false);
+          this.loading.set(false);
+        },
+      });
   }
 }

@@ -1,7 +1,7 @@
 .p-tooltip {
   &.p-tooltip-right {
     .p-tooltip-arrow {
-      border-right-color: var(--surface-gray) !important;
+      border-right-color: var(--border-color) !important;
       margin-top: -2px;
     }
 
@@ -12,7 +12,7 @@
 
   &.p-tooltip-left {
     .p-tooltip-arrow {
-      border-left-color: var(--surface-gray) !important;
+      border-left-color: var(--border-color) !important;
       margin-top: -2px;
     }
 

@@ -6,130 +6,132 @@
   </div>
 
   <div class="body">
-    @if (formView() === 'login') {
-      <h1>Welcome back</h1>
+    <div class="form-wrapper" style="view-transition-name: auth-panel">
+      @if (formView() === 'login') {
+        <h1>Welcome back</h1>
 
-      <form class="form" (submit)="login($event)">
-        @if (errorMessage()) {
-          <p class="error-message">{{ errorMessage() }}</p>
-        }
-
-        <div class="form-group">
-          <input
-            class="p-input"
-            [class.invalid]="hasFormError('email')()"
-            type="text"
-            [formField]="loginForm.email"
-            placeholder="E-Mail"
-          />
-        </div>
-
-        <div class="form-group">
-          <input
-            class="p-input"
-            [class.invalid]="hasFormError('password')()"
-            type="password"
-            [formField]="loginForm.password"
-            placeholder="Password"
-          />
-        </div>
-
-        <div class="form-group checkbox-group">
-          <p-checkbox
-            id="staySignedIn"
-            type="checkbox"
-            [formField]="loginForm.staySignedIn"
-            [binary]="true"
-          ></p-checkbox>
-          <label for="staySignedIn">Stay signed in</label>
-        </div>
-
-        <div class="form-view-switch">
-          <p>Don't have an account?</p>
-          <p
-            class="text-button"
-            (click)="switchFormView()"
-            (keydown.enter)="switchFormView()"
-            (keydown.space)="switchFormView()"
-            [class.disabled]="loading()"
-            tabindex="0"
-          >
-            Sign Up
-          </p>
-        </div>
-
-        <button type="submit" class="button" [disabled]="loading()">
-          Login
-          @if (loading()) {
-            <p-progress-spinner></p-progress-spinner>
+        <form class="form" (submit)="login($event)">
+          @if (errorMessage()) {
+            <p class="error-message">{{ errorMessage() }}</p>
           }
-        </button>
-      </form>
-    } @else {
-      <h1>Create an Account</h1>
 
-      <form class="form" (submit)="register($event)">
-        @if (errorMessage()) {
-          <p class="error-message">{{ errorMessage() }}</p>
-        }
+          <div class="form-group">
+            <input
+              class="p-input"
+              [class.invalid]="hasFormError('email')()"
+              type="text"
+              [formField]="loginForm.email"
+              placeholder="E-Mail"
+            />
+          </div>
 
-        <div class="form-group">
-          <input
-            class="p-input"
-            [class.invalid]="hasFormError('email')()"
-            type="text"
-            [formField]="registerForm.email"
-            placeholder="E-Mail"
-          />
-        </div>
+          <div class="form-group">
+            <input
+              class="p-input"
+              [class.invalid]="hasFormError('password')()"
+              type="password"
+              [formField]="loginForm.password"
+              placeholder="Password"
+            />
+          </div>
 
-        <div class="form-group">
-          <input
-            class="p-input"
-            [class.invalid]="hasFormError('password')()"
-            type="password"
-            [formField]="registerForm.password"
-            placeholder="Password"
-          />
-        </div>
+          <div class="form-group checkbox-group">
+            <p-checkbox
+              id="staySignedIn"
+              type="checkbox"
+              [formField]="loginForm.staySignedIn"
+              [binary]="true"
+            ></p-checkbox>
+            <label for="staySignedIn">Stay signed in</label>
+          </div>
 
-        <div class="form-group">
-          <input
-            class="p-input"
-            [class.invalid]="hasFormError('passwordCheck')()"
-            type="password"
-            [formField]="registerForm.passwordCheck"
-            placeholder="Enter password again"
-          />
-        </div>
+          <div class="form-view-switch">
+            <p>Don't have an account?</p>
+            <p
+              class="text-button"
+              (click)="switchFormView()"
+              (keydown.enter)="switchFormView()"
+              (keydown.space)="switchFormView()"
+              [class.disabled]="loading()"
+              tabindex="0"
+            >
+              Sign Up
+            </p>
+          </div>
 
-        <div class="form-view-switch">
-          <p>Already have an account?</p>
-          <p
-            class="text-button"
-            (click)="switchFormView()"
-            (keydown.enter)="switchFormView()"
-            (keydown.space)="switchFormView()"
-            [class.disabled]="loading()"
-            tabindex="0"
-          >
-            Sign In
-          </p>
-        </div>
+          <button type="submit" class="button" [disabled]="loading()">
+            Login
+            @if (loading()) {
+              <p-progress-spinner></p-progress-spinner>
+            }
+          </button>
+        </form>
+      } @else {
+        <h1>Create an Account</h1>
 
-        <button type="submit" class="button" [disabled]="loading()">
-          Create
-          @if (loading()) {
-            <p-progress-spinner></p-progress-spinner>
+        <form class="form" (submit)="register($event)">
+          @if (errorMessage()) {
+            <p class="error-message">{{ errorMessage() }}</p>
           }
-        </button>
-      </form>
-    }
 
-    <div class="legal">
-      <a> Legal </a>
-      <span class="divider"></span>
-      <a> Privacy Policy </a>
+          <div class="form-group">
+            <input
+              class="p-input"
+              [class.invalid]="hasFormError('email')()"
+              type="text"
+              [formField]="registerForm.email"
+              placeholder="E-Mail"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              class="p-input"
+              [class.invalid]="hasFormError('password')()"
+              type="password"
+              [formField]="registerForm.password"
+              placeholder="Password"
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              class="p-input"
+              [class.invalid]="hasFormError('passwordCheck')()"
+              type="password"
+              [formField]="registerForm.passwordCheck"
+              placeholder="Enter password again"
+            />
+          </div>
+
+          <div class="form-view-switch">
+            <p>Already have an account?</p>
+            <p
+              class="text-button"
+              (click)="switchFormView()"
+              (keydown.enter)="switchFormView()"
+              (keydown.space)="switchFormView()"
+              [class.disabled]="loading()"
+              tabindex="0"
+            >
+              Sign In
+            </p>
+          </div>
+
+          <button type="submit" class="button" [disabled]="loading()">
+            Create
+            @if (loading()) {
+              <p-progress-spinner></p-progress-spinner>
+            }
+          </button>
+        </form>
+      }
+
+      <div class="legal">
+        <a> Legal </a>
+        <span class="divider"></span>
+        <a> Privacy Policy </a>
+      </div>
     </div>
   </div>
 </div>

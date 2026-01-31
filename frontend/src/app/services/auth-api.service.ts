@@ -1,19 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import type { IAuthResponse, IUser } from '@shared/interfaces';
+import type { IUser } from '@shared/interfaces';
 import type { Observable } from 'rxjs';
-import { BehaviorSubject, filter, of, take, tap, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthApiService {
-  private refreshing = false;
-  private refreshTokenSubject = new BehaviorSubject<string | null>(null);
-
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     withCredentials: true,
@@ -38,48 +33,34 @@ export class AuthApiService {
    * Log in a user
    * POST /auth/login
    */
-  login(email: string, password: string, staySignedIn: boolean): Observable<IAuthResponse> {
+  login(email: string, password: string, staySignedIn: boolean): Observable<void> {
     const url = environment.apiUrl + environment.apiPoints.authLogin;
     const body = { email, password, staySignedIn };
     return this.http
-      .post<IAuthResponse>(url, body, this.httpOptions)
+      .post<void>(url, body, this.httpOptions)
       .pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   /**
-   * Refresh access token
-   * POST /auth/refresh
+   * Get session csrf token
+   * POST /auth/csrf
    */
-  refreshToken(): Observable<IAuthResponse> {
-    if (this.refreshing) {
-      return this.refreshTokenSubject.pipe(
-        filter((token) => token !== null),
-        take(1),
-        switchMap((token) => of({ access_token: token })),
-      );
-    } else {
-      this.refreshing = true;
-      this.refreshTokenSubject.next(null);
+  getCsrf(): Observable<{ csrfToken: string }> {
+    const url = environment.apiUrl + environment.apiPoints.authCsrf;
+    return this.http
+      .get<{ csrfToken: string }>(url, this.httpOptions)
+      .pipe(takeUntilDestroyed(this.destroyRef));
+  }
 
-      const url = environment.apiUrl + environment.apiPoints.authRefresh;
-      return this.http.post<IAuthResponse>(url, {}, this.httpOptions).pipe(
-        tap((response) => {
-          const newToken = response.access_token;
-          localStorage.setItem('token', newToken);
-
-          this.refreshing = false;
-          this.refreshTokenSubject.next(newToken);
-        }),
-        catchError((err) => {
-          localStorage.removeItem('refresh-token');
-
-          this.refreshing = false;
-          this.refreshTokenSubject.next(null);
-          return throwError(() => err);
-        }),
-        takeUntilDestroyed(this.destroyRef),
-      );
-    }
+  /**
+   * Get session csrf token
+   * POST /auth/logout
+   */
+  logout(): Observable<void> {
+    const url = environment.apiUrl + environment.apiPoints.authLogout;
+    return this.http
+      .post<void>(url, {}, this.httpOptions)
+      .pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   /**

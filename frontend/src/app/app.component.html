@@ -1,4 +1,17 @@
-<div class="app-wrapper">
+<div class="app-wrapper" style="view-transition-name: app">
+  @if (globalNavigating()) {
+    <div class="navigating-indicator">
+      <p-progress-bar [mode]="'indeterminate'"></p-progress-bar>
+    </div>
+  }
+  @if (globalLoading()) {
+    <div class="loading-overlay">
+      <p-progress-spinner class="p-progressspinner-big"></p-progress-spinner>
+    </div>
+  }
+
+  <p-toast />
+
   @if (showNavigation()) {
     <app-navigation></app-navigation>
   }

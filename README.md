@@ -2,9 +2,10 @@
 
 A full-stack monorepo boilerplate built with:
 
-- **Angular 21** (with PrimeNG + Auth skeleton)
-- **NestJS** (with Swagger + JWT Auth setup)
+- **Angular 21** (with PrimeNG + Auth skeleton + View Transitions)
+- **NestJS** (with Swagger + Session-based Auth + CSRF protection)
 - **PostgreSQL** (via Docker Compose)
+- **Redis** (optional, for session storage)
 - **Shared** module for common types/interfaces
 
 ---
@@ -13,9 +14,10 @@ A full-stack monorepo boilerplate built with:
 
 ```
 .
-├── backend       # NestJS API with Swagger & JWT auth
+├── backend       # NestJS API with Swagger & Session-based auth
 ├── frontend      # Angular app with PrimeNG & auth setup
 ├── postgres      # PostgreSQL via Docker Compose
+├── redis         # Redis via Docker Compose (optional, for session storage)
 ├── shared        # Shared interfaces/types between frontend & backend
 └── README.md
 ```
@@ -55,9 +57,28 @@ npm run start:dev
 http://localhost:3800/api
 ```
 
-#### 🔐 JWT Auth
+#### 🔐 Session-based Auth & CSRF Protection
 
-Basic JWT auth is preconfigured.
+Session-based authentication with CSRF protection is preconfigured:
+
+- **Session cookies** for authentication (httpOnly, secure in production)
+- **Double-submit CSRF tokens** to prevent CSRF attacks
+- **Redis support** (optional) for session storage in production
+- **LocalAuthGuard** for email/password login
+- **SessionAuthGuard** for protected routes
+- **RolesGuard** for role-based access control
+
+#### CSRF Token Flow
+
+1. Frontend requests a CSRF token from `/auth/csrf`
+2. Token is stored in a cookie and returned in the response
+3. Frontend includes the token in the `x-csrf-token` header for state-changing requests
+4. Backend validates the token before processing the request
+
+Excluded routes (no CSRF validation):
+- `POST /auth/login`
+- `POST /auth/register`
+- `GET /auth/csrf`
 
 #### 🧹 Linting & Formatting
 
@@ -78,18 +99,27 @@ npm run check          # Run both lint and format checks
 Create a `.env` file in the `backend` directory:
 
 ```
+NODE_ENV=dev
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=admin
 POSTGRES_PASSWORD=root
 POSTGRES_DB=app
-JWT_SECRET=your_jwt_secret
-JWT_REFRESH_SECRET=your_jwt_refresh_secret
-JWT_EXPIRATION=1h
-JWT_REFRESH_EXPIRATION=7d
+CSRF_SECRET=your_csrf_secret
+SESSION_SECRET=your_session_secret
+SESSION_EXPIRATION=1h
+SESSION_STAY_SIGNED_IN_EXPIRATION=7d
 PORT=3800
+SESSION_COOKIE_DOMAIN= .app.com # remove for dev / replace with own domain in prod
+FRONTEND_URL=http://localhost:4200
 ALLOWED_ORIGINS=http://localhost:4200
+REDIS_URL=redis://localhost:6379  # Optional: for production session storage
 ```
+
+**Important:**
+- `SESSION_SECRET` should be a strong random string (at least 32 characters)
+- `REDIS_URL` is optional. If not set, sessions will be stored in memory (not recommended for production)
+- In production, ensure sessions are stored in Redis or another persistent store
 
 ---
 
@@ -115,6 +145,23 @@ http://localhost:4200
 ### 💅 PrimeNG
 
 PrimeNG components are preconfigured.
+
+### 🎬 View Transitions
+
+The Angular app uses the **View Transitions API** for smooth animations between routes and component states.
+
+#### ✅ Features
+
+- Configured via `withViewTransitions()` in the router
+- Custom animations defined in `view-transitions.scss`
+- Smooth fade-in/fade-out transitions for route changes
+- Supports named view transitions for specific components (e.g., `auth-panel`)
+
+#### 🛠 How It Works
+
+- View transitions are enabled in `app.config.ts` with `provideRouter(routes, withViewTransitions())`
+- CSS animations are defined using `::view-transition-old()` and `::view-transition-new()` pseudo-elements
+- Different transition durations and styles can be applied to different parts of the app
 
 ### 🎨 Frontend Theme Support
 
@@ -172,14 +219,16 @@ Create `src/environments/environment.ts` in `frontend`:
 
 ```ts
 export const environment: Environment = {
-    apiUrl: 'http://localhost:3800',
-    apiPoints: {
-        authRegister: '/auth/register',
-        authLogin: '/auth/login',
-        authRefresh: '/auth/refresh',
-        authUser: '/auth/user',
-        changePassword: '/auth/change-password',
-    },
+  apiUrl: 'http://localhost:3800',
+  apiPoints: {
+    authRegister: '/auth/register',
+    authLogin: '/auth/login',
+    authLogout: '/auth/logout',
+    authCsrf: '/auth/csrf',
+    authRefresh: '/auth/refresh',
+    authUser: '/auth/user',
+    changePassword: '/auth/change-password',
+  },
 };
 ```
 
@@ -208,6 +257,21 @@ POSTGRES_DB=app
 
 ---
 
+### 🔴 Redis (Optional)
+
+Redis can be used for session storage in production environments.
+
+#### Setup with Docker Compose
+
+```
+cd redis
+docker-compose up -d
+```
+
+**Note:** Redis is optional. If `REDIS_URL` is not set in the backend `.env`, sessions will be stored in memory (suitable for development only).
+
+---
+
 ## 📦 Shared Module
 
 Use the `shared` directory to store common interfaces, DTOs, or utilities used across `frontend` and `backend`.
@@ -218,10 +282,13 @@ Path aliases in both projects to easily import shared resources are already adde
 
 ## ✅ Features
 
-- 🔐 JWT-based authentication
+- 🔐 Session-based authentication with CSRF protection
 - 🐘 PostgreSQL + TypeORM
+- 🔴 Redis support for session storage (optional)
 - 📑 Swagger API docs
 - 💄 PrimeNG in Angular
+- 🎬 View Transitions API for smooth animations
+- 🎨 Light/Dark theme support
 - 📦 Shared folder for type safety
 
 ---
