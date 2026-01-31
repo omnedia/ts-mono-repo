@@ -11,7 +11,7 @@ export class AuthService {
 
   async login(req: AuthRequest, staySignedIn: boolean): Promise<void> {
     const user = req.user;
-    (req as any).session.user = {
+    req.session.user = {
       id: user.id,
       email: user.email,
       role: user.role,
@@ -65,7 +65,7 @@ export class AuthService {
   createDoubleCsrfConfig() {
     return doubleCsrf({
       getSecret: () => this.configService.get<string>('CSRF_SECRET')!,
-      getSessionIdentifier: (req) => (req as any).sessionID,
+      getSessionIdentifier: (req) => req.sessionID,
       cookieName: 'csrf',
       cookieOptions: this.getSessionCookieOptions(),
       getCsrfTokenFromRequest: (req) => req.headers['x-csrf-token'] as string,

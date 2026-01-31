@@ -1,8 +1,13 @@
 import type { Request } from 'express';
-import { UnitAnyCase } from 'ms';
+import type { UnitAnyCase } from 'ms';
+import type session from 'express-session';
 
 export interface AuthRequest extends Request {
   user: SessionUser;
+  session: session.Session &
+    Partial<session.SessionData> & {
+      user?: SessionUser;
+    };
 }
 
 export interface SessionUser {

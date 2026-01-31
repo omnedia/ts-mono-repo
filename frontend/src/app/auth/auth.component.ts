@@ -189,7 +189,7 @@ export class AuthComponent implements OnInit {
       this.formView.set(this.formView() === 'login' ? 'register' : 'login');
     };
 
-    const doc = document as any;
+    const doc = document as Document;
 
     if (typeof doc.startViewTransition !== 'function') {
       doSwitch();
