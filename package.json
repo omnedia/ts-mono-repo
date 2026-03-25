@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Your app description",
   "scripts": {
+    "prepare": "husky install",
     "start:backend": "cd backend && npm run start:dev",
     "start:frontend": "cd frontend && npm run start",
     "check:frontend": "cd frontend && npm run check",
     "check:backend": "cd backend && npm run check"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
+  }
 }

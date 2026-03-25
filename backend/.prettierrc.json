@@ -2,28 +2,36 @@
   "printWidth": 100,
   "tabWidth": 2,
   "useTabs": false,
+  "bracketSpacing": true,
   "semi": true,
   "singleQuote": true,
   "trailingComma": "all",
-  "bracketSpacing": true,
   "arrowParens": "always",
-  "endOfLine": "lf",
-  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-organize-imports"],
-  "importOrder": ["^@angular/(.*)$", "^rxjs", "", "^@app/(.*)$", "^@core/(.*)$", "", "^[./]"],
+  "endOfLine": "auto",
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "ignore",
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-organize-imports"
+  ],
+  "importOrder": [
+    "^@angular/(.*)$",
+    "^rxjs",
+    "",
+    "^@app/(.*)$",
+    "^@core/(.*)$",
+    "",
+    "^[./]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "overrides": [
     {
-      "files": "*.html",
+      "files": ["*.ts", "*.tsx"],
       "options": {
-        "parser": "angular"
-      }
-    },
-    {
-      "files": "*.component.html",
-      "options": {
-        "parser": "angular"
+        "importOrderParserPlugins": ["decorators-legacy", "typescript"]
       }
     }
   ]
 }
+

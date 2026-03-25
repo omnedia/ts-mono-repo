@@ -50,6 +50,8 @@ export default tseslint.config(
 
             // TS
             '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/no-empty-function': 'warn',
+            '@typescript-eslint/no-floating-promises': 'error',
             '@typescript-eslint/no-unused-vars': 'off', // replaced by unused-imports
             '@typescript-eslint/ban-ts-comment': 'off',
             '@typescript-eslint/consistent-type-imports': ['error', {prefer: 'type-imports'}],
