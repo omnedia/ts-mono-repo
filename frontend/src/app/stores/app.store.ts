@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { effect, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ComponentStore } from '@ngrx/component-store';
 import type { IUser } from '@shared/interfaces';
+import { tap } from 'rxjs';
 
 export type Theme = 'light' | 'dark';
 
@@ -12,6 +13,7 @@ export interface AppState {
   lastUrl?: string;
   currentUrl?: string;
   csrfToken?: string;
+  theme: Theme;
 }
 
 const defaultState: AppState = {
@@ -21,12 +23,22 @@ const defaultState: AppState = {
   lastUrl: undefined,
   currentUrl: undefined,
   csrfToken: undefined,
+  theme: 'light',
 };
 
 @Injectable({ providedIn: 'root' })
 export class AppStore extends ComponentStore<AppState> {
   constructor() {
     super(defaultState);
+
+    this.initTheme();
+
+    effect(() => {
+      const theme = this.theme() ?? 'light';
+      const root = document.documentElement;
+      root.classList.remove('dark', 'light');
+      root.classList.add(theme);
+    });
   }
 
   readonly csrfToken$ = this.select(({ csrfToken }) => csrfToken);
@@ -82,4 +94,29 @@ export class AppStore extends ComponentStore<AppState> {
     ...state,
     currentUrl: currentUrl,
   }));
+
+  readonly theme$ = this.select(({ theme }) => theme);
+  readonly theme = toSignal(this.theme$);
+  readonly setTheme = this.updater((state, theme: Theme) => {
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    return { ...state, theme };
+  });
+  readonly toggleTheme = this.updater((state) => {
+    const newTheme: Theme = state.theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', newTheme);
+    return { ...state, theme: newTheme };
+  });
+
+  readonly initTheme = this.effect((origin$) =>
+    origin$.pipe(
+      tap(() => {
+        const saved = localStorage.getItem('theme') as Theme | null;
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme: Theme = saved ?? (systemPrefersDark ? 'dark' : 'light');
+
+        this.setTheme(theme);
+      }),
+    ),
+  );
 }

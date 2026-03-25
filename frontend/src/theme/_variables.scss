@@ -1,16 +1,16 @@
 $colors: (
-  'blue': #2196f3,
-  'green': #689f38,
-  'yellow': #fbc02d,
-  'cyan': #00bcd4,
-  'pink': #e91e63,
-  'indigo': #4e5fbb,
-  'teal': #009688,
-  'orange': #ff9800,
-  'bluegray': #607d8b,
-  'purple': #9c27b0,
-  'red': #f44336,
-  'primary': oklch(0.6971 0.1644 84.43),
+        'blue': #2196f3,
+        'green': #689f38,
+        'yellow': #fbc02d,
+        'cyan': #00bcd4,
+        'pink': #e91e63,
+        'indigo': #4e5fbb,
+        'teal': #009688,
+        'orange': #ff9800,
+        'bluegray': #607d8b,
+        'purple': #9c27b0,
+        'red': #f44336,
+        'primary': oklch(0.6971 0.1644 84.43),
 ) !default;
 
 :root,
@@ -24,6 +24,7 @@ html.light {
   --surface-ground: oklch(1 0 0);
   --surface-white: oklch(1 0 0);
   --surface-black: black;
+  --surface-grey: oklch(0.879 0.003 84.56);
   --surface-gray: oklch(0.88 0.008 85);
   --border-color: oklch(0.793 0.006 84.57);
   --surface-light-gray: oklch(0.94 0.004 85);
@@ -67,6 +68,7 @@ html.dark {
   --surface-ground: oklch(0.252 0 0);
   --surface-white: oklch(1 0 0);
   --surface-black: black;
+  --surface-grey: oklch(0.561 0.012 196.815);
   --surface-gray: oklch(0.351 0.007 196.849);
   --border-color: oklch(0.351 0.007 196.849);
   --surface-light-gray: oklch(0.22 0.003 196.9);
@@ -107,10 +109,19 @@ html.dark {
 :root {
   --spacing: 0.25rem;
   --spacing-2x: calc(var(--spacing) * 2);
+  --spacing-3x: calc(var(--spacing) * 3);
+  --spacing-4x: calc(var(--spacing) * 4);
+  --spacing-6x: calc(var(--spacing) * 6);
+  --spacing-8x: calc(var(--spacing) * 8);
+  --spacing-10x: calc(var(--spacing) * 10);
   --radius-2xl: 1rem;
   --radius-xl: 0.75rem;
   --radius-l: 0.5rem;
   --radius-s: 0.25rem;
-  --padding-lg: calc(var(--spacing) * 4) calc(var(--spacing) * 8);
-  --padding-sm: calc(var(--spacing) * 2.5) calc(var(--spacing) * 6);
+  --padding-lg-y: calc(var(--spacing) * 4);
+  --padding-lg-x: calc(var(--spacing) * 8);
+  --padding-lg: var(--padding-lg-y) var(--padding-lg-x);
+  --padding-sm-y: calc(var(--spacing) * 2.5);
+  --padding-sm-x: calc(var(--spacing) * 6);
+  --padding-sm: var(--padding-sm-y) var(--padding-sm-x);
 }

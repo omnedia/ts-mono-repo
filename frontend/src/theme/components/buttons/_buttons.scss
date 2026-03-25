@@ -34,17 +34,22 @@
 }
 
 .icon-button {
+  border: none;
+  background: transparent;
   cursor: pointer;
   transition: opacity 0.2s;
 
   &:hover {
     opacity: 0.8;
+    background: transparent;
   }
 
   &:focus {
+    background: transparent;
     border: none;
     outline: none;
-    color: var(--primary-color);
+    opacity: 1;
+    color: var(--primary-light-color);
   }
 
   &.disabled {

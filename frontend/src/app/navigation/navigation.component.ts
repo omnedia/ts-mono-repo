@@ -1,13 +1,12 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgxThemeToggleComponent } from '@omnedia/ngx-theme-toggle';
 import { MessageService } from 'primeng/api';
 import { AuthApiService } from '../services/auth-api.service';
 import { AppStore } from '../stores/app.store';
 
 @Component({
   selector: 'app-navigation',
-  imports: [NgxThemeToggleComponent],
+  imports: [],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
   standalone: true,
