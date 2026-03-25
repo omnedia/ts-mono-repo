@@ -1,5 +1,6 @@
 # Git Commit Instructions
 
+Write a commit message which describes **ALL** changes for **ALL** selected files in summary.
 All commit messages must follow the Conventional Commits 1.0.0 specification.
 
 [https://www.conventionalcommits.org/en/v1.0.0/](https://www.conventionalcommits.org/en/v1.0.0/)

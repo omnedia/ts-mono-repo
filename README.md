@@ -2,11 +2,13 @@
 
 A full-stack monorepo boilerplate built with:
 
-- **Angular 21** (with PrimeNG + Auth skeleton + View Transitions)
+- **Angular 21** (with PrimeNG + Auth skeleton + View Transitions + ng-openapi)
 - **NestJS** (with Swagger + Session-based Auth + CSRF protection)
 - **PostgreSQL** (via Docker Compose)
 - **Redis** (optional, for session storage)
 - **Shared** module for common types/interfaces
+- **Husky** for Git hooks and automated linting/formatting
+- **GitHub Copilot** context and coding guidelines
 
 ---
 
@@ -14,6 +16,8 @@ A full-stack monorepo boilerplate built with:
 
 ```
 .
+├── .github       # Copilot context and coding guidelines
+├── .husky        # Git hooks (pre-commit linting & formatting)
 ├── backend       # NestJS API with Swagger & Session-based auth
 ├── frontend      # Angular app with PrimeNG & auth setup
 ├── postgres      # PostgreSQL via Docker Compose
@@ -76,6 +80,7 @@ Session-based authentication with CSRF protection is preconfigured:
 4. Backend validates the token before processing the request
 
 Excluded routes (no CSRF validation):
+
 - `POST /auth/login`
 - `POST /auth/register`
 - `GET /auth/csrf`
@@ -117,6 +122,7 @@ REDIS_URL=redis://localhost:6379  # Optional: for production session storage
 ```
 
 **Important:**
+
 - `SESSION_SECRET` should be a strong random string (at least 32 characters)
 - `REDIS_URL` is optional. If not set, sessions will be stored in memory (not recommended for production)
 - In production, ensure sessions are stored in Redis or another persistent store
@@ -165,22 +171,22 @@ The Angular app uses the **View Transitions API** for smooth animations between 
 
 ### 🎨 Frontend Theme Support
 
-The Angular app supports **light and dark mode switching** using CSS variables and state managed by
-`@omnedia/ngx-theme-toggle`.
+The Angular app supports **light and dark mode switching** using CSS variables and state managed by the `AppStore` (NgRx
+ComponentStore).
 
 #### ✅ Theme Features
 
 - Light/dark mode based on system preference or user choice
 - Theme preference saved to `localStorage`
-- Reactive switching via a central `ThemeToggle`
+- Reactive theme switching via `AppStore`
+- Automatic class updates on the `<html>` element
 
 #### 🛠 How It Works
 
-- CSS variables are defined in `:root` (light theme) and `[data-theme="dark"]` (dark theme) in your global styles
-- The `ThemeToggle` manages the current theme and persists it
+- CSS variables are defined in `:root` (light theme) and `.dark` class (dark theme) in your global styles
+- The `AppStore` manages the current theme and persists it to `localStorage`
 - On app start, the system preference is used unless a saved value is found
-
-The html tag will automatically be updated with the correct `class` for styling.
+- An effect in the store automatically updates the `<html>` element with the correct theme class
 
 ---
 
@@ -204,13 +210,20 @@ You can add an AuthRoleGuard to your frontend routes like this:
 
 ```ts
 {
-    path: 'home',
-        loadComponent: () => import('./home/home.component').then(
-        (m) => m.HomeComponent,
-    ),
-        canActivate: [AuthRoleGuard],
-        roles: ['user', 'admin']
-},
+  path: 'home',
+    loadComponent
+:
+  () => import('./home/home.component').then(
+    (m) => m.HomeComponent,
+  ),
+    canActivate
+:
+  [AuthRoleGuard],
+    roles
+:
+  ['user', 'admin']
+}
+,
 ```
 
 ### 🌍 Frontend Environment Config
@@ -220,17 +233,36 @@ Create `src/environments/environment.ts` in `frontend`:
 ```ts
 export const environment: Environment = {
   apiUrl: 'http://localhost:3800',
-  apiPoints: {
-    authRegister: '/auth/register',
-    authLogin: '/auth/login',
-    authLogout: '/auth/logout',
-    authCsrf: '/auth/csrf',
-    authRefresh: '/auth/refresh',
-    authUser: '/auth/user',
-    changePassword: '/auth/change-password',
-  },
 };
 ```
+
+---
+
+### 🔄 API Client Generation with ng-openapi
+
+The frontend uses **ng-openapi-gen** to automatically generate TypeScript API clients from the NestJS Swagger/OpenAPI
+specification.
+
+#### ✅ Features
+
+- Type-safe API client generated from Swagger spec
+- Models, services, and request builders auto-generated
+- No need to manually maintain API service code
+- Full TypeScript support with auto-completion
+
+#### 🛠 How to Use
+
+1. Start the backend server (Swagger must be available at `http://localhost:3800/api-json`)
+2. Run the generation command from the backend directory:
+
+```bash
+cd backend
+npm run api:generate
+```
+
+This will generate the API client code in `frontend/src/app/api/`
+
+**Note:** The generated code should not be manually edited. Re-run the command whenever the backend API changes.
 
 ---
 
@@ -268,7 +300,8 @@ cd redis
 docker-compose up -d
 ```
 
-**Note:** Redis is optional. If `REDIS_URL` is not set in the backend `.env`, sessions will be stored in memory (suitable for development only).
+**Note:** Redis is optional. If `REDIS_URL` is not set in the backend `.env`, sessions will be stored in memory (
+suitable for development only).
 
 ---
 
@@ -288,8 +321,11 @@ Path aliases in both projects to easily import shared resources are already adde
 - 📑 Swagger API docs
 - 💄 PrimeNG in Angular
 - 🎬 View Transitions API for smooth animations
-- 🎨 Light/Dark theme support
+- 🎨 Light/Dark theme support (AppStore-based)
 - 📦 Shared folder for type safety
+- 🔄 Auto-generated API client with ng-openapi
+- 🪝 Husky Git hooks for automated linting and formatting
+- 🤖 GitHub Copilot context and coding guidelines
 
 ---
 
@@ -298,3 +334,6 @@ Path aliases in both projects to easily import shared resources are already adde
 - Always run `docker-compose up` before starting backend if DB is down
 - Sync `.env` values between backend and docker DB config
 - Make sure `environment.ts` matches backend URLs
+- Run `npm run api:generate` from backend after API changes to update frontend client
+- Pre-commit hooks will automatically lint and format your code via Husky
+- Check `.github/copilot-instructions.md` for AI-assisted development guidelines
