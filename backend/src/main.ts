@@ -30,7 +30,9 @@ async function bootstrap() {
       .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
       .build();
 
-    const document = SwaggerModule.createDocument(app, config);
+    const document = SwaggerModule.createDocument(app, config, {
+      operationIdFactory: (_controllerKey: string, methodKey: string) => methodKey,
+    });
     SwaggerModule.setup('api', app, document);
   }
 

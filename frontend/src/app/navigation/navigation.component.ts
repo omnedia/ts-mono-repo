@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MessageService } from 'primeng/api';
-import { AuthApiService } from '../services/auth-api.service';
+import { AuthenticationService } from '../api';
 import { AppStore } from '../stores/app.store';
 
 @Component({
@@ -13,14 +13,14 @@ import { AppStore } from '../stores/app.store';
 })
 export class NavigationComponent {
   appStore = inject(AppStore);
-  authApiService = inject(AuthApiService);
-  destroyRef = inject(DestroyRef);
-  messageService = inject(MessageService);
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly messageService = inject(MessageService);
 
   logout(): void {
     this.appStore.updateLoading(true);
 
-    this.authApiService
+    this.authenticationService
       .logout()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

@@ -24,7 +24,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
-    "check": "npm run lint && npm run format"
+    "check": "npm run lint && npm run format",
+    "api:generate": "npx ng-openapi -i http://127.0.0.1:3800/api-json -o ../frontend/src/app/api"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.17",
@@ -77,6 +78,7 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.4.0",
     "jest": "^30.3.0",
+    "ng-openapi": "^0.2.18",
     "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "source-map-support": "^0.5.21",

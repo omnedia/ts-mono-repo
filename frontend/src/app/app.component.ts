@@ -5,8 +5,8 @@ import { MessageService } from 'primeng/api';
 import { ProgressBar } from 'primeng/progressbar';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { Toast } from 'primeng/toast';
+import { AuthenticationService } from './api';
 import { NavigationComponent } from './navigation/navigation.component';
-import { AuthApiService } from './services/auth-api.service';
 import { AppStore } from './stores/app.store';
 
 @Component({
@@ -18,7 +18,7 @@ import { AppStore } from './stores/app.store';
   providers: [MessageService],
 })
 export class AppComponent implements OnInit {
-  private readonly authApiService = inject(AuthApiService);
+  private readonly authenticationService = inject(AuthenticationService);
   private readonly appStore = inject(AppStore);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   globalLoading = this.appStore.loading;
 
   ngOnInit(): void {
-    this.authApiService
+    this.authenticationService
       .getCurrentUser()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

@@ -1,9 +1,9 @@
 import type { HttpInterceptorFn } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { BehaviorSubject, filter, finalize, switchMap, take, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, filter, finalize, switchMap, take, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthApiService } from '../services/auth-api.service';
+import { AuthenticationService } from '../api';
 import { RoutingService } from '../services/routing.service';
 import { AppStore } from '../stores/app.store';
 
@@ -19,11 +19,15 @@ function isStateChanging(method: string) {
 export const csrfInterceptor: HttpInterceptorFn = (request, next) => {
   const routingService = inject(RoutingService);
   const appStore = inject(AppStore);
-  const authApiService = inject(AuthApiService);
+  const authenticationService = inject(AuthenticationService);
 
   const originalRequest = request;
 
   const currentPath = window.location.pathname + window.location.search + window.location.hash;
+
+  request = request.clone({
+    withCredentials: true,
+  });
 
   const csrfToken = appStore.csrfToken();
   if (isStateChanging(request.method) && csrfToken) {
@@ -41,7 +45,7 @@ export const csrfInterceptor: HttpInterceptorFn = (request, next) => {
           appStore.updateLastUrl(currentPath);
           routingService.auth();
         }
-        return throwError(() => error);
+        return EMPTY;
       }
 
       if (error instanceof HttpErrorResponse && (error.status === 403 || error.status === 419)) {
@@ -52,7 +56,7 @@ export const csrfInterceptor: HttpInterceptorFn = (request, next) => {
         if (!isCsrfFetchInFlight) {
           isCsrfFetchInFlight = true;
 
-          return authApiService.getCsrf().pipe(
+          return authenticationService.getCsrf().pipe(
             switchMap(({ csrfToken }) => {
               appStore.updateCsrfToken(csrfToken);
 

@@ -4,13 +4,13 @@ import { Component, computed, DestroyRef, effect, inject, signal } from '@angula
 import { ReactiveFormsModule } from '@angular/forms';
 import { email, form, FormField, required } from '@angular/forms/signals';
 import { ProgressSpinner } from 'primeng/progressspinner';
-import { AuthApiService } from '../services/auth-api.service';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Checkbox } from 'primeng/checkbox';
 import { RoutingService } from '../services/routing.service';
 import { AppStore } from '../stores/app.store';
 import type { LoginData, RegisterData } from '../types/form.types';
+import { AuthenticationService } from '../api';
 
 @Component({
   selector: 'app-auth',
@@ -20,6 +20,11 @@ import type { LoginData, RegisterData } from '../types/form.types';
   standalone: true,
 })
 export class AuthComponent implements OnInit {
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly appStore = inject(AppStore);
+  private readonly routingService = inject(RoutingService);
+  private readonly destroyRef = inject(DestroyRef);
+
   formView = signal<'login' | 'register'>('login');
 
   loginModel = signal<LoginData>({
@@ -65,11 +70,6 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  private readonly authApiService = inject(AuthApiService);
-  private readonly appStore = inject(AppStore);
-  private readonly routingService = inject(RoutingService);
-  private readonly destroyRef = inject(DestroyRef);
-
   constructor() {
     effect(() => {
       const user = this.appStore.user();
@@ -100,8 +100,8 @@ export class AuthComponent implements OnInit {
 
     this.loading.set(true);
 
-    this.authApiService
-      .login(email, password, staySignedIn)
+    this.authenticationService
+      .login({ email, password, staySignedIn })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
@@ -137,8 +137,8 @@ export class AuthComponent implements OnInit {
 
     this.loading.set(true);
 
-    this.authApiService
-      .register(email, password)
+    this.authenticationService
+      .register({ email, password })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
@@ -167,7 +167,7 @@ export class AuthComponent implements OnInit {
   }
 
   getUser(): void {
-    this.authApiService
+    this.authenticationService
       .getCurrentUser()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -200,12 +200,12 @@ export class AuthComponent implements OnInit {
   }
 
   private getCsrf() {
-    this.authApiService
+    this.authenticationService
       .getCsrf()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          this.appStore.updateCsrfToken(response.csrfToken);
+          this.appStore.updateCsrfToken(response['csrfToken']);
 
           this.loginForm().reset();
           this.submitted.set(false);

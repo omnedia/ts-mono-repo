@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
@@ -9,17 +10,30 @@ import {
   Request,
   Res,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Request as ERequest, Response as EResponse } from 'express';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiCookieAuth,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { User } from '../entities/user.entity';
 import { AuthRequest, SessionUser } from '../types/types';
 import { SessionAuthGuard } from './guards/session-auth.guard';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiTags('Authentication')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -29,23 +43,26 @@ export class AuthController {
 
   @Get('csrf')
   @ApiOperation({ summary: 'Get csrfToken for current session' })
-  csrf(@Req() req: ERequest, @Res() res: EResponse) {
-    const csrfToken = this.authService
-      .createDoubleCsrfConfig()
-      .generateCsrfToken(req, res);
-    return res.json({ csrfToken });
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        csrfToken: { type: 'string' },
+      },
+      required: ['csrfToken'],
+    },
+  })
+  @ApiCookieAuth()
+  getCsrf(@Req() req: ERequest, @Res({ passthrough: true }) res: EResponse) {
+    const csrfToken = this.authService.createDoubleCsrfConfig().generateCsrfToken(req, res);
+    return { csrfToken };
   }
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
-  @ApiBody({
-    schema: {
-      example: { email: 'test@test.test', password: 'securepassword' },
-    },
-  })
-  async register(
-    @Body() body: { email: string; password: string },
-  ): Promise<User> {
+  @ApiBody({ type: RegisterDto })
+  @ApiCreatedResponse({ type: User })
+  async register(@Body() body: RegisterDto): Promise<User> {
     return this.userService.create(body.email, body.password);
   }
 
@@ -53,25 +70,17 @@ export class AuthController {
   @Post('login')
   @HttpCode(204)
   @ApiOperation({ summary: 'Log in a user' })
-  @ApiBody({
-    schema: {
-      example: {
-        email: 'test@test.test',
-        password: 'securepassword',
-        staySignedIn: true,
-      },
-    },
-  })
-  login(
-    @Request() req: AuthRequest,
-    @Body() body: { staySignedIn: boolean },
-  ): Promise<void> {
-    return this.authService.login(req, body.staySignedIn);
+  @ApiBody({ type: LoginDto })
+  @ApiNoContentResponse()
+  login(@Request() req: AuthRequest, @Body() body: LoginDto): Promise<void> {
+    return this.authService.login(req, body.staySignedIn ?? false);
   }
 
   @HttpCode(204)
   @Post('logout')
   @ApiOperation({ summary: 'Log out a user' })
+  @ApiCookieAuth()
+  @ApiNoContentResponse()
   logout(@Req() req: ERequest): Promise<void> {
     return this.authService.logout(req);
   }
@@ -83,25 +92,19 @@ export class AuthController {
     description: 'Returns User Entity',
     type: User,
   })
-  async getCurrentUser(@Request() req: AuthRequest): Promise<SessionUser> {
-    const user = await this.userService.findOne(req.user.email);
-
-    return {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    };
+  async getCurrentUser(@Request() req: AuthRequest): Promise<User> {
+    return await this.userService.findOne(req.user.email);
   }
 
   @UseGuards(SessionAuthGuard)
   @Put('change-password')
+  @ApiCookieAuth()
   @ApiOperation({
     summary: 'Change the password of the current User (Authenticated)',
   })
-  changeUserPassword(
-    @Request() req: AuthRequest,
-    @Body() body: { password: string },
-  ): Promise<void> {
+  @ApiBody({ type: ChangePasswordDto })
+  @ApiNoContentResponse()
+  changeUserPassword(@Request() req: AuthRequest, @Body() body: ChangePasswordDto): Promise<void> {
     return this.userService.changePassword(req.user, body.password);
   }
 }
