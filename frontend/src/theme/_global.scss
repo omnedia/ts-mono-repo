@@ -20,13 +20,12 @@ h3 {
 
 a {
   text-decoration: none;
-
-  @extend .text-button !optional;
 }
 
 * {
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: var(--surface-gray) transparent; /* Firefox */
+  font-family: var(--font-family);
 }
 
 *::-webkit-scrollbar {
@@ -76,14 +75,16 @@ hr {
   margin: auto 0;
 }
 
-.p-absolute,
-p-dialog {
+.navigating-indicator {
   position: absolute;
-}
+  top: -14px;
+  left: 0;
+  width: 100%;
+  z-index: 99998;
+  overflow: hidden;
 
-[data-theme='dark'] {
-  .invert-on-dark-mode {
-    filter: invert(1);
+  p-progress-bar {
+    width: 101%;
   }
 }
 
@@ -115,84 +116,196 @@ p-dialog {
   }
 }
 
-.navigating-indicator {
-  position: absolute;
-  top: -3px;
-  left: 0;
-  width: 100%;
-  z-index: 99998;
-  overflow: hidden;
-
-  p-progress-bar {
-    width: 101%;
-  }
+.p-textarea-scrollable {
+  max-height: 156px;
+  overflow: auto;
 }
 
-.breadcrumb {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  color: var(--text-color);
-  align-items: center;
+.text-button {
+  color: var(--primary-light-color);
+  cursor: pointer;
+  transition:
+    opacity 0.2s,
+    background-color 0.2s;
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  padding: 0;
 
-  .breadcrumb-item {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    cursor: pointer;
+  &.default {
+    color: var(--text-color);
+  }
 
-    p,
-    i {
-      opacity: 0.8;
-      transition: opacity 0.25s;
-    }
+  &:hover {
+    opacity: 0.8;
+  }
 
-    & + .breadcrumb-item::before {
-      content: '/';
-      font-size: 1.25rem;
-      opacity: 0.8;
-    }
+  &.hover-bg {
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-xl);
 
-    &:hover p,
-    &:hover i {
+    &:hover {
       opacity: 1;
+      background-color: var(--surface-ground) !important;
     }
+  }
 
-    &.current-route {
-      pointer-events: none;
-    }
+  &.disabled {
+    cursor: default;
+    pointer-events: none;
   }
 }
 
-.content-card {
-  width: 100%;
-  padding: 1rem;
-  background-color: var(--surface-ground);
-  border-radius: var(--radius-2xl);
+.form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 
-  .card-title {
-    display: flex;
-    font-size: 1.5rem;
-    font-weight: bold;
-    justify-content: space-between;
-    gap: 1rem;
+  &.disabled {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
   }
 
-  .card-content {
+  &.grid,
+  .form-group-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .actions {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+
+    .full-width {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+  }
+
+  &.row {
+    flex-direction: row;
+  }
+
+  &.full-width {
+    width: 100%;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+
+    & > button {
+      flex-grow: 1;
+    }
+  }
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+
+  &:has(.full-width) {
     flex-grow: 1;
-    display: flex;
+  }
+
+  &:not(.checkbox-group) {
     flex-direction: column;
-    gap: 1rem;
+  }
 
-    &.row {
-      flex-direction: row;
-    }
+  &.checkbox-group {
+    align-items: center;
+    gap: 0.5rem;
+  }
 
-    &.centered {
-      align-items: center;
+  label {
+    margin-left: 0.25rem;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 0.875rem;
+  }
+}
+
+.p-card.p-card-border-left {
+  border-left: 6px solid var(--border-color);
+
+  &.billable {
+    border-color: var(--primary-color);
+  }
+
+  &.unbillable {
+    border-color: var(--warning);
+  }
+}
+
+.tree-unselectable-node > .p-tree-node-content {
+  opacity: 0.5;
+}
+
+.navigation-wrapper .p-tree.p-tree-toggle-end {
+  .p-tree-node-toggle-button {
+    order: 999;
+    margin-left: auto;
+  }
+}
+
+.navigation-wrapper .p-tree {
+  .p-tree-node > .p-tree-node-content {
+    color: var(--p-tree-node-color);
+    background-color: var(--p-tree-node-background);
+
+    .p-tree-node-icon {
+      color: var(--p-tree-node-icon-color);
     }
   }
+
+  .p-tree-node-children:not(:has(.p-tree-node-selected))
+    .p-tree-node.current-route
+    > .p-tree-node-content {
+    color: var(--p-tree-node-selected-color);
+    background-color: var(--p-tree-node-selected-background);
+    font-weight: bold;
+
+    .p-tree-node-content {
+      color: var(--p-tree-node-selected-color);
+    }
+
+    .p-tree-node-icon {
+      color: var(--p-tree-node-icon-selected-color);
+    }
+  }
+}
+
+.navigation-wrapper .p-tree-root-children .p-tree-node.p-tree-node-leaf:has(.p-tree-node-selected) {
+  color: var(--p-tree-node-selected-color);
+  background-color: var(--p-tree-node-selected-background);
+  font-weight: bold;
+  cursor: default;
+  pointer-events: none;
+
+  .p-tree-node-content {
+    color: var(--p-tree-node-selected-color);
+  }
+
+  .p-tree-node-icon {
+    color: var(--p-tree-node-icon-selected-color);
+  }
+}
+
+.p-dialog > .p-dialog-content {
+  overflow: visible !important;
+}
+
+.progress-success .p-progressbar-value {
+  background: var(--success-dark);
+}
+
+.progress-warning .p-progressbar-value {
+  background: var(--warning-dark);
+}
+
+.progress-error .p-progressbar-value {
+  background: var(--error-dark);
 }
