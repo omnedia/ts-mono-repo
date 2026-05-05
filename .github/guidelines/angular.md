@@ -12,7 +12,6 @@ This document defines Angular-specific coding standards, best practices, and con
 ## File & Folder Structure
 - Place all Angular code in `frontend/src/app/`.
 - Use subfolders for features, shared modules, services, guards, interceptors, etc.
-- Use the `shared/` folder in the monorepo root for types/interfaces shared with the backend.
 
 ## Components
 - Use `OnPush` change detection by default.

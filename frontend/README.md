@@ -14,7 +14,6 @@ This is the frontend application for the TS Monorepo project, built with [Angula
 - **Role-based routing** with AuthRoleGuard
 - **Type-safe API client** generated via ng-openapi
 - **ESLint & Prettier** for code quality
-- **Shared types** with backend via `@shared`
 
 ---
 

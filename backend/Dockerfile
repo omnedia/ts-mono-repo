@@ -13,7 +13,6 @@ RUN apk add --no-cache build-base python3 vips-dev
 WORKDIR /app
 
 COPY backend/ ./backend/
-COPY shared/ ./shared/
 
 WORKDIR /app/backend
 
@@ -27,7 +26,6 @@ FROM node:20-alpine AS prod
 WORKDIR /app
 
 COPY --from=build /app/backend/dist ./dist
-COPY --from=build /app/backend/src/pdf-export/templates ./dist/backend/src/pdf-export/templates
 COPY --from=build /app/backend/src/public ./dist/backend/src/public
 COPY --from=build /app/backend/package*.json ./
 COPY --from=build /app/backend/node_modules ./node_modules
@@ -35,4 +33,4 @@ COPY --from=build /app/backend/node_modules ./node_modules
 RUN npm prune --omit=dev
 
 EXPOSE 3800
-CMD ["node", "dist/backend/src/main.js"]
+CMD ["node", "dist/main.js"]

@@ -8,7 +8,6 @@ This document defines NestJS-specific coding standards, best practices, and conv
 - Use dependency injection for all services and providers.
 - Prefer modular architecture: organize code by feature modules.
 - Use DTOs and validation pipes for all incoming data.
-- Use the `shared/` folder in the monorepo root for types/interfaces shared with the frontend.
 
 ## File & Folder Structure
 - Place all NestJS code in `backend/src/`.

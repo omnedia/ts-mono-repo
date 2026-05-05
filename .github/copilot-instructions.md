@@ -7,7 +7,6 @@ This document defines the system context and operational boundaries for Copilot 
 ## Project Structure (for AI)
 - Backend: NestJS (TypeScript) in `backend/`
 - Frontend: Angular (TypeScript) in `frontend/`
-- Shared types/interfaces: `shared/`
 - Containerization: Dockerfiles and Compose files
 - Other services: e.g., `postgres/`, `redis/`
 
@@ -15,7 +14,6 @@ This document defines the system context and operational boundaries for Copilot 
 - All code must be strongly-typed TypeScript.
 - Enforce linter/formatter rules (ESLint, Prettier) at all times.
 - Prefer modular, reusable, and testable code.
-- Shared types/interfaces must reside in `shared/` and be imported by both backend and frontend.
 - All public APIs, functions, and complex logic must be documented with JSDoc or equivalent.
 - Commit messages must follow the Conventional Commits standard (see linked guideline).
 
@@ -31,7 +29,6 @@ This document defines the system context and operational boundaries for Copilot 
 - Angular: [./guidelines/angular.md](./guidelines/angular.md)
 - NestJS: [./guidelines/nestjs.md](./guidelines/nestjs.md)
 - Commit Messages: [./git-commit-instructions.md](./git-commit-instructions.md)
-- Shared Types: [./guidelines/shared-types.md](./guidelines/shared-types.md)
 
 ---
 

@@ -8,7 +8,6 @@ RUN npm ci
 
 # Copy the rest of the code
 COPY frontend/ ./
-COPY shared/ ../shared/
 
 RUN cp src/environments/environment.prod.ts src/environments/environment.ts
 RUN npm run build:prod

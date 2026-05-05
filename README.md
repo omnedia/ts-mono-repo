@@ -6,7 +6,6 @@ A full-stack monorepo boilerplate built with:
 - **NestJS** (with Swagger + Session-based Auth + CSRF protection)
 - **PostgreSQL** (via Docker Compose)
 - **Redis** (optional, for session storage)
-- **Shared** module for common types/interfaces
 - **Husky** for Git hooks and automated linting/formatting
 - **GitHub Copilot** context and coding guidelines
 
@@ -22,7 +21,6 @@ A full-stack monorepo boilerplate built with:
 ├── frontend      # Angular app with PrimeNG & auth setup
 ├── postgres      # PostgreSQL via Docker Compose
 ├── redis         # Redis via Docker Compose (optional, for session storage)
-├── shared        # Shared interfaces/types between frontend & backend
 └── README.md
 ```
 
@@ -305,14 +303,6 @@ suitable for development only).
 
 ---
 
-## 📦 Shared Module
-
-Use the `shared` directory to store common interfaces, DTOs, or utilities used across `frontend` and `backend`.
-
-Path aliases in both projects to easily import shared resources are already added.
-
----
-
 ## ✅ Features
 
 - 🔐 Session-based authentication with CSRF protection
@@ -322,7 +312,6 @@ Path aliases in both projects to easily import shared resources are already adde
 - 💄 PrimeNG in Angular
 - 🎬 View Transitions API for smooth animations
 - 🎨 Light/Dark theme support (AppStore-based)
-- 📦 Shared folder for type safety
 - 🔄 Auto-generated API client with ng-openapi
 - 🪝 Husky Git hooks for automated linting and formatting
 - 🤖 GitHub Copilot context and coding guidelines
