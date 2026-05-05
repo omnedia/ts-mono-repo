@@ -16,7 +16,7 @@ This document defines Angular-specific coding standards, best practices, and con
 
 ## Components
 - Use `OnPush` change detection by default.
-- Use SCSS for component styles.
+- Use SCSS for component styles. In there, never use `:ng-deep`.
 - Name files and selectors consistently: `feature-name.component.ts`, `feature-name.component.scss`, etc.
 - Keep components focused and small; extract logic to services where possible.
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthRequest } from '../types/types';
+import { doubleCsrf } from 'csrf-csrf';
 import { CookieOptions } from 'csurf';
 import { Request as ERequest } from 'express';
-import { doubleCsrf } from 'csrf-csrf';
+import { AuthRequest } from '../types/types';
 
 @Injectable()
 export class AuthService {
@@ -18,9 +18,7 @@ export class AuthService {
     };
 
     req.session.cookie.maxAge = staySignedIn
-      ? this.durationToMs(
-          this.configService.get<string>('SESSION_STAY_SIGNED_IN_EXPIRATION'),
-        )
+      ? this.durationToMs(this.configService.get<string>('SESSION_STAY_SIGNED_IN_EXPIRATION'))
       : this.durationToMs(this.configService.get<string>('SESSION_EXPIRATION'));
 
     req.session.touch();
@@ -56,9 +54,7 @@ export class AuthService {
       httpOnly: true,
       secure: this.configService.get<string>('NODE_ENV') === 'prod',
       sameSite: 'lax',
-      maxAge: this.durationToMs(
-        this.configService.get<string>('SESSION_EXPIRATION'),
-      ),
+      maxAge: this.durationToMs(this.configService.get<string>('SESSION_EXPIRATION')),
     };
   }
 
@@ -74,16 +70,12 @@ export class AuthService {
 
   private durationToMs(value?: string): number {
     if (!value) {
-      throw new Error(
-        `Invalid duration format: .env variable missing for session ttl.`,
-      );
+      throw new Error(`Invalid duration format: .env variable missing for session ttl.`);
     }
 
     const match = value.trim().match(/^(\d+)\s*([smhd])$/i);
     if (!match) {
-      throw new Error(
-        `Invalid duration format: "${value}" (expected 10s | 5m | 1h | 7d)`,
-      );
+      throw new Error(`Invalid duration format: "${value}" (expected 10s | 5m | 1h | 7d)`);
     }
 
     const amount = Number(match[1]);

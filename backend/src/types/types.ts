@@ -1,6 +1,6 @@
 import type { Request } from 'express';
-import type { UnitAnyCase } from 'ms';
 import type session from 'express-session';
+import type { UnitAnyCase } from 'ms';
 
 export interface AuthRequest extends Request {
   user: SessionUser;
@@ -21,7 +21,4 @@ export enum UserRole {
   ADMIN = 'admin',
 }
 
-export type StringValue =
-  | `${number}`
-  | `${number}${UnitAnyCase}`
-  | `${number} ${UnitAnyCase}`;
+export type StringValue = `${number}` | `${number}${UnitAnyCase}` | `${number} ${UnitAnyCase}`;

@@ -1,20 +1,11 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
-import * as session from 'express-session';
-import * as cookieParser from 'cookie-parser';
-import { createClient } from 'redis';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { RedisStore } from 'connect-redis';
+import * as cookieParser from 'cookie-parser';
+import { Request as ERequest, Response as EResponse, NextFunction } from 'express';
+import * as session from 'express-session';
+import { createClient } from 'redis';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
-import {
-  NextFunction,
-  Request as ERequest,
-  Response as EResponse,
-} from 'express';
 
 function isBadCsrfError(err: unknown): err is { code: string } {
   return typeof err === 'object' && err !== null && 'code' in err;
@@ -52,9 +43,7 @@ export class MiddlewareModule implements NestModule {
       .apply((req: ERequest, res: EResponse, next: NextFunction) => {
         doubleCsrfProtection(req, res, (err?: unknown) => {
           if (isBadCsrfError(err) && err.code === 'EBADCSRFTOKEN') {
-            return res
-              .status(403)
-              .json({ message: 'CSRF token missing or invalid' });
+            return res.status(403).json({ message: 'CSRF token missing or invalid' });
           }
           return next(err);
         });

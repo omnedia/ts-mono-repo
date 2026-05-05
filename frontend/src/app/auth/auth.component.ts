@@ -7,10 +7,10 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Checkbox } from 'primeng/checkbox';
+import { AuthenticationService } from '../api';
 import { RoutingService } from '../services/routing.service';
 import { AppStore } from '../stores/app.store';
 import type { LoginData, RegisterData } from '../types/form.types';
-import { AuthenticationService } from '../api';
 
 @Component({
   selector: 'app-auth',

@@ -94,6 +94,7 @@ export default tseslint.config(
     files: ['**/*.html'],
     extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
     rules: {
+      '@angular-eslint/template/no-autofocus': 'off',
       '@angular-eslint/template/banana-in-box': 'error',
       '@angular-eslint/template/no-negated-async': 'error',
       '@angular-eslint/template/eqeqeq': 'error',

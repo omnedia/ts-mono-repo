@@ -1,13 +1,13 @@
 import { effect, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ComponentStore } from '@ngrx/component-store';
-import type { IUser } from '@shared/interfaces';
 import { tap } from 'rxjs';
+import { User } from '../api';
 
 export type Theme = 'light' | 'dark';
 
 export interface AppState {
-  user?: IUser;
+  user?: User;
   loading: boolean;
   navigating: boolean;
   lastUrl?: string;
@@ -52,7 +52,7 @@ export class AppStore extends ComponentStore<AppState> {
   readonly user$ = this.select(({ user }) => user);
   readonly user = toSignal(this.user$);
 
-  readonly updateUser = this.updater((state, user: IUser | undefined) => ({
+  readonly updateUser = this.updater((state, user: User | undefined) => ({
     ...state,
     user: user,
   }));

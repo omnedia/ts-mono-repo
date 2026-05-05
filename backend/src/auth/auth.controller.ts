@@ -12,9 +12,6 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { Request as ERequest, Response as EResponse } from 'express';
-import { AuthService } from './auth.service';
-import { UserService } from './user.service';
 import {
   ApiBody,
   ApiCookieAuth,
@@ -24,13 +21,16 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { Request as ERequest, Response as EResponse } from 'express';
 import { User } from '../entities/user.entity';
-import { AuthRequest, SessionUser } from '../types/types';
-import { SessionAuthGuard } from './guards/session-auth.guard';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
+import { AuthRequest } from '../types/types';
+import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { SessionAuthGuard } from './guards/session-auth.guard';
+import { UserService } from './user.service';
 
 @ApiTags('Authentication')
 @UseInterceptors(ClassSerializerInterceptor)

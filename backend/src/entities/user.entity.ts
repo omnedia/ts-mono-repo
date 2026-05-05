@@ -1,16 +1,10 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { IUser } from '@shared/interfaces';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from '../types/types';
 
 @Entity()
-export class User implements IUser {
+export class User {
   @PrimaryGeneratedColumn()
   @ApiProperty({ example: 1, description: 'Unique identifier of the user' })
   id: number;

@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
-import type { NestExpressApplication } from '@nestjs/platform-express';
+import { AppModule } from './app.module';
 
 dotenv.config();
 
@@ -11,8 +11,7 @@ async function bootstrap() {
 
   app.set('trust proxy', 1);
 
-  const allowedOrigins =
-    process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:4200';
+  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:4200';
 
   app.enableCors({
     origin: allowedOrigins,
@@ -24,10 +23,38 @@ async function bootstrap() {
 
   if (process.env.NODE_ENV !== 'prod') {
     const config = new DocumentBuilder()
-      .setTitle('PromptFlow API Documentation')
-      .setDescription('This is the API documentation for PromptFlow')
+      .setTitle('API Documentation')
+      .setDescription(
+        `
+## Authentication Flow
+
+This API uses **session-based authentication** with CSRF protection:
+
+1. **Login**: POST to \`/auth/login\` with your credentials
+2. **Get CSRF Token**: GET \`/auth/csrf\` to obtain your CSRF token
+3. **Access Protected Routes**: Include the CSRF token in the \`X-CSRF-Token\` header for all subsequent requests
+
+The session cookie (\`sid\`) is automatically managed by your HTTP client.`,
+      )
       .setVersion('1.0')
-      .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
+      .addCookieAuth(
+        'sid',
+        {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'sid',
+        },
+        'sid',
+      )
+      .addApiKey(
+        {
+          type: 'apiKey',
+          in: 'header',
+          name: 'X-CSRF-Token',
+          description: 'CSRF token for session-bound requests',
+        },
+        'csrf',
+      )
       .build();
 
     const document = SwaggerModule.createDocument(app, config, {

@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Your app description",
   "scripts": {
-    "prepare": "husky install",
     "start:backend": "cd backend && npm run start:dev",
     "start:frontend": "cd frontend && npm run start",
     "check:frontend": "cd frontend && npm run check",
-    "check:backend": "cd backend && npm run check"
+    "check:backend": "cd backend && npm run check",
+    "lint": "cd backend && npm run lint && cd ../frontend && npm run lint",
+    "format:fix": "cd backend && npm run format:fix && cd ../frontend && npm run format:fix"
   },
   "private": true,
   "devDependencies": {
