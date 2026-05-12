@@ -1,8 +1,41 @@
 import { definePreset } from '@primeng/themes';
 import Aura from '@primeng/themes/aura';
 
+const palette = {
+  white: 'var(--palette-white)',
+  black: 'var(--palette-black)',
+  primary: 'var(--primary-color)',
+  primaryLight: 'var(--primary-light-color)',
+  primaryText: 'var(--primary-color-text)',
+  secondary: 'var(--secondary-color)',
+  surfaceBackground: 'var(--surface-background)',
+  surfaceGround: 'var(--surface-ground)',
+  surfaceGray: 'var(--surface-gray)',
+  surfaceLightGray: 'var(--surface-light-gray)',
+  border: 'var(--border-color)',
+  text: 'var(--text-color)',
+} as const;
+
+const mix = (color: string, percent: number, base: string = palette.white): string =>
+  `color-mix(in oklch, ${color} ${percent}%, ${base})`;
+
+const alpha = (color: string, percent: number): string =>
+  `color-mix(in srgb, ${color} ${percent}%, transparent)`;
+
+const shadow = {
+  light:
+    `0 1px 1px ${alpha(palette.black, 4)},\n` +
+    `  0 4px 6px ${alpha(palette.black, 6)},\n` +
+    `  0 10px 20px ${alpha(palette.black, 8)},\n` +
+    `  0 20px 40px ${alpha(palette.black, 10)};`,
+  dark:
+    `0 1px 2px ${alpha(palette.black, 60)},\n` +
+    `  0 8px 24px ${alpha(palette.black, 60)},\n` +
+    `  inset 0 1px 0 ${alpha(palette.white, 5)};`,
+} as const;
+
 /**
- * WorkTimer Custom PrimeNG Theme Preset
+ * Custom PrimeNG Theme Preset
  *
  * This preset extends the Aura theme with custom colors and design tokens
  * that match the existing CSS variables used in the application.
@@ -18,58 +51,58 @@ export const CustomPreset = definePreset(Aura, {
       xl: '1rem', // --radius-2xl
     },
     neutral: {
-      0: 'oklch(0.25 0.015 85)', // --text-color
-      50: 'oklch(0.96 0.008 85)', // --text-color (dark)
-      100: 'oklch(0.793 0 192)', // --border-color
-      200: 'oklch(0.4 0 192)', // --border-color (dark)
-      300: 'oklch(0.6 0 192)',
-      400: 'oklch(0.65 0 192)',
+      0: palette.text,
+      50: palette.text,
+      100: palette.border,
+      200: palette.border,
+      300: palette.secondary,
+      400: mix(palette.secondary, 82, palette.white),
     },
     indigo: {
-      0: '#ffffff',
-      50: 'oklch(0.96 0.01 250)',
-      100: 'oklch(0.92 0.025 250)',
-      200: 'oklch(0.85 0.04 250)',
-      300: 'oklch(0.75 0.055 250)',
-      400: 'oklch(0.65 0.07 250)',
-      500: 'oklch(0.57 0.09 250)',
-      600: 'oklch(0.45 0.08 250)',
-      700: 'oklch(0.35 0.07 250)',
-      800: 'oklch(0.30 0.05 250)',
-      900: 'oklch(0.23 0.035 250)',
-      950: 'oklch(0.18 0.02 250)',
+      0: palette.white,
+      50: mix(palette.secondary, 8),
+      100: mix(palette.secondary, 16),
+      200: mix(palette.secondary, 28),
+      300: mix(palette.secondary, 42),
+      400: mix(palette.secondary, 58),
+      500: palette.secondary,
+      600: mix(palette.secondary, 88, palette.black),
+      700: mix(palette.secondary, 76, palette.black),
+      800: mix(palette.secondary, 64, palette.black),
+      900: mix(palette.secondary, 50, palette.black),
+      950: mix(palette.secondary, 38, palette.black),
     },
   },
   semantic: {
     primary: {
-      0: '#ffffff',
-      50: 'oklch(0.96 0.008 85)',
-      100: 'oklch(0.92 0.02 192)',
-      200: 'oklch(0.85 0.03 192)',
-      300: 'oklch(0.75 0.04 192)',
-      400: 'oklch(0.65 0.05 192)',
-      500: 'oklch(0.57 0.07 192)', // primary-light-color
-      600: 'oklch(0.45 0.05 192)', // primary-color
-      700: 'oklch(0.35 0.05 192)', // primary-color (dark)
-      800: 'oklch(0.30 0.03 192)',
-      900: 'oklch(0.23 0.02 192)',
-      950: 'oklch(0.18 0.01 192)',
+      0: palette.primaryText,
+      50: mix(palette.primary, 8),
+      100: mix(palette.primary, 16),
+      200: mix(palette.primary, 28),
+      300: mix(palette.primaryLight, 58),
+      400: mix(palette.primary, 72),
+      500: palette.primaryLight,
+      600: palette.primary,
+      700: mix(palette.primary, 84, palette.black),
+      800: mix(palette.primary, 70, palette.black),
+      900: mix(palette.primary, 56, palette.black),
+      950: mix(palette.primary, 42, palette.black),
     },
     colorScheme: {
       light: {
         surface: {
-          0: 'oklch(1 0 192)', // --surface-ground
-          50: 'oklch(0.96 0 192)',
-          100: 'oklch(0.94 0 192)', // --surface-light-gray
-          200: 'oklch(0.92 0 192)',
-          300: 'oklch(0.88 0 192)', // --surface-gray
-          400: 'oklch(0.9 0 192)',
-          500: 'oklch(0.793 0 192)',
-          600: 'oklch(0.7 0 192)',
-          700: 'oklch(0.6 0 192)',
-          800: 'oklch(0.4 0 192)',
-          900: 'oklch(1 0 192)', // --surface-ground
-          950: 'oklch(0.96 0 192)', // --surface-background
+          0: palette.surfaceGround,
+          50: mix(palette.surfaceBackground, 45, palette.surfaceGround),
+          100: palette.surfaceLightGray,
+          200: mix(palette.surfaceBackground, 70, palette.surfaceGround),
+          300: palette.surfaceGray,
+          400: mix(palette.border, 28, palette.surfaceGround),
+          500: palette.border,
+          600: mix(palette.border, 88, palette.black),
+          700: mix(palette.border, 76, palette.black),
+          800: mix(palette.border, 64, palette.black),
+          900: palette.surfaceGround,
+          950: palette.surfaceBackground,
         },
         primary: {
           color: '{primary.600}',
@@ -84,33 +117,33 @@ export const CustomPreset = definePreset(Aura, {
           focusColor: '{primary.800}',
         },
         text: {
-          color: '{neutral.0}',
-          mutedColor: '{neutral.300}',
+          color: palette.text,
+          mutedColor: palette.secondary,
         },
         formField: {
           color: '{text.color}',
           iconColor: '{text.color}',
-          borderColor: '{neutral.100}',
-          placeholderColor: '{neutral.100}',
+          borderColor: palette.border,
+          placeholderColor: palette.border,
         },
       },
       dark: {
         surface: {
-          100: 'oklch(0.22 0 192)', // --surface-light-gray
-          300: 'oklch(0.351 0 192)', // --surface-gray
-          400: 'oklch(0.45 0 192)',
-          900: 'oklch(0.252 0 0)', // --surface-ground (dark)
-          950: 'oklch(0.198 0 192)', // --surface-background (dark)
+          100: palette.surfaceLightGray,
+          300: palette.surfaceGray,
+          400: mix(palette.surfaceGray, 82, palette.white),
+          900: palette.surfaceGround,
+          950: palette.surfaceBackground,
         },
         primary: {
-          color: '{primary.700}',
+          color: '{primary.600}',
           contrastColor: '{text.color}',
-          hoverColor: '{primary.600}',
+          hoverColor: '{primary.700}',
           activeColor: '{primary.500}',
         },
         text: {
-          color: '{neutral.50}',
-          mutedColor: '{neutral.400}',
+          color: palette.text,
+          mutedColor: palette.secondary,
         },
         highlight: {
           color: '{text.color}',
@@ -118,8 +151,8 @@ export const CustomPreset = definePreset(Aura, {
         formField: {
           color: '{text.color}',
           iconColor: '{text.color}',
-          borderColor: '{neutral.200}',
-          placeholderColor: '{neutral.200}',
+          borderColor: palette.border,
+          placeholderColor: palette.border,
         },
       },
     },
@@ -184,19 +217,12 @@ export const CustomPreset = definePreset(Aura, {
         colorScheme: {
           light: {
             root: {
-              shadow:
-                '0 1px 1px rgba(0, 0, 0, 0.04),\n' +
-                '  0 4px 6px rgba(0, 0, 0, 0.06),\n' +
-                '  0 10px 20px rgba(0, 0, 0, 0.08),\n' +
-                '  0 20px 40px rgba(0, 0, 0, 0.10);',
+              shadow: shadow.light,
             },
           },
           dark: {
             root: {
-              shadow:
-                '0 1px 2px rgba(0, 0, 0, 0.6),\n' +
-                '  0 8px 24px rgba(0, 0, 0, 0.6),\n' +
-                '  inset 0 1px 0 rgba(255, 255, 255, 0.05);',
+              shadow: shadow.dark,
             },
           },
         },
@@ -205,19 +231,12 @@ export const CustomPreset = definePreset(Aura, {
         colorScheme: {
           light: {
             root: {
-              shadow:
-                '0 1px 1px rgba(0, 0, 0, 0.04),\n' +
-                '  0 4px 6px rgba(0, 0, 0, 0.06),\n' +
-                '  0 10px 20px rgba(0, 0, 0, 0.08),\n' +
-                '  0 20px 40px rgba(0, 0, 0, 0.10);',
+              shadow: shadow.light,
             },
           },
           dark: {
             root: {
-              shadow:
-                '0 1px 2px rgba(0, 0, 0, 0.6),\n' +
-                '  0 8px 24px rgba(0, 0, 0, 0.6),\n' +
-                '  inset 0 1px 0 rgba(255, 255, 255, 0.05);',
+              shadow: shadow.dark,
             },
           },
         },
@@ -226,19 +245,12 @@ export const CustomPreset = definePreset(Aura, {
         colorScheme: {
           light: {
             root: {
-              shadow:
-                '0 1px 1px rgba(0, 0, 0, 0.04),\n' +
-                '  0 4px 6px rgba(0, 0, 0, 0.06),\n' +
-                '  0 10px 20px rgba(0, 0, 0, 0.08),\n' +
-                '  0 20px 40px rgba(0, 0, 0, 0.10);',
+              shadow: shadow.light,
             },
           },
           dark: {
             root: {
-              shadow:
-                '0 1px 2px rgba(0, 0, 0, 0.6),\n' +
-                '  0 8px 24px rgba(0, 0, 0, 0.6),\n' +
-                '  inset 0 1px 0 rgba(255, 255, 255, 0.05);',
+              shadow: shadow.dark,
             },
           },
         },
@@ -247,19 +259,12 @@ export const CustomPreset = definePreset(Aura, {
         colorScheme: {
           light: {
             root: {
-              shadow:
-                '0 1px 1px rgba(0, 0, 0, 0.04),\n' +
-                '  0 4px 6px rgba(0, 0, 0, 0.06),\n' +
-                '  0 10px 20px rgba(0, 0, 0, 0.08),\n' +
-                '  0 20px 40px rgba(0, 0, 0, 0.10);',
+              shadow: shadow.light,
             },
           },
           dark: {
             root: {
-              shadow:
-                '0 1px 2px rgba(0, 0, 0, 0.6),\n' +
-                '  0 8px 24px rgba(0, 0, 0, 0.6),\n' +
-                '  inset 0 1px 0 rgba(255, 255, 255, 0.05);',
+              shadow: shadow.dark,
             },
           },
         },
@@ -272,19 +277,12 @@ export const CustomPreset = definePreset(Aura, {
       colorScheme: {
         light: {
           root: {
-            shadow:
-              '0 1px 1px rgba(0, 0, 0, 0.04),\n' +
-              '  0 4px 6px rgba(0, 0, 0, 0.06),\n' +
-              '  0 10px 20px rgba(0, 0, 0, 0.08),\n' +
-              '  0 20px 40px rgba(0, 0, 0, 0.10);',
+            shadow: shadow.light,
           },
         },
         dark: {
           root: {
-            shadow:
-              '0 1px 2px rgba(0, 0, 0, 0.6),\n' +
-              '  0 8px 24px rgba(0, 0, 0, 0.6),\n' +
-              '  inset 0 1px 0 rgba(255, 255, 255, 0.05);',
+            shadow: shadow.dark,
           },
         },
       },

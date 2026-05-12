@@ -10,7 +10,16 @@ $colors: (
   'bluegray': #607d8b,
   'purple': #9c27b0,
   'red': #f44336,
-  'primary': oklch(0.6971 0.1644 84.43),
+  'primary': var(--palette-primary),
+  'primary-light': var(--palette-primary-light),
+  'secondary': var(--palette-secondary),
+  'background': var(--palette-background),
+  'ground': var(--palette-ground),
+  'grey': var(--palette-grey),
+  'gray': var(--palette-gray),
+  'light-gray': var(--palette-light-gray),
+  'border': var(--palette-border),
+  'text': var(--palette-text),
 ) !default;
 
 :root,
@@ -19,28 +28,43 @@ html.light {
   font-family: 'Open Sans', sans-serif;
   --font-family: 'Open Sans', sans-serif;
 
+  /* palette */
+  --palette-white: oklch(1 0 0);
+  --palette-black: oklch(0 0 0);
+  --palette-background: oklch(0.96 0.008 85);
+  --palette-ground: var(--palette-white);
+  --palette-grey: oklch(0.879 0.003 84.56);
+  --palette-gray: oklch(0.88 0.008 85);
+  --palette-light-gray: oklch(0.94 0.004 85);
+  --palette-border: oklch(0.793 0.006 84.57);
+  --palette-text: oklch(0.25 0.015 85);
+  --palette-text-black: oklch(0.25 0.015 85);
+  --palette-primary: oklch(0.35 0.05 192);
+  --palette-primary-light: oklch(0.57 0.07 192);
+  --palette-secondary: oklch(0.4 0.035 192);
+
   /* surfaces */
-  --surface-background: oklch(0.96 0.008 85);
-  --surface-ground: oklch(1 0 0);
-  --surface-white: oklch(1 0 0);
-  --surface-black: black;
-  --surface-grey: oklch(0.879 0.003 84.56);
-  --surface-gray: oklch(0.88 0.008 85);
-  --border-color: oklch(0.793 0.006 84.57);
-  --surface-light-gray: oklch(0.94 0.004 85);
+  --surface-background: var(--palette-background);
+  --surface-ground: var(--palette-ground);
+  --surface-white: var(--palette-white);
+  --surface-black: var(--palette-black);
+  --surface-grey: var(--palette-grey);
+  --surface-gray: var(--palette-gray);
+  --border-color: var(--palette-border);
+  --surface-light-gray: var(--palette-light-gray);
 
   /* text */
-  --text-color: oklch(0.25 0.015 85);
-  --text-color-black: var(--text-color);
+  --text-color: var(--palette-text);
+  --text-color-black: var(--palette-text-black);
 
   /* misc */
   --dark-overlay: rgba(220, 220, 220, 0.8);
 
   /* brand */
-  --primary-color: oklch(0.35 0.05 192);
-  --primary-light-color: oklch(0.57 0.07 192);
-  --secondary-color: oklch(0.4 0.035 192);
-  --primary-color-text: white;
+  --primary-color: var(--palette-primary);
+  --primary-light-color: var(--palette-primary-light);
+  --secondary-color: var(--palette-secondary);
+  --primary-color-text: var(--palette-white);
   --secondary-color-text: var(--text-color);
 
   /* semantic */
@@ -63,27 +87,37 @@ html.light {
 }
 
 html.dark {
+  /* palette */
+  --palette-background: oklch(0.198 0.0031 196.9);
+  --palette-ground: oklch(0.252 0 0);
+  --palette-grey: oklch(0.561 0.012 196.815);
+  --palette-gray: oklch(0.351 0.007 196.849);
+  --palette-light-gray: oklch(0.22 0.003 196.9);
+  --palette-border: var(--palette-gray);
+  --palette-text: oklch(0.96 0.008 85);
+  --palette-text-black: oklch(0.25 0.015 85);
+
   /* surfaces */
-  --surface-background: oklch(0.198 0.0031 196.9);
-  --surface-ground: oklch(0.252 0 0);
-  --surface-white: oklch(1 0 0);
-  --surface-black: black;
-  --surface-grey: oklch(0.561 0.012 196.815);
-  --surface-gray: oklch(0.351 0.007 196.849);
-  --border-color: oklch(0.351 0.007 196.849);
-  --surface-light-gray: oklch(0.22 0.003 196.9);
+  --surface-background: var(--palette-background);
+  --surface-ground: var(--palette-ground);
+  --surface-white: var(--palette-white);
+  --surface-black: var(--palette-black);
+  --surface-grey: var(--palette-grey);
+  --surface-gray: var(--palette-gray);
+  --border-color: var(--palette-border);
+  --surface-light-gray: var(--palette-light-gray);
 
   /* text */
-  --text-color: oklch(0.96 0.008 85);
-  --text-color-black: oklch(0.25 0.015 85);
+  --text-color: var(--palette-text);
+  --text-color-black: var(--palette-text-black);
 
   /* misc */
   --dark-overlay: rgba(0, 0, 0, 0.5);
 
   /* brand */
-  --primary-color: oklch(0.35 0.05 192);
-  --primary-light-color: oklch(0.57 0.07 192);
-  --secondary-color: oklch(0.4 0.035 192);
+  --primary-color: var(--palette-primary);
+  --primary-light-color: var(--palette-primary-light);
+  --secondary-color: var(--palette-secondary);
   --primary-color-text: var(--text-color);
   --secondary-color-text: var(--text-color);
 
