@@ -1,11 +1,9 @@
-export interface LoginData {
-  email: string;
-  password: string;
-  staySignedIn: boolean;
-}
+import { LoginDto, RegisterDto } from '../api';
 
-export interface RegisterData {
-  email: string;
-  password: string;
+export type LoginFormData = LoginDto & {
+  staySignedIn: boolean;
+};
+
+export type RegisterFormData = RegisterDto & {
   passwordCheck: string;
-}
+};

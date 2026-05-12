@@ -7,7 +7,7 @@ import { User } from '../api';
 export type Theme = 'light' | 'dark';
 
 export interface AppState {
-  user?: User;
+  user?: User | null;
   loading: boolean;
   navigating: boolean;
   lastUrl?: string;
@@ -52,7 +52,7 @@ export class AppStore extends ComponentStore<AppState> {
   readonly user$ = this.select(({ user }) => user);
   readonly user = toSignal(this.user$);
 
-  readonly updateUser = this.updater((state, user: User | undefined) => ({
+  readonly updateUser = this.updater((state, user: User | undefined | null) => ({
     ...state,
     user: user,
   }));

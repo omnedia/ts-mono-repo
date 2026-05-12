@@ -38,11 +38,12 @@ export const csrfInterceptor: HttpInterceptorFn = (request, next) => {
 
   return next(request).pipe(
     catchError((error: unknown) => {
-      if (error instanceof HttpErrorResponse && error.status === 401) {
+      if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 0)) {
         appStore.updateUser(undefined);
+        appStore.updateCsrfToken(undefined);
 
         if (!currentPath.startsWith('/auth')) {
-          appStore.updateLastUrl(currentPath);
+          appStore.updateCurrentUrl(currentPath);
           routingService.auth();
         }
         return EMPTY;

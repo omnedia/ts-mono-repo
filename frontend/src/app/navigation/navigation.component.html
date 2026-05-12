@@ -4,13 +4,11 @@
   </div>
 
   <div class="actions">
-    <button class="icon-button" (click)="appStore.toggleTheme()">
-      <i
-        class="pi"
-        [class.pi-sun]="appStore.theme() === 'dark'"
-        [class.pi-moon]="appStore.theme() === 'light'"
-      ></i>
-    </button>
-    <button class="button" (click)="logout()">Logout</button>
+    <p-button
+      [icon]="appStore.theme() === 'dark' ? 'pi pi-sun' : 'pi pi-moon'"
+      [rounded]="true"
+      (click)="appStore.toggleTheme()"
+    />
+    <p-button (click)="logout()">Logout</p-button>
   </div>
 </div>

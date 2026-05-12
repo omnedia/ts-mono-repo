@@ -1,21 +1,24 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MessageService } from 'primeng/api';
+import { Button } from 'primeng/button';
 import { AuthenticationService } from '../api';
+import { RoutingService } from '../services/routing.service';
 import { AppStore } from '../stores/app.store';
 
 @Component({
   selector: 'app-navigation',
-  imports: [],
+  imports: [Button],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
   standalone: true,
 })
 export class NavigationComponent {
-  appStore = inject(AppStore);
+  readonly appStore = inject(AppStore);
   private readonly authenticationService = inject(AuthenticationService);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly messageService = inject(MessageService);
+  private readonly routingService = inject(RoutingService);
+  private readonly destroyRef = inject(DestroyRef);
 
   logout(): void {
     this.appStore.updateLoading(true);
@@ -25,10 +28,12 @@ export class NavigationComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.appStore.updateCsrfToken(undefined);
-          this.appStore.updateUser(undefined);
-          this.appStore.updateLoading(false);
-          window.location.href = '/auth';
+          this.routingService.auth(() => {
+            this.appStore.updateCsrfToken(undefined);
+            this.appStore.updateUser(null);
+            this.appStore.updateLoading(false);
+            window.location.href = '/auth';
+          });
         },
         error: () => {
           this.appStore.updateLoading(false);

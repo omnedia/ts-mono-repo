@@ -3,18 +3,27 @@ import type { OnInit } from '@angular/core';
 import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { email, form, FormField, required } from '@angular/forms/signals';
-import { ProgressSpinner } from 'primeng/progressspinner';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ButtonDirective } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';
+import { InputText } from 'primeng/inputtext';
+import { PasswordDirective } from 'primeng/password';
 import { AuthenticationService } from '../api';
 import { RoutingService } from '../services/routing.service';
 import { AppStore } from '../stores/app.store';
-import type { LoginData, RegisterData } from '../types/form.types';
+import type { LoginFormData, RegisterFormData } from '../types/form.types';
 
 @Component({
   selector: 'app-auth',
-  imports: [ReactiveFormsModule, ProgressSpinner, Checkbox, FormField],
+  imports: [
+    ReactiveFormsModule,
+    Checkbox,
+    FormField,
+    InputText,
+    PasswordDirective,
+    ButtonDirective,
+  ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
   standalone: true,
@@ -27,13 +36,13 @@ export class AuthComponent implements OnInit {
 
   formView = signal<'login' | 'register'>('login');
 
-  loginModel = signal<LoginData>({
+  loginModel = signal<LoginFormData>({
     email: '',
     password: '',
     staySignedIn: false,
   });
 
-  registerModel = signal<RegisterData>({
+  registerModel = signal<RegisterFormData>({
     email: '',
     password: '',
     passwordCheck: '',
@@ -56,15 +65,15 @@ export class AuthComponent implements OnInit {
 
   loading = signal<boolean>(false);
 
-  hasFormError(fieldName: keyof LoginData): ReturnType<typeof computed<boolean>>;
-  hasFormError(fieldName: keyof RegisterData): ReturnType<typeof computed<boolean>>;
-  hasFormError(fieldName: keyof LoginData | keyof RegisterData) {
+  hasFormError(fieldName: keyof LoginFormData): ReturnType<typeof computed<boolean>>;
+  hasFormError(fieldName: keyof RegisterFormData): ReturnType<typeof computed<boolean>>;
+  hasFormError(fieldName: keyof LoginFormData | keyof RegisterFormData) {
     return computed(() => {
       if (this.formView() === 'login') {
-        const field = this.loginForm[fieldName as keyof LoginData];
+        const field = this.loginForm[fieldName as keyof LoginFormData];
         return !!field && this.submitted() && field().invalid();
       } else {
-        const field = this.registerForm[fieldName as keyof RegisterData];
+        const field = this.registerForm[fieldName as keyof RegisterFormData];
         return !!field && this.submitted() && field().invalid();
       }
     });
