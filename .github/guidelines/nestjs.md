@@ -1,4 +1,4 @@
-# NestJS Standards for ts-mono-repo
+# NestJS Standards
 
 This document defines NestJS-specific coding standards, best practices, and conventions for the `backend/` project in
 this monorepo.

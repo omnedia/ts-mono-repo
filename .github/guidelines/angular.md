@@ -1,4 +1,4 @@
-# Angular Standards for ts-mono-repo
+# Angular Standards
 
 This document defines Angular-specific coding standards, best practices, and conventions for the `frontend/` project in
 this monorepo.

@@ -1,4 +1,4 @@
-# System Context: Copilot & AI for ts-mono-repo
+# System Context: Copilot & AI
 
 This document defines the system context and operational boundaries for Copilot and AI-powered tools in the ts-mono-repo
 project. It is not a user-facing ReadMe, but a reference for automated agents.
