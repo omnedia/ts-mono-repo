@@ -1,0 +1,93 @@
+guideline_resolution:
+  frontend:
+    paths:
+      - "frontend/**"
+    technologies:
+      - "Angular"
+      - "TypeScript"
+      - "Testing"
+    guidelines:
+      - ".github/guidelines/angular.md"
+      - ".github/guidelines/typescript.md"
+      - ".github/guidelines/testing.md"
+      - ".github/guidelines/coding-standards.md"
+    verification:
+      - "cd frontend && npm run lint"
+      - "run frontend typecheck or tests when available"
+
+  backend:
+    paths:
+      - "backend/**"
+    technologies:
+      - "NestJS"
+      - "TypeScript"
+      - "Testing"
+    guidelines:
+      - ".github/guidelines/nestjs.md"
+      - ".github/guidelines/typescript.md"
+      - ".github/guidelines/testing.md"
+      - ".github/guidelines/coding-standards.md"
+    verification:
+      - "cd backend && npm run lint"
+      - "run backend tests when available"
+
+  database:
+    paths:
+      - "backend/src/entities/**"
+      - "backend/src/migrations/**"
+      - "postgres/**"
+    technologies:
+      - "Database"
+      - "NestJS"
+      - "TypeScript"
+    guidelines:
+      - ".github/guidelines/database.md"
+      - ".github/guidelines/nestjs.md"
+      - ".github/guidelines/typescript.md"
+
+  testing:
+    paths:
+      - "**/*.spec.ts"
+      - "**/*.test.ts"
+    technologies:
+      - "Testing"
+      - "TypeScript"
+    guidelines:
+      - ".github/guidelines/testing.md"
+      - ".github/guidelines/typescript.md"
+      - ".github/guidelines/coding-standards.md"
+
+  docker:
+    paths:
+      - "**/Dockerfile"
+      - "docker-compose*.yml"
+      - "postgres/**"
+      - "redis/**"
+    technologies:
+      - "Docker"
+    guidelines:
+      - ".github/guidelines/docker.md"
+
+  ci:
+    paths:
+      - ".github/**"
+      - "package.json"
+      - "package-lock.json"
+    technologies:
+      - "CI/CD"
+    guidelines:
+      - ".github/guidelines/ci.md"
+      - ".github/guidelines/coding-standards.md"
+
+precedence:
+  - "Direct user instructions"
+  - "Task-specific guidelines"
+  - "Technology guidelines"
+  - "Coding standards"
+  - "General AI behavior"
+
+enforcement:
+  mandatory_resolution: true
+  read_all_matched_guidelines_before_implementation: true
+  mention_conflicts_explicitly: true
+  verify_before_claiming_completion: true

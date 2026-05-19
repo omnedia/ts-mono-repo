@@ -22,21 +22,64 @@ this monorepo.
 - Keep controllers thin; move business logic to services.
 - Use guards, interceptors, and pipes for cross-cutting concerns.
 - Use async/await for all asynchronous operations.
+- Validate DTOs explicitly for incoming data.
+- Never access repositories or database clients directly from controllers.
+- Keep dependency injection consistent for services, repositories, guards, and providers.
 
 ## Entities & Database
 
-- Use TypeORM or the configured ORM for entities and migrations.
-- Place entities in the `entities/` folder and migrations in `migrations/`.
+* Use Drizzle ORM for all database access and schema management.
+* Organize database code by entity/domain under `entities/ENTITY_NAME/`.
+* Keep all Drizzle-related files for an entity inside its dedicated folder.
+
+Example structure:
+
+```txt
+entities/
+  user/
+    user.schema.ts
+    user.relations.ts
+    user.types.ts
+    user.repository.ts
+
+  organization/
+    organization.schema.ts
+    organization.relations.ts
+    organization.types.ts
+    organization.repository.ts
+```
+
+* Place shared database utilities and the Drizzle client configuration in a dedicated `database/` module.
+* Place migrations in the `migrations/` folder.
+* Use Drizzle migrations for all schema changes.
+* Define schemas, relations, indexes, and constraints explicitly in TypeScript.
+* Prefer typed query builders over raw SQL whenever possible.
+* Keep database access logic inside repositories or services; controllers must never access the database directly.
+* Use transactions for multi-step write operations.
+* Use generated and inferred Drizzle types to maintain end-to-end type safety.
 
 ## Testing
 
 - Write unit and integration tests for all modules, services, and controllers.
 - Use Jest as the default test runner.
 
+## Enforcement
+
+When working in NestJS:
+
+- Load `nestjs.md` and `typescript.md` before implementation.
+- Keep controllers focused on HTTP concerns.
+- Place business logic in services.
+- Put persistence logic in repositories or dedicated data services.
+- Validate request DTOs explicitly.
+- Verify with backend linting and relevant tests when available.
+
 ## Linting & Formatting
 
 - Follow the configured ESLint and Prettier rules.
 - Fix all lint errors before committing.
+- To run the linter use the command `npm run lint`
+- To run the formatter use the command `npm run format:fix`
 
 ## Documentation
 
@@ -44,5 +87,5 @@ this monorepo.
 
 ---
 
-**Last updated:** 2026-05-12
+**Last updated:** 2026-05-19
 

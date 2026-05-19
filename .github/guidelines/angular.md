@@ -22,6 +22,11 @@ this monorepo.
 - Use SCSS for component styles. In there, never use `:ng-deep`.
 - Name files and selectors consistently: `feature-name.component.ts`, `feature-name.component.scss`, etc.
 - Keep components focused and small; extract logic to services where possible.
+- ALWAYS use PrimeNG components instead of own implementations, if it exist as a PrimeNG component.
+- ALWAYS use signal forms for form validation and state management, not reactive forms.
+- ALWAYS choose signals where possible, e.g. for Inputs, models, etc.
+- Keep business logic out of templates.
+- Avoid manual RxJS subscriptions in components when an async pipe, signal, or framework lifecycle helper is sufficient.
 
 ## Services
 
@@ -36,13 +41,26 @@ this monorepo.
 
 ## Testing
 
-- Write unit tests for all components, services, and guards.
+- After making changes, always ask if unit tests for the components, services, and guards should be updated or written.
 - Use Angular's testing utilities and TestBed.
+
+## Enforcement
+
+When working in Angular:
+
+- Load `angular.md` and `typescript.md` before implementation.
+- Prefer standalone components and modern Angular APIs.
+- Use signals for component state and inputs where the project standard supports them.
+- Prefer PrimeNG components over custom UI controls when an equivalent PrimeNG component exists.
+- Keep API communication in dedicated services.
+- Verify with frontend linting and relevant tests or typechecks when available.
 
 ## Linting & Formatting
 
 - Follow the configured ESLint and Prettier rules.
 - Fix all lint errors before committing.
+- To run the linter use the command `npm run lint`
+- To run the formatter use the command `npm run format:fix`
 
 ## Documentation
 
@@ -50,5 +68,5 @@ this monorepo.
 
 ---
 
-**Last updated:** 2026-05-12
+**Last updated:** 2026-05-19
 
