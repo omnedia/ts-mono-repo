@@ -7,6 +7,7 @@
     "start:frontend": "cd frontend && npm run start",
     "check:frontend": "cd frontend && npm run check",
     "check:backend": "cd backend && npm run check",
+    "migration:run": "cd backend && npm run migration:run",
     "lint": "cd backend && npm run lint && cd ../frontend && npm run lint",
     "format:fix": "cd backend && npm run format:fix && cd ../frontend && npm run format:fix"
   },

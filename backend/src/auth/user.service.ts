@@ -4,44 +4,33 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
-import { SessionUser, UserRole } from '../types/types';
+import { UserRepository } from '../entities/user/user.repository';
+import type { UserSchema } from '../entities/user/user.types';
+import { SessionUser } from '../types/types';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  async create(email: string, password: string): Promise<User> {
+  async create(email: string, password: string): Promise<UserSchema> {
     if (!email || !password) {
       throw new BadRequestException('No credentials received.');
     }
 
-    const existingUser = await this.userRepository.findOneBy({
-      email: email,
-    });
+    const existingUser = await this.userRepository.findByEmail(email);
 
     if (existingUser) {
       throw new ConflictException('E-Mail is already in use.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = this.userRepository.create({
-      email,
-      password: hashedPassword,
-      role: UserRole.USER,
-    });
 
-    return this.userRepository.save(user);
+    return this.userRepository.create(email, hashedPassword);
   }
 
-  async findOne(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { email } });
+  async findOne(email: string): Promise<UserSchema> {
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new NotFoundException('No user found.');
@@ -50,7 +39,7 @@ export class UserService {
     return user;
   }
 
-  async validateUser(email: string, password: string): Promise<User | null> {
+  async validateUser(email: string, password: string): Promise<UserSchema | null> {
     const user = await this.findOne(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
@@ -67,6 +56,6 @@ export class UserService {
 
     userEntity.password = await bcrypt.hash(password, 10);
 
-    await this.userRepository.update(userEntity.id, userEntity);
+    await this.userRepository.updatePassword(userEntity.id, userEntity.password);
   }
 }

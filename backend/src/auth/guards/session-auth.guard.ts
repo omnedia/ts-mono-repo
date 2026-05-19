@@ -1,12 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../../entities/user.entity';
+import { UserRepository } from '../../entities/user/user.repository';
 import { SessionUser } from '../../types/types';
 
 @Injectable()
 export class SessionAuthGuard implements CanActivate {
-  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
@@ -16,9 +14,7 @@ export class SessionAuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const user = await this.userRepository.findOne({
-      where: { email: sessionUser.email },
-    });
+    const user = await this.userRepository.findByEmail(sessionUser.email);
 
     if (!user) {
       throw new UnauthorizedException();
