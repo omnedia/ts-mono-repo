@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { doubleCsrf } from 'csrf-csrf';
 import { CookieOptions } from 'csurf';
 import { Request as ERequest } from 'express';
-import { AuthRequest } from '../types/types';
+import { AuthRequest } from '../types/user.types';
 
 @Injectable()
 export class AuthService {

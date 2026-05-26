@@ -17,7 +17,13 @@ import {
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ChangePasswordDto, LoginDto, RegisterDto, RequestOptions, User } from '../models';
+import {
+  ChangePasswordDto,
+  LoginDto,
+  RegisterDto,
+  RequestOptions,
+  UserResponseDto,
+} from '../models';
 import { BASE_PATH_DEFAULT, CLIENT_CONTEXT_TOKEN_DEFAULT } from '../tokens';
 
 @Injectable({ providedIn: 'root' })
@@ -68,17 +74,17 @@ export class AuthenticationService {
     registerDto: RegisterDto,
     observe?: 'body',
     options?: RequestOptions<'json'>,
-  ): Observable<User>;
+  ): Observable<UserResponseDto>;
   register(
     registerDto: RegisterDto,
     observe?: 'response',
     options?: RequestOptions<'json'>,
-  ): Observable<HttpResponse<User>>;
+  ): Observable<HttpResponse<UserResponseDto>>;
   register(
     registerDto: RegisterDto,
     observe?: 'events',
     options?: RequestOptions<'json'>,
-  ): Observable<HttpEvent<User>>;
+  ): Observable<HttpEvent<UserResponseDto>>;
   register(
     registerDto: RegisterDto,
     observe?: 'body' | 'events' | 'response',
@@ -175,12 +181,15 @@ export class AuthenticationService {
     return this.httpClient.post(url, null, requestOptions);
   }
 
-  getCurrentUser(observe?: 'body', options?: RequestOptions<'json'>): Observable<User>;
+  getCurrentUser(observe?: 'body', options?: RequestOptions<'json'>): Observable<UserResponseDto>;
   getCurrentUser(
     observe?: 'response',
     options?: RequestOptions<'json'>,
-  ): Observable<HttpResponse<User>>;
-  getCurrentUser(observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<User>>;
+  ): Observable<HttpResponse<UserResponseDto>>;
+  getCurrentUser(
+    observe?: 'events',
+    options?: RequestOptions<'json'>,
+  ): Observable<HttpEvent<UserResponseDto>>;
   getCurrentUser(
     observe?: 'body' | 'events' | 'response',
     options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>,

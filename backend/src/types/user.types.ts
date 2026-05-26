@@ -1,6 +1,8 @@
+import type { UserRole } from '@prisma/client';
 import type { Request } from 'express';
 import type session from 'express-session';
-import type { UnitAnyCase } from 'ms';
+
+export { UserRole } from '@prisma/client';
 
 export interface AuthRequest extends Request {
   user: SessionUser;
@@ -15,10 +17,3 @@ export interface SessionUser {
   email: string;
   role: UserRole;
 }
-
-export enum UserRole {
-  USER = 'user',
-  ADMIN = 'admin',
-}
-
-export type StringValue = `${number}` | `${number}${UnitAnyCase}` | `${number} ${UnitAnyCase}`;

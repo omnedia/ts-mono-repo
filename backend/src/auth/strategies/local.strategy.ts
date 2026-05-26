@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { UserRole } from '../../types/types';
+import { UserRole } from '../../types/user.types';
 import { UserService } from '../user.service';
 
 interface ValidateResult {

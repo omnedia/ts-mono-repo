@@ -15,17 +15,13 @@ export interface RegisterDto {
   password: string;
 }
 
-export interface User {
+export interface UserResponseDto {
   /** Unique identifier of the user */
   id: number;
   /** Unique email for the user */
   email: string;
-  /** User password (hashed) */
-  password: string;
   /** Role of the user */
-  role: 'user' | 'admin';
-  /** Timestamp when the user was created */
-  createdAt: Date;
+  role: 'USER' | 'ADMIN';
 }
 
 export interface LoginDto {

@@ -14,7 +14,7 @@ this monorepo.
 ## File & Folder Structure
 
 - Place all NestJS code in `backend/src/`.
-- Use subfolders for features (e.g., `auth/`, `entities/`, `migrations/`).
+- Use subfolders for features (e.g., `auth/`, `database/`, `types/`).
 - Use the `types/` folder for backend-specific types.
 
 ## Controllers & Services
@@ -28,35 +28,34 @@ this monorepo.
 
 ## Entities & Database
 
-* Use Drizzle ORM for all database access and schema management.
-* Organize database code by entity/domain under `entities/ENTITY_NAME/`.
-* Keep all Drizzle-related files for an entity inside its dedicated folder.
+* Use Prisma ORM for all database access and schema management.
+* Keep the main Prisma generator and datasource configuration in `backend/prisma/schema.prisma`.
+* Organize Prisma model files by domain under `backend/prisma/models/`.
 
 Example structure:
 
 ```txt
-entities/
-  user/
-    user.schema.ts
-    user.relations.ts
-    user.types.ts
-    user.repository.ts
+prisma/
+  schema.prisma
+  migrations/
+  models/
+    user.schema.prisma
+    organization.schema.prisma
 
-  organization/
-    organization.schema.ts
-    organization.relations.ts
-    organization.types.ts
-    organization.repository.ts
+src/
+  database/
+    prisma.module.ts
+    prisma.service.ts
 ```
 
-* Place shared database utilities and the Drizzle client configuration in a dedicated `database/` module.
-* Place migrations in the `migrations/` folder.
-* Use Drizzle migrations for all schema changes.
-* Define schemas, relations, indexes, and constraints explicitly in TypeScript.
+* Place shared database utilities and the Prisma client configuration in a dedicated `database/` module.
+* Place migrations in `backend/prisma/migrations/`.
+* Use Prisma Migrate for all schema changes.
+* Define models, relations, indexes, and constraints explicitly in Prisma schema files.
 * Prefer typed query builders over raw SQL whenever possible.
 * Keep database access logic inside repositories or services; controllers must never access the database directly.
 * Use transactions for multi-step write operations.
-* Use generated and inferred Drizzle types to maintain end-to-end type safety.
+* Use generated Prisma Client types to maintain end-to-end type safety.
 
 ## Testing
 

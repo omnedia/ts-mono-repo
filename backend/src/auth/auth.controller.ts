@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
@@ -10,7 +9,6 @@ import {
   Request,
   Res,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -22,18 +20,17 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request as ERequest, Response as EResponse } from 'express';
-import { User } from '../entities/user.entity';
-import { AuthRequest } from '../types/types';
+import { AuthRequest } from '../types/user.types';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { UserResponseDto } from './dto/user-response.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { SessionAuthGuard } from './guards/session-auth.guard';
 import { UserService } from './user.service';
 
 @ApiTags('Authentication')
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -61,8 +58,8 @@ export class AuthController {
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
   @ApiBody({ type: RegisterDto })
-  @ApiCreatedResponse({ type: User })
-  async register(@Body() body: RegisterDto): Promise<User> {
+  @ApiCreatedResponse({ type: UserResponseDto })
+  async register(@Body() body: RegisterDto): Promise<UserResponseDto> {
     return this.userService.create(body.email, body.password);
   }
 
@@ -90,9 +87,9 @@ export class AuthController {
   @ApiOperation({ summary: 'Get the current User (Authenticated)' })
   @ApiOkResponse({
     description: 'Returns User Entity',
-    type: User,
+    type: UserResponseDto,
   })
-  async getCurrentUser(@Request() req: AuthRequest): Promise<User> {
+  async getCurrentUser(@Request() req: AuthRequest): Promise<UserResponseDto> {
     return await this.userService.findOne(req.user.email);
   }
 

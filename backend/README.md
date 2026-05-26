@@ -7,13 +7,13 @@ This is the backend API for the TS Monorepo project, built with [NestJS](https:/
 ## 📦 Features
 
 - **Session-based authentication** with CSRF protection
-- **PostgreSQL** database with TypeORM
+- **PostgreSQL** database with Prisma
 - **Redis** support for session storage (optional)
 - **Swagger/OpenAPI** documentation
 - **Role-based access control** with guards
 - **TypeScript** for type safety
 - **ESLint & Prettier** for code quality
-- **Database migrations** with TypeORM CLI
+- **Database migrations** with Prisma Migrate
 
 ---
 
@@ -36,6 +36,7 @@ POSTGRES_PORT=5432
 POSTGRES_USER=admin
 POSTGRES_PASSWORD=root
 POSTGRES_DB=app
+DATABASE_URL=postgresql://admin:root@localhost:5432/app
 CSRF_SECRET=your_csrf_secret
 SESSION_SECRET=your_session_secret
 SESSION_EXPIRATION=1h
@@ -50,6 +51,7 @@ REDIS_URL=redis://localhost:6379  # Optional: for production session storage
 **Important:**
 
 - `SESSION_SECRET` should be a strong random string (at least 32 characters)
+- `DATABASE_URL` is required by Prisma CLI commands. Runtime configuration can also use the `POSTGRES_*` variables.
 - `REDIS_URL` is optional. If not set, sessions will be stored in memory (not recommended for production)
 
 ### 3. Run database migrations
@@ -115,10 +117,10 @@ Excluded routes (no CSRF validation):
 
 ### Generate a new migration
 
-After changing entities:
+After changing a `.prisma` schema file under `prisma/`:
 
 ```bash
-npm run migration:generate -- src/migrations/MigrationName
+npm run migration:generate -- --name migration_name
 ```
 
 ### Run migrations
@@ -127,10 +129,10 @@ npm run migration:generate -- src/migrations/MigrationName
 npm run migration:run
 ```
 
-### Revert last migration
+### Run migrations in development
 
 ```bash
-npm run migration:revert
+npm run migration:dev
 ```
 
 ---
@@ -210,13 +212,17 @@ npm run start:prod
 ```
 src/
 ├── auth/              # Authentication module (login, register, guards)
-├── entities/          # TypeORM entities
-├── migrations/        # Database migrations
+├── database/          # Prisma service and module
 ├── types/             # TypeScript types and interfaces
 ├── app.module.ts      # Root application module
-├── datasource.ts      # TypeORM data source configuration
 ├── main.ts            # Application entry point
 └── middleware.module.ts # Global middleware configuration
+
+prisma/
+├── migrations/        # Prisma database migrations
+├── models/
+│   └── user.schema.prisma # Prisma model and enum schema
+└── schema.prisma      # Main Prisma generator and datasource schema
 ```
 
 ---
@@ -224,5 +230,5 @@ src/
 ## 📖 Additional Resources
 
 - [NestJS Documentation](https://docs.nestjs.com)
-- [TypeORM Documentation](https://typeorm.io)
+- [Prisma Documentation](https://www.prisma.io/docs)
 - [Swagger/OpenAPI](https://swagger.io)

@@ -1,12 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../../entities/user.entity';
-import { SessionUser } from '../../types/types';
+import { PrismaService } from '../../database/prisma.service';
+import { SessionUser } from '../../types/user.types';
 
 @Injectable()
 export class SessionAuthGuard implements CanActivate {
-  constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
@@ -16,7 +14,7 @@ export class SessionAuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const user = await this.userRepository.findOne({
+    const user = await this.prismaService.user.findUnique({
       where: { email: sessionUser.email },
     });
 

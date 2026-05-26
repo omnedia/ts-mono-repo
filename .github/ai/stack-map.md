@@ -6,7 +6,7 @@ Use this map to identify affected technologies before guideline resolution.
 |---|---|---|
 | Frontend application | `frontend/**` | Angular, TypeScript, PrimeNG, SCSS |
 | Backend application | `backend/**` | NestJS, TypeScript |
-| Backend database code | `backend/src/entities/**`, `backend/src/migrations/**` | NestJS, Drizzle ORM, TypeScript |
+| Backend database code | `backend/prisma/**`, `backend/src/database/**` | NestJS, Prisma ORM, TypeScript |
 | Containers | `**/Dockerfile`, `docker-compose*.yml`, `postgres/**`, `redis/**` | Docker, Docker Compose |
 | GitHub automation | `.github/workflows/**` | GitHub Actions |
 | AI and project instructions | `.github/**`, `AGENTS.md`, `CLAUDE.md` | Repository documentation and CI-adjacent configuration |

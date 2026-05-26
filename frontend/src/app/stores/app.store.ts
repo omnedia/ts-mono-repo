@@ -2,7 +2,7 @@ import { effect, Injectable } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ComponentStore } from '@ngrx/component-store';
 import { tap } from 'rxjs';
-import { User } from '../api';
+import { User } from '../types/user.types';
 
 export type Theme = 'light' | 'dark';
 
@@ -60,7 +60,7 @@ export class AppStore extends ComponentStore<AppState> {
   readonly hasRole$ = (role: string) => this.select(({ user }) => user?.role === role);
   readonly hasRole = (role: string) => toSignal(this.hasRole$(role), { initialValue: false });
 
-  readonly isAdmin$ = this.select(({ user }) => user?.role === 'admin');
+  readonly isAdmin$ = this.select(({ user }) => user?.role === 'ADMIN');
   readonly isAdmin = toSignal(this.isAdmin$);
 
   readonly loading$ = this.select(({ loading }) => loading);

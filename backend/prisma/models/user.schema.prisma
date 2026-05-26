@@ -1,0 +1,16 @@
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar
+  password  String   @db.VarChar
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now()) @map("createdAt") @db.Timestamp(6)
+
+  @@map("user")
+}
+
+enum UserRole {
+  USER  @map("user")
+  ADMIN @map("admin")
+
+  @@map("user_role_enum")
+}
