@@ -1,5 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import type { Params, QueryParamsHandling } from '@angular/router';
 import {
+  ActivatedRoute,
   NavigationCancel,
   NavigationEnd,
   NavigationError,
@@ -10,14 +12,29 @@ import { AppStore } from '../stores/app.store';
 
 type NavigationCallback = (success: boolean) => void;
 
+export interface UpdateUrlStateOptions {
+  fragment?: string | null;
+  queryParams?: Params | null;
+  queryParamsHandling?: QueryParamsHandling;
+  replaceUrl?: boolean;
+  callback?: NavigationCallback;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class RoutingService {
   private readonly router = inject(Router);
+  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly appStore = inject(AppStore);
 
   private timer: ReturnType<typeof setTimeout> | null = null;
+
+  readonly anchor = signal<string | null>(null);
+  readonly queryParams = signal<Params>({});
+  readonly routeParams = signal<Params>({});
+
+  readonly queryParam = (key: string) => computed(() => this.queryParams()[key] ?? null);
 
   constructor() {
     this.router.events.subscribe((event) => {
@@ -39,10 +56,30 @@ export class RoutingService {
       if (event instanceof NavigationEnd) {
         const currentPath = event.urlAfterRedirects;
 
+        let route = this.router.routerState.root;
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+
+        this.anchor.set(this.activatedRoute.snapshot.fragment);
+        this.queryParams.set(this.activatedRoute.snapshot.queryParams);
+        this.routeParams.set(route.snapshot.params);
+
         this.appStore.updateLastUrl(this.appStore.currentUrl());
         this.appStore.updateCurrentUrl(currentPath);
       }
     });
+  }
+
+  updateUrlState(options: UpdateUrlStateOptions): void {
+    void this.router
+      .navigate([], {
+        fragment: options.fragment ?? undefined,
+        queryParams: options.queryParams ?? undefined,
+        queryParamsHandling: options.queryParamsHandling ?? 'merge',
+        replaceUrl: options.replaceUrl ?? false,
+      })
+      .then(options.callback);
   }
 
   lastUrl(callback?: NavigationCallback): void {
