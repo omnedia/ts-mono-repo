@@ -4,33 +4,44 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { UserRepository } from '../entities/user/user.repository';
-import type { UserSchema } from '../entities/user/user.types';
-import { SessionUser } from '../types/types';
+import { Repository } from 'typeorm';
+import { User } from '../entities/user.entity';
+import { SessionUser, UserRole } from '../types/types';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
-  async create(email: string, password: string): Promise<UserSchema> {
+  async create(email: string, password: string): Promise<User> {
     if (!email || !password) {
       throw new BadRequestException('No credentials received.');
     }
 
-    const existingUser = await this.userRepository.findByEmail(email);
+    const existingUser = await this.userRepository.findOneBy({
+      email: email,
+    });
 
     if (existingUser) {
       throw new ConflictException('E-Mail is already in use.');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const user = this.userRepository.create({
+      email,
+      password: hashedPassword,
+      role: UserRole.USER,
+    });
 
-    return this.userRepository.create(email, hashedPassword);
+    return this.userRepository.save(user);
   }
 
-  async findOne(email: string): Promise<UserSchema> {
-    const user = await this.userRepository.findByEmail(email);
+  async findOne(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
       throw new NotFoundException('No user found.');
@@ -39,7 +50,7 @@ export class UserService {
     return user;
   }
 
-  async validateUser(email: string, password: string): Promise<UserSchema | null> {
+  async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.findOne(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       return user;
@@ -56,6 +67,6 @@ export class UserService {
 
     userEntity.password = await bcrypt.hash(password, 10);
 
-    await this.userRepository.updatePassword(userEntity.id, userEntity.password);
+    await this.userRepository.update(userEntity.id, userEntity);
   }
 }

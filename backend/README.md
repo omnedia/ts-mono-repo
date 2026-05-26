@@ -7,13 +7,13 @@ This is the backend API for the TS Monorepo project, built with [NestJS](https:/
 ## 📦 Features
 
 - **Session-based authentication** with CSRF protection
-- **PostgreSQL** database with Drizzle
+- **PostgreSQL** database with TypeORM
 - **Redis** support for session storage (optional)
 - **Swagger/OpenAPI** documentation
 - **Role-based access control** with guards
 - **TypeScript** for type safety
 - **ESLint & Prettier** for code quality
-- **Database migrations** with Drizzle Kit
+- **Database migrations** with TypeORM CLI
 
 ---
 
@@ -52,12 +52,11 @@ REDIS_URL=redis://localhost:6379  # Optional: for production session storage
 - `SESSION_SECRET` should be a strong random string (at least 32 characters)
 - `REDIS_URL` is optional. If not set, sessions will be stored in memory (not recommended for production)
 
-### 3. Apply database migrations
+### 3. Run database migrations
 
-Generate SQL from the TypeScript Drizzle schema, then apply pending migrations:
+Ensure PostgreSQL is running (see `postgres/` directory), then:
 
 ```bash
-npm run migration:generate -- --name=MigrationName
 npm run migration:run
 ```
 
@@ -114,26 +113,24 @@ Excluded routes (no CSRF validation):
 
 ## 🗄️ Database Migrations
 
-This project uses Drizzle's codebase-first SQL generation flow. Drizzle generates SQL files from the TypeScript schema and applies pending migrations with the project migration runner.
-
 ### Generate a new migration
 
-After changing Drizzle schemas:
+After changing entities:
 
 ```bash
-npm run migration:generate -- --name=MigrationName
+npm run migration:generate -- src/migrations/MigrationName
 ```
 
-### Check migration history
-
-```bash
-npm run migration:check
-```
-
-### Apply pending migrations
+### Run migrations
 
 ```bash
 npm run migration:run
+```
+
+### Revert last migration
+
+```bash
+npm run migration:revert
 ```
 
 ---
@@ -213,20 +210,19 @@ npm run start:prod
 ```
 src/
 ├── auth/              # Authentication module (login, register, guards)
-├── database/          # Drizzle database provider
-├── entities/          # Drizzle schemas, repositories, and types
+├── entities/          # TypeORM entities
+├── migrations/        # Database migrations
 ├── types/             # TypeScript types and interfaces
 ├── app.module.ts      # Root application module
+├── datasource.ts      # TypeORM data source configuration
 ├── main.ts            # Application entry point
 └── middleware.module.ts # Global middleware configuration
 ```
-
-Generated SQL migrations are written to `src/migrations/`.
 
 ---
 
 ## 📖 Additional Resources
 
 - [NestJS Documentation](https://docs.nestjs.com)
-- [Drizzle Documentation](https://orm.drizzle.team)
+- [TypeORM Documentation](https://typeorm.io)
 - [Swagger/OpenAPI](https://swagger.io)

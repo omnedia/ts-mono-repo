@@ -82,14 +82,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Copy Deploy Files to Server
+      - name: Copy Compose File to Server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "./docker-compose.server.yml,./backend/drizzle.config.ts,./backend/src/entities/**,./backend/src/migrations/**,./backend/src/types/**"
+          source: "./docker-compose.server.yml"
           target: "projects/YOUR_APP/"
 
       - name: SSH to Server and Deploy Containers
@@ -105,17 +105,10 @@ jobs:
             mv -f docker-compose.server.yml docker-compose.yml
 
             echo "${{ secrets.NEST_ENV_FILE }}" > .env
-            cp .env backend/.env
 
             docker login ghcr.io -u YOUR_GITHUB_USERNAME -p ${{ secrets.GHCR_PAT }}
 
             docker compose pull
-
-            cd backend
-            if [ ! -x node_modules/.bin/drizzle-kit ]; then
-              npm install --no-save --package-lock=false drizzle-kit drizzle-orm pg dotenv
-            fi
-            npx drizzle-kit migrate --config drizzle.config.ts
-            cd ..
-
             docker compose up -d --force-recreate
+
+            docker compose exec backend npx typeorm migration:run -d dist/backend/src/datasource.js

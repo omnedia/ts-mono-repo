@@ -22,8 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Request as ERequest, Response as EResponse } from 'express';
-import type { UserSchema } from '../entities/user/user.types';
-import { User } from '../entities/user/user.types';
+import { User } from '../entities/user.entity';
 import { AuthRequest } from '../types/types';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -63,7 +62,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Register a new user' })
   @ApiBody({ type: RegisterDto })
   @ApiCreatedResponse({ type: User })
-  async register(@Body() body: RegisterDto): Promise<UserSchema> {
+  async register(@Body() body: RegisterDto): Promise<User> {
     return this.userService.create(body.email, body.password);
   }
 
@@ -93,7 +92,7 @@ export class AuthController {
     description: 'Returns User Entity',
     type: User,
   })
-  async getCurrentUser(@Request() req: AuthRequest): Promise<UserSchema> {
+  async getCurrentUser(@Request() req: AuthRequest): Promise<User> {
     return await this.userService.findOne(req.user.email);
   }
 
