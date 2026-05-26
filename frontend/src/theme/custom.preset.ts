@@ -94,7 +94,7 @@ export const CustomPreset = definePreset(Aura, {
           0: palette.surfaceGround,
           50: mix(palette.surfaceBackground, 45, palette.surfaceGround),
           100: palette.surfaceLightGray,
-          200: mix(palette.surfaceBackground, 70, palette.surfaceGround),
+          200: mix(palette.border, 70, palette.surfaceGround),
           300: palette.surfaceGray,
           400: mix(palette.border, 28, palette.surfaceGround),
           500: palette.border,
@@ -136,9 +136,9 @@ export const CustomPreset = definePreset(Aura, {
           950: palette.surfaceBackground,
         },
         primary: {
-          color: '{primary.600}',
+          color: '{primary.700}',
           contrastColor: '{text.color}',
-          hoverColor: '{primary.700}',
+          hoverColor: '{primary.600}',
           activeColor: '{primary.500}',
         },
         text: {
@@ -196,6 +196,39 @@ export const CustomPreset = definePreset(Aura, {
     },
   },
   components: {
+    fieldset: {
+      colorScheme: {
+        light: {
+          root: {
+            borderColor: 'oklch(from var(--border-color) calc(l * 1.5) c h)',
+          },
+        },
+        dark: {
+          root: {
+            borderColor: 'var(--border-color)',
+          },
+        },
+      },
+    },
+    datepicker: {
+      colorScheme: {
+        light: {
+          dropdown: {
+            color: '{text.color}',
+          },
+        },
+        dark: {
+          dropdown: {
+            color: '{text.color}',
+          },
+        },
+      },
+    },
+    breadcrumb: {
+      root: {
+        background: 'transparent',
+      },
+    },
     badge: {
       colorScheme: {
         light: {
@@ -290,6 +323,12 @@ export const CustomPreset = definePreset(Aura, {
     button: {
       colorScheme: {
         light: {
+          root: {
+            secondary: {
+              color: '{text.color}',
+              background: '{surface.300}',
+            },
+          },
           outlined: {
             primary: {
               color: '{text.color}',
@@ -297,6 +336,12 @@ export const CustomPreset = definePreset(Aura, {
           },
         },
         dark: {
+          root: {
+            secondary: {
+              color: '{text.color}',
+              background: '{surface.500}',
+            },
+          },
           outlined: {
             primary: {
               color: '{primary.0}',
@@ -309,6 +354,11 @@ export const CustomPreset = definePreset(Aura, {
         paddingX: '1.5rem',
         paddingY: '0.625rem',
       },
+      css: `
+        .p-button-label {
+          text-wrap: nowrap;
+        }
+      `,
     },
     togglebutton: {
       colorScheme: {
@@ -423,9 +473,15 @@ export const CustomPreset = definePreset(Aura, {
       },
     },
     tabs: {
+      tablist: {
+        background: 'transparent',
+      },
       tab: {
         activeBorderColor: '{text.color}',
         activeColor: '{text.color}',
+      },
+      tabpanel: {
+        background: 'transparent',
       },
     },
   },

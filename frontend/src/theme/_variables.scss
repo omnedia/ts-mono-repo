@@ -1,25 +1,19 @@
 $colors: (
-  'blue': #2196f3,
-  'green': #689f38,
-  'yellow': #fbc02d,
-  'cyan': #00bcd4,
-  'pink': #e91e63,
-  'indigo': #4e5fbb,
-  'teal': #009688,
-  'orange': #ff9800,
-  'bluegray': #607d8b,
-  'purple': #9c27b0,
-  'red': #f44336,
-  'primary': var(--palette-primary),
-  'primary-light': var(--palette-primary-light),
-  'secondary': var(--palette-secondary),
-  'background': var(--palette-background),
-  'ground': var(--palette-ground),
-  'grey': var(--palette-grey),
-  'gray': var(--palette-gray),
-  'light-gray': var(--palette-light-gray),
-  'border': var(--palette-border),
-  'text': var(--palette-text),
+        'blue': #2196f3,
+        'green': #689f38,
+        'yellow': #fbc02d,
+        'cyan': #00bcd4,
+        'pink': #e91e63,
+        'indigo': #4e5fbb,
+        'teal': #009688,
+        'orange': #ff9800,
+        'bluegray': #607d8b,
+        'purple': #9c27b0,
+        'red': #f44336,
+        'primary': var(--palette-green),
+        'navy': var(--palette-navy),
+        'slate': var(--palette-slate),
+        'light': var(--palette-light),
 ) !default;
 
 :root,
@@ -29,45 +23,63 @@ html.light {
   --font-family: 'Open Sans', sans-serif;
 
   /* palette */
+  --palette-navy: oklch(0.221 0.0394 258.28);
+  --palette-green: oklch(0.35 0.05 192);
+  --palette-stone: oklch(0.55 0.03 45);
+  --palette-slate: oklch(0.5544 0.0407 257.42);
+  --palette-slate-light: oklch(0.94 0.01 257.42);
+  --palette-light: oklch(0.9303 0.0046 258.33);
   --palette-white: oklch(1 0 0);
   --palette-black: oklch(0 0 0);
-  --palette-background: oklch(0.96 0.008 85);
-  --palette-ground: var(--palette-white);
-  --palette-grey: oklch(0.879 0.003 84.56);
-  --palette-gray: oklch(0.88 0.008 85);
-  --palette-light-gray: oklch(0.94 0.004 85);
-  --palette-border: oklch(0.793 0.006 84.57);
-  --palette-text: oklch(0.25 0.015 85);
-  --palette-text-black: oklch(0.25 0.015 85);
-  --palette-primary: oklch(0.35 0.05 192);
-  --palette-primary-light: oklch(0.57 0.07 192);
-  --palette-secondary: oklch(0.4 0.035 192);
+
+  --teal: oklch(0.62 0.12 185);
+  --teal-dark: oklch(0.45 0.13 185);
+  --teal-light: oklch(0.94 0.035 185);
+  --blue-dark: oklch(0.46 0.12 255);
+  --blue-light: oklch(0.94 0.03 255);
+  --purple-dark: oklch(0.44 0.14 285);
+  --purple-light: oklch(0.94 0.03 285);
+  --pink-dark: oklch(0.48 0.12 340);
+  --pink-light: oklch(0.94 0.035 340);
+  --green-dark: oklch(0.46 0.11 155);
+  --green-light: oklch(0.94 0.035 155);
+  --cyan-dark: oklch(0.48 0.11 220);
+  --cyan-light: oklch(0.94 0.03 220);
+  --indigo-dark: oklch(0.45 0.1 275);
+  --indigo-light: oklch(0.94 0.03 275);
+  --slate-dark: oklch(0.42 0.02 255);
+  --slate-light: oklch(0.94 0.01 255);
 
   /* surfaces */
-  --surface-background: var(--palette-background);
-  --surface-ground: var(--palette-ground);
+  --surface-background: oklch(0.98 0 0);
+  --surface-ground: var(--palette-white);
   --surface-white: var(--palette-white);
   --surface-black: var(--palette-black);
-  --surface-grey: var(--palette-grey);
-  --surface-gray: var(--palette-gray);
-  --border-color: var(--palette-border);
-  --surface-light-gray: var(--palette-light-gray);
+  --surface-grey: var(--palette-light);
+  --surface-gray: var(--palette-light);
+  --surface-light-gray: var(--palette-light);
+  --surface-navigation: var(--palette-navy);
+
+  --border-color: var(--palette-slate);
 
   /* text */
-  --text-color: var(--palette-text);
-  --text-color-black: var(--palette-text-black);
+  --text-color: oklch(0.25 0.015 85);
+  --text-color-black: var(--text-color);
 
   /* misc */
   --dark-overlay: rgba(220, 220, 220, 0.8);
 
   /* brand */
-  --primary-color: var(--palette-primary);
-  --primary-light-color: var(--palette-primary-light);
-  --secondary-color: var(--palette-secondary);
+  --primary-color: var(--palette-green);
+  --primary-light-color: oklch(0.57 0.07 192);
+  --primary-bleached-color: oklch(from var(--primary-color) calc(l * 1.35) calc(c * 0.25) h);
+  --secondary-color: var(--palette-stone);
+  --secondary-dark-color: oklch(from var(--secondary-color) calc(l * 0.8) c h);
   --primary-color-text: var(--palette-white);
   --secondary-color-text: var(--text-color);
 
   /* semantic */
+  --info: oklch(0.68 0.14 255);
   --info-dark: oklch(0.45 0.15 255);
   --info-light: oklch(0.94 0.03 255);
 
@@ -83,47 +95,69 @@ html.light {
   --success-dark: oklch(0.55 0.16 145);
   --success-light: oklch(0.94 0.05 145);
 
+  --review: oklch(0.58 0.14 285);
+  --review-dark: oklch(0.42 0.16 285);
+  --review-light: oklch(0.94 0.03 285);
+
   color-scheme: light;
 }
 
 html.dark {
   /* palette */
-  --palette-background: oklch(0.198 0.0031 196.9);
-  --palette-ground: oklch(0.252 0 0);
-  --palette-grey: oklch(0.561 0.012 196.815);
-  --palette-gray: oklch(0.351 0.007 196.849);
-  --palette-light-gray: oklch(0.22 0.003 196.9);
-  --palette-border: var(--palette-gray);
-  --palette-text: oklch(0.96 0.008 85);
-  --palette-text-black: oklch(0.25 0.015 85);
+  --palette-navy: oklch(0.24 0.032 258);
+  --palette-green: oklch(0.35 0.05 192);
+  --palette-slate-light: oklch(0.3 0.015 257.42);
+
+  --teal: oklch(0.74 0.1 185);
+  --teal-dark: oklch(0.82 0.08 185);
+  --teal-light: oklch(0.27 0.035 185);
+  --blue-dark: oklch(0.82 0.08 255);
+  --blue-light: oklch(0.28 0.03 255);
+  --purple-dark: oklch(0.82 0.08 285);
+  --purple-light: oklch(0.28 0.03 285);
+  --pink-dark: oklch(0.84 0.07 340);
+  --pink-light: oklch(0.28 0.035 340);
+  --green-dark: oklch(0.82 0.07 155);
+  --green-light: oklch(0.28 0.035 155);
+  --cyan-dark: oklch(0.82 0.08 220);
+  --cyan-light: oklch(0.28 0.03 220);
+  --indigo-dark: oklch(0.82 0.07 275);
+  --indigo-light: oklch(0.28 0.03 275);
+  --slate-dark: oklch(0.78 0.015 255);
+  --slate-light: oklch(0.24 0.01 255);
 
   /* surfaces */
-  --surface-background: var(--palette-background);
-  --surface-ground: var(--palette-ground);
+  --surface-background: oklch(0.167 0.012 254.2);
+  --surface-ground: oklch(0.221 0.012 254.2);
   --surface-white: var(--palette-white);
   --surface-black: var(--palette-black);
-  --surface-grey: var(--palette-grey);
-  --surface-gray: var(--palette-gray);
-  --border-color: var(--palette-border);
-  --surface-light-gray: var(--palette-light-gray);
+  --surface-grey: oklch(0.561 0.012 196.815);
+  --surface-gray: oklch(0.351 0.007 196.849);
+  --border-color: oklch(0.45 0.007 196.849);
+  --surface-light-gray: oklch(0.22 0.003 196.9);
+
+  --surface-navigation: var(--palette-navy);
 
   /* text */
-  --text-color: var(--palette-text);
-  --text-color-black: var(--palette-text-black);
+  --text-color: oklch(0.96 0.008 85);
+  --text-color-black: oklch(0.25 0.015 85);
 
   /* misc */
   --dark-overlay: rgba(0, 0, 0, 0.5);
 
   /* brand */
-  --primary-color: var(--palette-primary);
-  --primary-light-color: var(--palette-primary-light);
-  --secondary-color: var(--palette-secondary);
+  --primary-color: var(--palette-green);
+  --primary-light-color: oklch(0.57 0.15 192);
+  --primary-bleached-color: oklch(from var(--primary-color) calc(l * 0.5) calc(c * 0.25) h);
+  --secondary-color: var(--palette-stone);
+  --secondary-dark-color: oklch(from var(--secondary-color) calc(l * 1.25) c h);
   --primary-color-text: var(--text-color);
   --secondary-color-text: var(--text-color);
 
   /* semantic */
-  --info-dark: oklch(0.45 0.15 255);
-  --info-light: oklch(0.572 0.067 254.811);
+  --info: oklch(0.76 0.13 255);
+  --info-dark: oklch(0.64 0.14 255);
+  --info-light: oklch(0.25 0.04 255);
 
   --error: oklch(0.74 0.18 25);
   --error-dark: oklch(0.62 0.2 25);
@@ -136,6 +170,10 @@ html.dark {
   --success: oklch(0.74 0.14 145);
   --success-dark: oklch(0.64 0.15 145);
   --success-light: oklch(0.3 0.04 145);
+
+  --review: oklch(0.72 0.12 285);
+  --review-dark: oklch(0.82 0.08 285);
+  --review-light: oklch(0.28 0.03 285);
 
   color-scheme: dark;
 }
@@ -152,6 +190,7 @@ html.dark {
   --radius-xl: 0.75rem;
   --radius-l: 0.5rem;
   --radius-s: 0.25rem;
+  --padding-page: clamp(var(--spacing-6x), 3vw, var(--spacing-10x));
   --padding-lg-y: calc(var(--spacing) * 4);
   --padding-lg-x: calc(var(--spacing) * 8);
   --padding-lg: var(--padding-lg-y) var(--padding-lg-x);
